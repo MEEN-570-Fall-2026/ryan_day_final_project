@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.23)
 project(QtVTK LANGUAGES CXX VERSION 1.0.0)
 
-find_package(Qt6 COMPONENTS Widgets Concurrent Gui OpenGLWidgets REQUIRED)
+find_package(Qt6 COMPONENTS Widgets Gui OpenGLWidgets REQUIRED)
 find_package(VTK REQUIRED)
 
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -21,7 +21,7 @@ target_sources(${PROJECT_NAME}
 
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-    ${VTK_INCLUDE_DIRS}
+        ${VTK_INCLUDE_DIRS}
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -29,6 +29,10 @@ target_link_libraries(${PROJECT_NAME}
     Qt6::Gui
     Qt6::OpenGL
     ${VTK_LIBRARIES}
+    Mesher
+    Modeler
+    Parser
+    StructuralSimulator
 )
 
 
