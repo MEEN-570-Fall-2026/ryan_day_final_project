@@ -7,6 +7,7 @@
 class Object3d {
 public:
     std::set<Point> get_vertices();
+    void translate(double xDistance, double yDistance, double zDistance);
 
 protected:
     Point centroid;

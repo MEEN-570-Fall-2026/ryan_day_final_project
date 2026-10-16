@@ -3,7 +3,16 @@
 #include "primitives3d/Cube.hpp"
 #include <stdexcept>
 #include <set>
+#include "primitives3d/Object3d.hpp"
+#include <concepts>
 
+void assertContainsAllVertices(std::set<Point>& expectedVertices, Object3d& object3d)
+{
+    for (Point point : expectedVertices)
+    {
+        ASSERT_TRUE(object3d.get_vertices().contains(point));
+    }
+}
 
 TEST(Point, GivenXYZCoordiantes_WhenCreatingPoint_ExpectPointGivesCorrectXYZCoordinates)
 {
@@ -44,33 +53,50 @@ TEST(Cube, GivenXYZLengths_WhenCreatingCube_ExpectVerticesInCorrectLocation)
         Point(1, -1.5, 2),
     };
 
-    for (Point point : expectedVertices)
-    {
-        ASSERT_TRUE(cube.get_vertices().contains(point));
-    }
+    assertContainsAllVertices(expectedVertices, cube);
 }
 
 TEST(Cube, GivenOriginPointAndXYZLengths_WhenCreatingCube_ExpectVerticesInCorrectLocation)
 {
-    Point centroid{1, 1, 1};
+    Point centroid{1, 1.5, 2};
     double xLength{2};
     double yLength{3};
     double zLength{4};
     Cube cube{centroid, xLength, yLength, zLength};
 
     std::set<Point> expectedVertices = {
-        Point(0, -0.5, -1),
-        Point(0, 2.5, -1),
-        Point(0, 2.5, 3),
-        Point(0, -0.5, 3),
-        Point(2, -0.5, -1),
-        Point(2, 2.5, -1),
-        Point(2, 2.5, 3),
-        Point(2, -0.5, 3),
+        Point(0, 0, 0),
+        Point(0, 3, 0),
+        Point(0, 3, 4),
+        Point(0, 0, 4),
+        Point(2, 0, 0),
+        Point(2, 3, 0),
+        Point(2, 3, 4),
+        Point(2, 0, 4),
     };
 
-    for (Point point : expectedVertices)
-    {
-        ASSERT_TRUE(cube.get_vertices().contains(point));
-    }
+    assertContainsAllVertices(expectedVertices, cube);
+}
+
+TEST(Primative3D, GivenA3DPrimative_WhenTranslating_Expect_VerticesAndCentroidTranslateCorrectly)
+{
+    double xLength{2};
+    double yLength{3};
+    double zLength{4};
+    Cube cube{xLength, yLength, zLength};
+
+    cube.translate(1, 1.5, 2);
+
+    std::set<Point> expectedVertices = {
+        Point(0, 0, 0),
+        Point(0, 3, 0),
+        Point(0, 3, 4),
+        Point(0, 0, 4),
+        Point(2, 0, 0),
+        Point(2, 3, 0),
+        Point(2, 3, 4),
+        Point(2, 0, 4),
+    };
+    
+    assertContainsAllVertices(expectedVertices, cube);
 }
