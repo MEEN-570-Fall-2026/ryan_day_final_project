@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "Point.hpp"
+#include "primitives3d/Cube.hpp"
 #include <stdexcept>
 #include <set>
 
@@ -45,6 +46,6 @@ TEST(Cube, GivenXYZLengths_WhenCreatingCube_ExpectVerticesInCorrectLocation)
 
     for (Point point : expectedVertices)
     {
-        ASSERT_TRUE(cube.getVertices().contains(point));
+        ASSERT_TRUE(cube.get_vertices().contains(point));
     }
 }

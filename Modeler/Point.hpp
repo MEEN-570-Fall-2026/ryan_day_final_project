@@ -12,6 +12,8 @@ public:
     double y();
     double z();
 
+    bool operator<(const Point& other) const;
+
 private:
     double x_coordinate{0};
     double y_coordinate{0};
