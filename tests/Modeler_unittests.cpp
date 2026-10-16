@@ -10,7 +10,7 @@ TEST(Point, GivenXYZCoordiantes_WhenCreatingPoint_ExpectPointGivesCorrectXYZCoor
     int x{1};
     int y{2};
     int z{3};
-    Point point{1,2,3}
+    Point point{1,2,3};
 
     ASSERT_EQ(point.x(), x);
     ASSERT_EQ(point.y(), y);
