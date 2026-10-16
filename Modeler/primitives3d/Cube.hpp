@@ -5,12 +5,13 @@
 
 class Cube : public Object3d {
 public:
-    Cube(double x_length, double y_length, double z_length);
+    Cube(double xLength, double yLength, double zLength);
+    Cube(Point centroidLocation, double xLength, double yLength, double zLength);
 
 private:
-    double x_length;
-    double y_length;
-    double z_length;
+    double xLength;
+    double yLength;
+    double zLength;
 
     void set_vertices();
 

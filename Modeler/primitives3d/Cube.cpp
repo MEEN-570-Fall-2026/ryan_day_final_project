@@ -1,10 +1,19 @@
 #include "Cube.hpp"
 
-Cube::Cube(double x_length, double y_length, double z_length): 
-    x_length{x_length}, 
-    y_length{y_length}, 
-    z_length{z_length}
+Cube::Cube(double xLength, double yLength, double zLength): 
+    xLength{xLength}, 
+    yLength{yLength}, 
+    zLength{zLength}
 {
+    set_vertices();
+}
+
+Cube::Cube(Point centroidLocation, double xLength, double yLength, double zLength) :
+    xLength{xLength}, 
+    yLength{yLength}, 
+    zLength{zLength}
+{
+    centroid = centroidLocation;
     set_vertices();
 }
 
@@ -16,13 +25,10 @@ void Cube::set_vertices()
         {
             for (int k = -1; k <= 1; k += 2)
             {
-                vertices.insert(
-                    Point(
-                        x_length / 2 * i,
-                        y_length / 2 * j,
-                        z_length / 2 * k
-                    )
-                );
+                double xOffset = centroid.x() + xLength / 2 * i;
+                double yOffset = centroid.y() + yLength / 2 * j;
+                double zOffset = centroid.z() + zLength / 2 * k;
+                vertices.insert(Point(xOffset, yOffset, zOffset));
             };
         }
     }
