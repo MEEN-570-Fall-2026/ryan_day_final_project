@@ -19,7 +19,7 @@ TEST(Point, GivenXYZCoordiantes_WhenCreatingPoint_ExpectPointGivesCorrectXYZCoor
 
 TEST(Point, GivenNoCoordiantes_WhenCreatingPoint_ExpectInitializesAtOrigin)
 {
-    Point point{};
+    Point point;
 
     ASSERT_EQ(point.x(), 0);
     ASSERT_EQ(point.y(), 0);
