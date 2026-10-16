@@ -16,3 +16,12 @@ TEST(Point, GivenXYZCoordiantes_WhenCreatingPoint_ExpectPointGivesCorrectXYZCoor
     ASSERT_EQ(point.y(), y);
     ASSERT_EQ(point.z(), z);
 }
+
+TEST(Point, GivenNoCoordiantes_WhenCreatingPoint_ExpectInitializesAtOrigin)
+{
+    Point point{};
+
+    ASSERT_EQ(point.x(), 0);
+    ASSERT_EQ(point.y(), 0);
+    ASSERT_EQ(point.z(), 0);
+}
