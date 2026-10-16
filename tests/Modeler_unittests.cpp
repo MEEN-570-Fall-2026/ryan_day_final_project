@@ -49,3 +49,28 @@ TEST(Cube, GivenXYZLengths_WhenCreatingCube_ExpectVerticesInCorrectLocation)
         ASSERT_TRUE(cube.get_vertices().contains(point));
     }
 }
+
+TEST(Cube, GivenOriginPointAndXYZLengths_WhenCreatingCube_ExpectVerticesInCorrectLocation)
+{
+    Point centroid{1, 1, 1};
+    double xLength{2};
+    double yLength{3};
+    double zLength{4};
+    Cube cube{centroid, xLength, yLength, zLength};
+
+    std::set<Point> expectedVertices = {
+        Point(0, -0.5, -1),
+        Point(0, 2.5, -1),
+        Point(0, 2.5, 3),
+        Point(0, -0.5, 3),
+        Point(2, -0.5, -1),
+        Point(2, 2.5, -1),
+        Point(2, 2.5, 3),
+        Point(2, -0.5, 3),
+    };
+
+    for (Point point : expectedVertices)
+    {
+        ASSERT_TRUE(cube.get_vertices().contains(point));
+    }
+}
