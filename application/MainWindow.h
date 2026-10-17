@@ -5,6 +5,7 @@
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkSmartPointer.h>
 #include <vtkConeSource.h>
+#include <QGridLayout>
 
 namespace Ui {
   class MainWindow;

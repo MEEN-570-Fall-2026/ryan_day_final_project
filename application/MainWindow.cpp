@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ui_mainwindow.h"
 #include <vtkVersion.h>
 #include <vtkSmartPointer.h>
@@ -9,17 +9,19 @@
 #include <vtkGenericOpenGLRenderWindow.h>
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkPolyDataMapper.h>
+#include <QGridLayout>
 
 MainWindow::MainWindow(QWidget* parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
-  mQVtkWidget= new QVTKOpenGLNativeWidget(this);
 
-  QGridLayout* layout = new QGridLayout(ui->frame);
-  layout->addWidget(mQVtkWidget, 1, 1);
-  ui->frame->setLayout(layout);
+  mQVtkWidget = new QVTKOpenGLNativeWidget(ui->viewerFrame);
+
+  auto* layout = new QGridLayout(ui->viewerFrame);
+  layout->setContentsMargins(0, 0, 0, 0);
+  layout->addWidget(mQVtkWidget);
 
   setup_vtk_pipeline();
 
