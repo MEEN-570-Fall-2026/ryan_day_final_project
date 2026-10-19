@@ -2,15 +2,23 @@
 #include "Point.hpp"
 #include "primitives3d/Cube.hpp"
 #include <stdexcept>
-#include <set>
+#include <vector>
 #include "primitives3d/Object3d.hpp"
 #include <concepts>
+#include <algorithm>
 
-void assertContainsAllVertices(std::set<Point>& expectedVertices, Object3d& object3d)
+
+bool vectorContainsVertex(std::vector<Point> vertices, Point point)
+{
+    return std::find(vertices.begin(), vertices.end(), point) != vertices.end();
+}
+
+
+void assertContainsAllVertices(std::vector<Point>& expectedVertices, Object3d& object3d)
 {
     for (Point point : expectedVertices)
     {
-        ASSERT_TRUE(object3d.get_vertices().contains(point));
+        ASSERT_TRUE(vectorContainsVertex(object3d.get_vertices(), point));
     }
 }
 
@@ -42,7 +50,7 @@ TEST(Cube, GivenXYZLengths_WhenCreatingCube_ExpectVerticesInCorrectLocation)
     double zLength{4};
     Cube cube{xLength, yLength, zLength};
 
-    std::set<Point> expectedVertices = {
+    std::vector<Point> expectedVertices = {
         Point(-1, -1.5, -2),
         Point(-1, 1.5, -2),
         Point(-1, 1.5, 2),
@@ -64,7 +72,7 @@ TEST(Cube, GivenOriginPointAndXYZLengths_WhenCreatingCube_ExpectVerticesInCorrec
     double zLength{4};
     Cube cube{centroid, xLength, yLength, zLength};
 
-    std::set<Point> expectedVertices = {
+    std::vector<Point> expectedVertices = {
         Point(0, 0, 0),
         Point(0, 3, 0),
         Point(0, 3, 4),
@@ -87,7 +95,7 @@ TEST(Primative3D, GivenA3DPrimative_WhenTranslating_Expect_VerticesAndCentroidTr
 
     cube.translate(1, 1.5, 2);
 
-    std::set<Point> expectedVertices = {
+    std::vector<Point> expectedVertices = {
         Point(0, 0, 0),
         Point(0, 3, 0),
         Point(0, 3, 4),

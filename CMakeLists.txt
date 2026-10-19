@@ -26,4 +26,5 @@ add_subdirectory(Parser)
 add_subdirectory(Modeler)
 add_subdirectory(Mesher)
 add_subdirectory(StructuralSimulator)
+add_subdirectory(VTKSceneRenderer)
 
