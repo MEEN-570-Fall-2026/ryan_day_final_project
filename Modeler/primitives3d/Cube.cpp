@@ -6,6 +6,14 @@ Cube::Cube(double xLength, double yLength, double zLength):
     zLength{zLength}
 {
     set_vertices();
+    Cube::surfaceTriangleIndices = {
+        {0, 2, 6}, {0, 6, 4},
+        {1, 5, 7}, {1, 7, 3},
+        {0, 1, 5}, {0, 5, 4},
+        {2, 3, 7}, {2, 7, 6},
+        {0, 3, 2}, {0, 1, 3},
+        {4, 6, 7}, {4, 7, 5}
+    };
 }
 
 Cube::Cube(Point centroidLocation, double xLength, double yLength, double zLength) :
@@ -33,3 +41,4 @@ void Cube::set_vertices()
         }
     }
 }
+

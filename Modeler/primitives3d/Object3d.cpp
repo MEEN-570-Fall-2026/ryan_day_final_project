@@ -21,3 +21,23 @@ void Object3d::translate(double xDistance, double yDistance, double zDistance)
     }
     vertices = newVertices;
 }
+
+std::vector<SurfaceTriangle> Object3d::getSurfaceTriangles()
+{
+    return surfaceTriangles;
+}
+
+void Object3d::set_surface_triangles()
+{
+    surfaceTriangles.clear();
+    for (std::array<int, 3> indices : surfaceTriangleIndices) 
+    {
+        surfaceTriangles.push_back(
+            SurfaceTriangle(
+                vertices[indices[0]],
+                vertices[indices[1]],
+                vertices[indices[2]]
+            )
+        );
+    }
+}

@@ -11,10 +11,12 @@ target_sources(Modeler
     PRIVATE
         Modeler.cpp
         Point.cpp
+        SurfaceTriangle.cpp
         ${PRIMITIVES3D_SOURCES}
     PUBLIC
         Modeler.hpp
         Point.hpp
+        SurfaceTriangle.hpp
         ${PRIMITIVES3D_HEADERS}
 )
 target_compile_features(Modeler PRIVATE cxx_std_20)
