@@ -30,3 +30,8 @@ bool Point::operator<(const Point &other) const
     < 
     std::tie(other.x_coordinate, other.y_coordinate, other.z_coordinate);
 }
+
+bool Point::operator==(const Point &other) const
+{
+    return x_coordinate == other.x_coordinate && y_coordinate == other.y_coordinate && z_coordinate == other.z_coordinate;
+}

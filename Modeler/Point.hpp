@@ -13,6 +13,7 @@ public:
     double z();
 
     bool operator<(const Point& other) const;
+    bool operator==(const Point& other) const;
 
 private:
     double x_coordinate{0};

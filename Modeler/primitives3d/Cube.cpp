@@ -25,10 +25,10 @@ void Cube::set_vertices()
         {
             for (int k = -1; k <= 1; k += 2)
             {
-                double xOffset = centroid.x() + xLength / 2 * i;
-                double yOffset = centroid.y() + yLength / 2 * j;
-                double zOffset = centroid.z() + zLength / 2 * k;
-                vertices.insert(Point(xOffset, yOffset, zOffset));
+                double xOffvector = centroid.x() + xLength / 2 * i;
+                double yOffvector = centroid.y() + yLength / 2 * j;
+                double zOffvector = centroid.z() + zLength / 2 * k;
+                vertices.push_back(Point(xOffvector, yOffvector, zOffvector));
             };
         }
     }
