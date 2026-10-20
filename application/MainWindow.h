@@ -24,7 +24,7 @@ private:
   Ui::MainWindow *ui;
   QVTKOpenGLNativeWidget* mQVtkWidget;
 
-  vtkSmartPointer<vtkConeSource> mConeSource;
+  vtkSmartPointer<vtkPolyData> mConeSource;
   vtkSmartPointer<vtkRenderer> mRenderer;
 };
 

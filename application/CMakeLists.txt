@@ -33,6 +33,7 @@ target_link_libraries(${PROJECT_NAME}
     Modeler
     Parser
     StructuralSimulator
+    VTKSceneRenderer
 )
 
 

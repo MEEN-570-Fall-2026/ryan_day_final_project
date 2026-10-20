@@ -7,7 +7,15 @@ target_sources(VTKSceneRenderer
 )
 target_compile_features(VTKSceneRenderer PRIVATE cxx_std_20)
 
+find_package(VTK REQUIRED)
+
 target_include_directories(VTKSceneRenderer
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
+        Modeler
+)
+
+target_link_libraries(VTKSceneRenderer
+    Modeler
+    ${VTK_LIBRARIES}
 )

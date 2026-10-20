@@ -4,7 +4,7 @@ SurfaceTriangle::SurfaceTriangle(Point vertex1, Point vertex2, Point vertex3) : 
 {
 }
 
-std::array<Point, 3> SurfaceTriangle::getVertices()
+std::array<Point, 3> SurfaceTriangle::get_vertices()
 {
     return vertices;
 }

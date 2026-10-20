@@ -10,6 +10,8 @@
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkPolyDataMapper.h>
 #include <QGridLayout>
+#include "VtkSceneRenderer.hpp"
+#include "primitives3d/Cube.hpp"
 
 MainWindow::MainWindow(QWidget* parent) :
   QMainWindow(parent),
@@ -34,26 +36,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::setup_vtk_pipeline()
 {
-  mConeSource = vtkSmartPointer<vtkConeSource>::New();
-  mConeSource->SetHeight(3.0);
-  mConeSource->SetRadius(1.0);
-  mConeSource->SetResolution(50);
-
-  vtkSmartPointer<vtkPolyDataMapper> mapper =vtkSmartPointer<vtkPolyDataMapper>::New();
-  mapper->SetInputConnection(mConeSource->GetOutputPort());
-
-  vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-  actor->SetMapper(mapper);
-
-  mRenderer = vtkSmartPointer<vtkRenderer>::New();
-  mRenderer->AddActor(actor);
-
-
-  vtkSmartPointer<vtkGenericOpenGLRenderWindow> window = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
-  window->AddRenderer(mRenderer);
-
-  mQVtkWidget->setRenderWindow(window);
-
-  mRenderer->ResetCamera();
+    Cube cube{2.0, 0.3, 2.0};
+    VtkSceneRenderer sceneRenderer;
+    sceneRenderer.add_object(cube);
+    auto sceneData = sceneRenderer.render_scene();
+    auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+    mapper->SetInputData(sceneData);
+    auto actor = vtkSmartPointer<vtkActor>::New();
+    actor->SetMapper(mapper);
+    mRenderer = vtkSmartPointer<vtkRenderer>::New();
+    mRenderer->AddActor(actor);
+    auto window = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+    window->AddRenderer(mRenderer);
+    mQVtkWidget->setRenderWindow(window);
+    mRenderer->ResetCamera();
 }
 

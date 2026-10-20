@@ -27,6 +27,11 @@ std::vector<SurfaceTriangle> Object3d::getSurfaceTriangles()
     return surfaceTriangles;
 }
 
+std::vector<std::array<int, 3>> Object3d::getSurfaceTriangleIndices()
+{
+    return surfaceTriangleIndices;
+}
+
 void Object3d::set_surface_triangles()
 {
     surfaceTriangles.clear();
