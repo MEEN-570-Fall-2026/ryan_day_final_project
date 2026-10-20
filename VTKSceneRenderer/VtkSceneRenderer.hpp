@@ -15,11 +15,10 @@ class VtkSceneRenderer {
 public:
     VtkSceneRenderer();
     void add_object(Object3d& object3d);
-    vtkSmartPointer<vtkPolyData> render_scene() const;
+    std::vector<vtkSmartPointer<vtkPolyData>> render_scene() const;
 
 
 private:
-    vtkNew<vtkPolyData> scene;
     std::vector<Object3d*> sceneObjects;
 };
 

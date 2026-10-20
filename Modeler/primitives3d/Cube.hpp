@@ -14,7 +14,7 @@ private:
     double zLength;
 
     void set_vertices();
-
+    void set_vertex_indices();
 };
 
 #endif

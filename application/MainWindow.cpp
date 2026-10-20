@@ -12,6 +12,8 @@
 #include <QGridLayout>
 #include "VtkSceneRenderer.hpp"
 #include "primitives3d/Cube.hpp"
+#include <iostream>
+#include <vtkProperty.h>
 
 MainWindow::MainWindow(QWidget* parent) :
   QMainWindow(parent),
@@ -36,18 +38,24 @@ MainWindow::~MainWindow()
 
 void MainWindow::setup_vtk_pipeline()
 {
-    Cube cube{2.0, 0.3, 2.0};
+    Cube cube{1, 1, 1};
+    Point cube2Centroid{0.5, 0.5, 0.5};
+    Cube cube2{cube2Centroid, 1, 1, 1};
     VtkSceneRenderer sceneRenderer;
     sceneRenderer.add_object(cube);
+    sceneRenderer.add_object(cube2);
     auto sceneData = sceneRenderer.render_scene();
-    auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-    mapper->SetInputData(sceneData);
-    auto actor = vtkSmartPointer<vtkActor>::New();
-    actor->SetMapper(mapper);
-    mRenderer = vtkSmartPointer<vtkRenderer>::New();
-    mRenderer->AddActor(actor);
     auto window = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
+    mRenderer = vtkSmartPointer<vtkRenderer>::New();
     window->AddRenderer(mRenderer);
+    for (const auto& scene : sceneData)
+    {
+        auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+        mapper->SetInputData(scene);
+        auto actor = vtkSmartPointer<vtkActor>::New();
+        actor->SetMapper(mapper);
+        mRenderer->AddActor(actor);
+    }
     mQVtkWidget->setRenderWindow(window);
     mRenderer->ResetCamera();
 }

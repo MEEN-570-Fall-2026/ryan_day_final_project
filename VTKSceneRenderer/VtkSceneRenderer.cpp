@@ -10,12 +10,13 @@ void VtkSceneRenderer::add_object(Object3d& object3d){
     sceneObjects.push_back(&object3d);
 }
 
-vtkSmartPointer<vtkPolyData> VtkSceneRenderer::render_scene() const
+std::vector<vtkSmartPointer<vtkPolyData>> VtkSceneRenderer::render_scene() const
 {
-    vtkNew<vtkPoints> vtkPoints;
-    vtkNew<vtkCellArray> vtkTriangles;
+    std::vector<vtkSmartPointer<vtkPolyData>> sceneVector;
     for (Object3d* sceneObject : sceneObjects)
     {
+        vtkNew<vtkPoints> vtkPoints;
+        vtkNew<vtkCellArray> vtkTriangles;
         for (Point vertex : sceneObject->get_vertices())
         {
             vtkPoints->InsertNextPoint(vertex.x(), vertex.y(), vertex.z());
@@ -27,9 +28,10 @@ vtkSmartPointer<vtkPolyData> VtkSceneRenderer::render_scene() const
             vtkTriangles->InsertCellPoint(static_cast<vtkIdType>(triangleIndices[1]));
             vtkTriangles->InsertCellPoint(static_cast<vtkIdType>(triangleIndices[2]));
         }
+        auto polyData = vtkSmartPointer<vtkPolyData>::New();
+        polyData->SetPoints(vtkPoints);
+        polyData->SetPolys(vtkTriangles);
+        sceneVector.push_back(polyData);
     }
-    auto polyData = vtkSmartPointer<vtkPolyData>::New();
-    polyData->SetPoints(vtkPoints);
-    polyData->SetPolys(vtkTriangles);
-    return polyData;
+    return sceneVector;
 }
