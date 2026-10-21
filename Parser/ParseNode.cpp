@@ -15,3 +15,8 @@ const std::vector<std::unique_ptr<ParseNode>>& ParseNode::get_children() const
 {
     return childrenNodes;
 }
+
+ParseToken ParseNode::get_value()
+{
+    return value;
+}

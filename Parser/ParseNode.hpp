@@ -10,6 +10,7 @@ public:
     ParseNode(ParseToken value, ParseNode* parent);
     void add_child(ParseToken value);
     const std::vector<std::unique_ptr<ParseNode>>& get_children() const;
+    ParseToken get_value();
 
 
 private:
