@@ -6,23 +6,18 @@ Parser::Parser()
 {
 }
 
-void Parser::parse_from_file()
+std::vector<ParseTree> Parser::parse_from_file()
 {
 }
 
-void Parser::parse_from_string(std::string inputString)
+std::vector<ParseTree> Parser::parse_from_string(std::string inputString)
 {
-    splitStatements(inputString);
     for (std::string statement : statements)
     {
         parseStatement(statement);
     }
 }
 
-std::vector<std::string> Parser::splitStatements(std::string bodyText)
-{
-    return std::vector<std::string>();
-}
 
 void Parser::parseStatement(std::string statement)
 {
