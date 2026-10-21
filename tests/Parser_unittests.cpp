@@ -95,6 +95,33 @@ TEST(ParseToken, GivenTwoEqualParseTokens_WhenCheckingTokenEquality_ExpectTokesE
 }
 
 
+TEST(ParseNode, GivenTwoEqualParseNodes_WhenCheckingNodeEquality_ExpectNodesEqual)
+{
+    ParseNode node1{ParseToken{"Value"}, nullptr};
+    ParseNode node2{ParseToken{"Value"}, nullptr};
+    ASSERT_EQ(node1, node2);
+}
+
+
+TEST(ParseNode, GivenTwoParseNodesWithDifferentChildren_WhenCheckingNodeEquality_ExpectNodesUnequal)
+{
+    ParseNode node1{ParseToken{"Value"}, nullptr};
+    ParseNode node2{ParseToken{"Value"}, nullptr};
+    node2.add_child(ParseToken("Child"));
+    ASSERT_NE(node1, node2);
+}
+
+
+TEST(ParseNode, GivenTwoParseNodesWithSameChildren_WhenCheckingNodeEquality_ExpectNodesEqual)
+{
+    ParseNode node1{ParseToken{"Value"}, nullptr};
+    ParseNode node2{ParseToken{"Value"}, nullptr};
+    node2.add_child(ParseToken("Child"));
+    node1.add_child(ParseToken("Child"));
+    ASSERT_NE(node1, node2);
+}
+
+
 TEST(Parser, GivenASimpleInputString_WhenParsingInput_ExpectCorrectParseTreeCreated)
 {
     std::string input = "Cube(1,1,1);";
