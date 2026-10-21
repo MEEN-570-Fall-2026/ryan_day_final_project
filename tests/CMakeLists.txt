@@ -16,11 +16,13 @@ target_include_directories(tests
         "${GTEST_INCLUDE_DIRS}"
         Modeler
         Parser
+        Commands
 )
 target_link_libraries(tests
     GTest::gtest_main
     Modeler
     Parser
+    Commands
 )
 
 gtest_discover_tests(tests)

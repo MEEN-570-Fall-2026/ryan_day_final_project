@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "Parser.hpp"
 #include <string>
+#include "Command.hpp"
 
 
 bool checkExpectedCommandsWithActualCommands(std::vector<Command*> expectedCommands, std::vector<Command*> actualCommands)
@@ -20,7 +21,7 @@ bool checkExpectedCommandsWithActualCommands(std::vector<Command*> expectedComma
 }
 
 
-TEST(Parser, GivenAStringInput_WhenParsingSingleLine_ExpectCallableCreated)
+TEST(Parser, GivenAStringInput_WhenParsingSingleLine_ExpectCommandCreated)
 {
     Parser parser;
     std::string inputString = "Cube(1,1,1);";
@@ -29,5 +30,5 @@ TEST(Parser, GivenAStringInput_WhenParsingSingleLine_ExpectCallableCreated)
     std::vector<Command*> expectedCommands = {
         new CubeCommand()
     }
-    ASSERT_TRUE(checkExpectedCommandsWithActualCommands(expectedCommands, actualCommands))
+    ASSERT_TRUE(checkExpectedCommandsWithActualCommands(expectedCommands, actualCommands));
 }
