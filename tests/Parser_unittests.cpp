@@ -86,16 +86,27 @@ TEST(ParseTree, GivenAParseTree_WhenAddingNewUnevenNodes_ExpectLeavesUpdateCorre
     ASSERT_EQ(leaves[finalRightChild], 10);
 }
 
+
+TEST(ParseToken, GivenTwoEqualParseTokens_WhenCheckingTokenEquality_ExpectTokesEqual)
+{
+    ParseToken token1{"Value"};
+    ParseToken token2{"Value"};
+    ASSERT_EQ(token1, token2);
+}
+
+
 TEST(Parser, GivenASimpleInputString_WhenParsingInput_ExpectCorrectParseTreeCreated)
 {
     std::string input = "Cube(1,1,1);";
     Parser parser;
     std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
-    ParseToken headToken{"Cube"};
+    ParseToken headToken{"StatementStart"};
     ParseNode* headNode = new ParseNode(headToken, nullptr);
     ParseTree expectedParseTree{headNode};
-    headNode->add_child(ParseToken{"1"});
-    headNode->add_child(ParseToken{"1"});
-    headNode->add_child(ParseToken{"1"});
+    headNode->add_child(ParseToken{"Cube"});
+    ParseNode* cubeToken = headNode->get_children().back().get();
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }

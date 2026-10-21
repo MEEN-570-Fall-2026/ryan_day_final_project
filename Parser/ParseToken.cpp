@@ -8,3 +8,17 @@ std::string ParseToken::getTokenText()
 {
     return tokenText;
 }
+
+bool ParseToken::operator==(const ParseToken &other) const
+{
+    if (tokenText != other.tokenText)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool ParseToken::operator!=(const ParseToken &other) const
+{
+    return !operator==(other);
+}

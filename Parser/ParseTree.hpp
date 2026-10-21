@@ -11,12 +11,17 @@ public:
     ParseNode* get_head_node();
     std::map<ParseNode*, int> get_leaf_nodes();
 
+    bool operator==(const ParseTree& other) const;
+    bool operator!=(const ParseTree& other) const;
+
 private:
     ParseNode* headNode;
     std::map<ParseNode*, int> leafNodes;
     
     void update_leaf_nodes();
     void find_new_leaves(ParseNode*, int startingDepth);
+
+    
 
 };
 

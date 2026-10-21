@@ -20,3 +20,24 @@ ParseToken ParseNode::get_value()
 {
     return value;
 }
+
+bool ParseNode::operator==(const ParseNode &other) const
+{
+    if (value != other.value || childrenNodes.size() != other.childrenNodes.size())
+    {
+        return false;
+    }
+    for (int i = 0; i < childrenNodes.size(); i++)
+    {
+        if (childrenNodes[i] != other.childrenNodes[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool ParseNode::operator!=(const ParseNode &other) const
+{
+    return !operator==(other);
+}

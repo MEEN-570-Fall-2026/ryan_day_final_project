@@ -12,18 +12,50 @@ std::vector<ParseTree> Parser::parse_from_file()
 
 std::vector<ParseTree> Parser::parse_from_string(std::string inputString)
 {
-    for (std::string statement : statements)
-    {
-        parseStatement(statement);
-    }
+    return parse(std::istringstream(inputString));
 }
 
-
-void Parser::parseStatement(std::string statement)
+std::vector<ParseTree> Parser::parse(std::istringstream inputStream)
 {
-    int subStatementStart = 0;
-    for (int i = 0; i < statement.length(); i++)
+    std::vector<ParseTree> parseTrees;
+    std::string statement;
+    while (std::getline(inputStream, statement, ';'))
     {
-        
+        // if (statement == "") continue;
+        ParseNode* headNode = new ParseNode(ParseToken("StatementStart"), nullptr);
+        ParseTree parseTree{headNode};
+        std::istringstream inputStream{statement};
+        parse_statement(headNode, inputStream);
+        parseTrees.push_back(parseTree);
+    }
+    return parseTrees;
+}
+
+void Parser::parse_statement(ParseNode* parentNode, std::istringstream& statement)
+{
+    std::ostringstream tokenText;
+    char character;
+    while (statement.get(character))
+    {
+        if (character == '(')
+        {
+            parentNode->add_child(tokenText.str());
+            ParseNode* newNode = parentNode->get_children().back().get();
+            parse_statement(newNode, statement);
+            tokenText.str("");
+        }
+        else if (character == ')')
+        {
+            parentNode->add_child(tokenText.str());
+            return;
+        }
+        else if (character == ',')
+        {
+            parentNode->add_child(tokenText.str());
+            tokenText.str("");
+        }
+        else {
+            tokenText << character;
+        }
     }
 }

@@ -16,6 +16,20 @@ std::map<ParseNode *, int> ParseTree::get_leaf_nodes()
     return leafNodes;
 }
 
+bool ParseTree::operator==(const ParseTree &other) const
+{
+    if (*headNode != *other.headNode)
+    {
+        return false;
+    }
+    return true;
+}
+
+bool ParseTree::operator!=(const ParseTree &other) const
+{
+    return !operator==(other);
+}
+
 void ParseTree::update_leaf_nodes()
 {
     leafNodes.clear();

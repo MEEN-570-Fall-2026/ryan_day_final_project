@@ -12,6 +12,8 @@ public:
     const std::vector<std::unique_ptr<ParseNode>>& get_children() const;
     ParseToken get_value();
 
+    bool operator==(const ParseNode& other) const;
+    bool operator!=(const ParseNode& other) const;
 
 private:
     std::vector<std::unique_ptr<ParseNode>> childrenNodes;
