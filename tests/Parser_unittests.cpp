@@ -33,7 +33,7 @@ TEST(ParseNode, GivenAParseNode_WhenAddingChildren_ExpectChildrenAddedCorrectly)
     const auto& children = headNode->get_children();
     ASSERT_EQ(children.size(), 2);
     ASSERT_EQ(children[0]->get_value().getTokenText(), child1Token.getTokenText());
-    ASSERT_EQ(children[1]->get_value().getTokenText(), child1Token.getTokenText());
+    ASSERT_EQ(children[1]->get_value().getTokenText(), child2Token.getTokenText());
 }
 
 TEST(ParseTree, GivenAParseTree_WhenAddingNewNodes_ExpectLeavesUpdate)

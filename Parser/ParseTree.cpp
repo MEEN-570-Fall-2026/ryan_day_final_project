@@ -12,6 +12,7 @@ ParseNode* ParseTree::get_head_node()
 
 std::map<ParseNode *, int> ParseTree::get_leaf_nodes()
 {
+    update_leaf_nodes();
     return leafNodes;
 }
 
