@@ -24,3 +24,4 @@ target_link_libraries(tests
 )
 
 gtest_discover_tests(tests)
+

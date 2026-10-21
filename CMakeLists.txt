@@ -20,6 +20,8 @@ FetchContent_MakeAvailable(googletest)
 
 # ----------------------------
 
+include(CTest)
+
 add_subdirectory(application)
 add_subdirectory(tests)
 add_subdirectory(Parser)
