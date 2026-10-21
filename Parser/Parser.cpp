@@ -21,10 +21,7 @@ void Parser::parse_from_string(std::string inputString)
 
 std::vector<std::string> Parser::splitStatements(std::string bodyText)
 {
-    for (std::string statement : std::views::split(bodyText, ";"))
-    {
-        statements.push_back(statement);
-    }
+    return std::vector<std::string>();
 }
 
 void Parser::parseStatement(std::string statement)

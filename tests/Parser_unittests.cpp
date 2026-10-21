@@ -1,34 +1,23 @@
 #include "gtest/gtest.h"
 #include "Parser.hpp"
 #include <string>
-#include "Command.hpp"
+#include "ParseNode.hpp"
+#include "ParseToken.hpp"
+#include "ParseTree.hpp"
 
-
-bool checkExpectedCommandsWithActualCommands(std::vector<Command*> expectedCommands, std::vector<Command*> actualCommands)
+ParseTree constructTreeWithHead()
 {
-    if (expectedCommands.size() != actualCommands.size())
-    {
-        return false;
-    }
-    for (int i = 0; i < expectedCommands.size(); i++)
-    {
-        if (*expectedCommands[i] != *actualCommands[i])
-        {
-            return false;
-        }
-    }
-    return true;
+    ParseToken headToken = ParseToken("HeadToken");
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    return ParseTree(headNode);
 }
 
 
-TEST(Parser, GivenAStringInput_WhenParsingSingleLine_ExpectCommandCreated)
+TEST(ParseTree, GivenAParseTree_WhenInitializingWithHead_ExpectHeadIsOnlyLeaf)
 {
-    Parser parser;
-    std::string inputString = "Cube(1,1,1);";
-    std::vector<Command*> actualCommands = parser.parse_from_string(inputString);
-
-    std::vector<Command*> expectedCommands = {
-        new CubeCommand()
-    }
-    ASSERT_TRUE(checkExpectedCommandsWithActualCommands(expectedCommands, actualCommands));
+    ParseTree tree = constructTreeWithHead();
+    std::map<ParseNode*, int> leaves = tree.get_leaf_nodes();
+    ASSERT_EQ(leaves.size(), 1);
+    ParseNode* head = tree.get_head_node();
+    ASSERT_TRUE(leaves.contains(head));
 }

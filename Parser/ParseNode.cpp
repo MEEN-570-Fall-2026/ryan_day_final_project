@@ -8,10 +8,10 @@ ParseNode::ParseNode(ParseToken value, ParseNode* parent) : value{value}, parent
 void ParseNode::add_child(ParseToken childToken)
 {
     std::unique_ptr<ParseNode> childNode = std::make_unique<ParseNode>(childToken, this);
-    childrenNodes.push_back(childNode);
+    childrenNodes.push_back(std::move(childNode));
 }
 
-std::vector<std::unique_ptr<ParseNode>> ParseNode::get_children()
+const std::vector<std::unique_ptr<ParseNode>>& ParseNode::get_children() const
 {
     return childrenNodes;
 }
