@@ -4,7 +4,6 @@
 #include <vector>
 #include <functional>
 #include <string>
-#include "Command.hpp"
 
 class Parser {
 public:
@@ -14,9 +13,8 @@ public:
 
 private:
     std::vector<std::string> splitStatements(std::string bodyText);
-    Command parseStatement(std::string statement);
+    void parseStatement(std::string statement);
     std::vector<std::string> statements;
-    std::vector<Command> commands;
 };
 
 

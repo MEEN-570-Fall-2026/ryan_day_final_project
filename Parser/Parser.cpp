@@ -27,7 +27,7 @@ std::vector<std::string> Parser::splitStatements(std::string bodyText)
     }
 }
 
-Command Parser::parseStatement(std::string statement)
+void Parser::parseStatement(std::string statement)
 {
     int subStatementStart = 0;
     for (int i = 0; i < statement.length(); i++)

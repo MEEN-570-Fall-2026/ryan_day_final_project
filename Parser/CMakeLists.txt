@@ -2,8 +2,14 @@ add_library(Parser STATIC)
 target_sources(Parser
     PRIVATE
         Parser.cpp
+        ParseTree.cpp
+        ParseNode.cpp
+        ParseToken.cpp
     PUBLIC
         Parser.hpp
+        ParseTree.hpp
+        ParseNode.hpp
+        ParseToken.hpp
 )
 target_compile_features(Parser PRIVATE cxx_std_20)
 
