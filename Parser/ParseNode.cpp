@@ -11,3 +11,7 @@ void ParseNode::add_child(ParseToken childToken)
     childrenNodes.push_back(childNode);
 }
 
+std::vector<std::unique_ptr<ParseNode>> ParseNode::get_children()
+{
+    return childrenNodes;
+}
