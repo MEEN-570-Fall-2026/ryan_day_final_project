@@ -51,6 +51,7 @@ void Parser::parse_statement(ParseNode* parentNode, std::istringstream& statemen
         }
         else if (character == ',')
         {
+            if (tokenText.str() == "") continue;
             parentNode->add_child(tokenText.str());
             tokenText.str("");
         }

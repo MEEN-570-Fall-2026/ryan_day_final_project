@@ -137,3 +137,24 @@ TEST(Parser, GivenASimpleInputString_WhenParsingInput_ExpectCorrectParseTreeCrea
     cubeToken->add_child(ParseToken{"1"});
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }
+
+TEST(Parser, GivenANestedInputString_WhenParsingInput_ExpectCorrectParseTreeCreated)
+{
+    std::string input = "Cube(Point(1,2,3),1,1,1);";
+    Parser parser;
+    std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
+    ParseToken headToken{"StatementStart"};
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree{headNode};
+    headNode->add_child(ParseToken{"Cube"});
+    ParseNode* cubeToken = headNode->get_children().back().get();
+    cubeToken->add_child(ParseToken("Point"));
+    ParseNode* pointToken = cubeToken->get_children().back().get();
+    pointToken->add_child(ParseToken{"1"});
+    pointToken->add_child(ParseToken{"2"});
+    pointToken->add_child(ParseToken{"3"});
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    ASSERT_EQ(expectedParseTree, parseTrees[0]);
+}
