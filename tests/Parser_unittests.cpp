@@ -118,7 +118,7 @@ TEST(ParseNode, GivenTwoParseNodesWithSameChildren_WhenCheckingNodeEquality_Expe
     ParseNode node2{ParseToken{"Value"}, nullptr};
     node2.add_child(ParseToken("Child"));
     node1.add_child(ParseToken("Child"));
-    ASSERT_NE(node1, node2);
+    ASSERT_EQ(node1, node2);
 }
 
 

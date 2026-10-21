@@ -29,7 +29,7 @@ bool ParseNode::operator==(const ParseNode &other) const
     }
     for (int i = 0; i < childrenNodes.size(); i++)
     {
-        if (childrenNodes[i] != other.childrenNodes[i])
+        if (*childrenNodes[i] != *other.childrenNodes[i])
         {
             return false;
         }
