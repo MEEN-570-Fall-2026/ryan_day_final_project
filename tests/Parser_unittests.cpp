@@ -6,6 +6,10 @@
 #include "ParseTree.hpp"
 #include <format>
 
+
+#include <filesystem>
+#include <iostream>
+
 ParseTree constructTreeWithHead()
 {
     ParseToken headToken = ParseToken("HeadToken");
@@ -308,7 +312,10 @@ TEST(Parser, GivenAnIntializedObjectAndMemberMethodInline_WhenParsingInput_Expec
 
 TEST(Parser, GivenATextFile_WhenParsingText_ExpectCorrectParseTree)
 {
-    std::string filepath = "test_files/parserReadsFromFileTest.txt;";
+    
+    std::cout << "\n\n" << std::filesystem::current_path() << "\n\n" << '\n';
+
+    std::string filepath = "test_files/parserReadsFromFileTest.txt";
     Parser parser;
     std::vector<ParseTree> parseTrees = parser.parse_from_file(filepath);
     

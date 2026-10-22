@@ -2,21 +2,28 @@
 #include <ranges>
 #include <string_view>
 #include <cctype>
+#include <fstream>
 
 Parser::Parser()
 {
 }
 
-std::vector<ParseTree> Parser::parse_from_file()
+std::vector<ParseTree> Parser::parse_from_file(std::string filepath)
 {
+    std::ifstream file{filepath};
+    if (!file) {
+        throw std::runtime_error("Could not open file: " + filepath);
+    }
+    return parse(file);
 }
 
 std::vector<ParseTree> Parser::parse_from_string(std::string inputString)
 {
-    return parse(std::istringstream(inputString));
+    std::istringstream inputStream{inputString};
+    return parse(inputStream);
 }
 
-std::vector<ParseTree> Parser::parse(std::istringstream inputStream)
+std::vector<ParseTree> Parser::parse(std::istream& inputStream)
 {
     std::vector<ParseTree> parseTrees;
     std::string statement;
@@ -32,7 +39,7 @@ std::vector<ParseTree> Parser::parse(std::istringstream inputStream)
     return parseTrees;
 }
 
-void Parser::parse_statement(ParseNode* parentNode, std::istringstream& statement)
+void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
 {
     std::ostringstream tokenText;
     char character;

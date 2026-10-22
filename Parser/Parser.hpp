@@ -10,12 +10,12 @@
 class Parser {
 public:
     Parser();
-    std::vector<ParseTree> parse_from_file();
+    std::vector<ParseTree> parse_from_file(std::string filepath);
     std::vector<ParseTree> parse_from_string(std::string inputString);
 
 private:
-    std::vector<ParseTree> parse(std::istringstream inputStream);
-    void parse_statement(ParseNode* parentNode, std::istringstream& statement);
+    std::vector<ParseTree> parse(std::istream& inputStream);
+    void parse_statement(ParseNode* parentNode, std::istream& statement);
     std::vector<std::string> statements;
 };
 

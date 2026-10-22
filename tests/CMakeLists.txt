@@ -23,5 +23,12 @@ target_link_libraries(tests
     Parser
 )
 
+target_compile_definitions(tests PRIVATE
+    TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test_files"
+)
+
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/test_files"
+     DESTINATION "${CMAKE_BINARY_DIR}/tests")
+
 gtest_discover_tests(tests)
 
