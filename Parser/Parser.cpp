@@ -52,11 +52,16 @@ void Parser::parse_statement(ParseNode* parentNode, std::istringstream& statemen
         }
         else if (character == '.')
         {
-            if (!std::isdigit(
-                static_cast<unsigned char>(tokenText.str().front())) 
+            if (!std::isdigit(static_cast<unsigned char>(tokenText.str().front())) 
                 && !std::isdigit(static_cast<unsigned char>(statement.peek())))
             {
-                parentNode->add_child(tokenText.str());
+                std::string previousToken = tokenText.str();
+                if (previousToken == "")
+                {
+                    parentNode = parentNode->get_children().back().get();
+                    continue;
+                }
+                parentNode->add_child(previousToken);
                 ParseNode* newNode = parentNode->get_children().back().get();
                 parse_statement(newNode, statement);
                 tokenText.str("");
@@ -77,3 +82,4 @@ void Parser::parse_statement(ParseNode* parentNode, std::istringstream& statemen
         }
     }
 }
+

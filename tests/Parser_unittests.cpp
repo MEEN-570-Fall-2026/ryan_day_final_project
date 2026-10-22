@@ -284,3 +284,24 @@ TEST(Parser, GivenAMemberWithDecimals_WhenParsingInput_ExpectDecimalPointPreserv
     translateNode->add_child(ParseToken(".3"));
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }
+
+TEST(Parser, GivenAnIntializedObjectAndMemberMethodInline_WhenParsingInput_ExpectCorrectParseTreeCreated)
+{
+    std::string input = "Cube(1, 1, 1).translate(1, 1, 1);";
+    Parser parser;
+    std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
+    ParseToken headToken{"StatementStart"};
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree{headNode};
+    headNode->add_child(ParseToken{"Cube"});
+    ParseNode* cubeNode = headNode->get_children().back().get();
+    cubeNode->add_child(ParseToken{"1"});
+    cubeNode->add_child(ParseToken{"1"});
+    cubeNode->add_child(ParseToken{"1"});
+    cubeNode->add_child(ParseToken("translate"));
+    ParseNode* translateNode = cubeNode->get_children().back().get();
+    translateNode->add_child(ParseToken("1"));
+    translateNode->add_child(ParseToken("1"));
+    translateNode->add_child(ParseToken("1"));
+    ASSERT_EQ(expectedParseTree, parseTrees[0]);
+}
