@@ -8,7 +8,6 @@ ParseNode::ParseNode(ParseToken* value, ParseNode* parent) : value{value}, paren
 ParseNode::~ParseNode()
 {
     delete value;
-    delete parentNode;
 }
 
 void ParseNode::add_child(ParseToken* childToken)
