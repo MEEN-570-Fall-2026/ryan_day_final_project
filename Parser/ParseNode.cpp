@@ -1,11 +1,17 @@
 #include "ParseNode.hpp"
-#include "ParseToken.hpp"
+#include "parseTokens/ParseToken.hpp"
 
-ParseNode::ParseNode(ParseToken value, ParseNode* parent) : value{value}, parentNode{parent}
+ParseNode::ParseNode(ParseToken* value, ParseNode* parent) : value{value}, parentNode{parent}
 {
 }
 
-void ParseNode::add_child(ParseToken childToken)
+ParseNode::~ParseNode()
+{
+    delete value;
+    delete parentNode;
+}
+
+void ParseNode::add_child(ParseToken* childToken)
 {
     std::unique_ptr<ParseNode> childNode = std::make_unique<ParseNode>(childToken, this);
     childrenNodes.push_back(std::move(childNode));
@@ -16,14 +22,14 @@ const std::vector<std::unique_ptr<ParseNode>>& ParseNode::get_children() const
     return childrenNodes;
 }
 
-ParseToken ParseNode::get_value()
+ParseToken* ParseNode::get_value()
 {
     return value;
 }
 
 bool ParseNode::operator==(const ParseNode &other) const
 {
-    if (value != other.value || childrenNodes.size() != other.childrenNodes.size())
+    if (*value != *other.value || childrenNodes.size() != other.childrenNodes.size())
     {
         return false;
     }

@@ -1,4 +1,10 @@
 #include "Parser.hpp"
+#include "parseTokens/ArgumentToken.hpp"
+#include "parseTokens/MemberMethodToken.hpp"
+#include "parseTokens/ObjectToken.hpp"
+#include "parseTokens/ParseToken.hpp"
+#include "parseTokens/StartToken.hpp"
+#include "parseTokens/VariableToken.hpp"
 #include <ranges>
 #include <string_view>
 #include <cctype>
@@ -30,7 +36,7 @@ std::vector<ParseTree> Parser::parse(std::istream& inputStream)
     while (std::getline(inputStream, statement, ';'))
     {
         if (statement == "") continue;
-        ParseNode* headNode = new ParseNode(ParseToken("StatementStart"), nullptr);
+        ParseNode* headNode = new ParseNode(new StartToken("StatementStart"), nullptr);
         ParseTree parseTree{headNode};
         std::istringstream inputStream{statement};
         parse_statement(headNode, inputStream);
@@ -47,14 +53,14 @@ void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
     {
         if (character == '(')
         {
-            parentNode->add_child(tokenText.str());
+            parentNode->add_child(new ArgumentToken(tokenText.str()));
             ParseNode* newNode = parentNode->get_children().back().get();
             parse_statement(newNode, statement);
             tokenText.str("");
         }
         else if (character == ')')
         {
-            parentNode->add_child(tokenText.str());
+            parentNode->add_child(new ArgumentToken(tokenText.str()));
             return;
         }
         else if (character == '.')
@@ -68,7 +74,7 @@ void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
                     parentNode = parentNode->get_children().back().get();
                     continue;
                 }
-                parentNode->add_child(previousToken);
+                parentNode->add_child(new MemberMethodToken(previousToken));
                 ParseNode* newNode = parentNode->get_children().back().get();
                 parse_statement(newNode, statement);
                 tokenText.str("");
@@ -81,12 +87,12 @@ void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
         else if (character == ',')
         {
             if (tokenText.str() == "") continue;
-            parentNode->add_child(tokenText.str());
+            parentNode->add_child(new ArgumentToken(tokenText.str()));
             tokenText.str("");
         }
         else if (character == '=')
         {
-            parentNode->add_child(tokenText.str());
+            parentNode->add_child(new VariableToken(tokenText.str()));
             ParseNode* newNode = parentNode->get_children().back().get();
             parse_statement(newNode, statement);
             tokenText.str("");

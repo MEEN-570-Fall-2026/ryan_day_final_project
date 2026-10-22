@@ -1,16 +1,17 @@
 #ifndef PARSENODE
 #define PARSENODE
 
-#include "ParseToken.hpp"
+#include "parseTokens/ParseToken.hpp"
 #include <vector>
 #include <memory>
 
 class ParseNode {
 public:
-    ParseNode(ParseToken value, ParseNode* parent);
-    void add_child(ParseToken value);
+    ParseNode(ParseToken* value, ParseNode* parent);
+    ~ParseNode();
+    void add_child(ParseToken* value);
     const std::vector<std::unique_ptr<ParseNode>>& get_children() const;
-    ParseToken get_value();
+    ParseToken* get_value();
 
     bool operator==(const ParseNode& other) const;
     bool operator!=(const ParseNode& other) const;
@@ -18,7 +19,7 @@ public:
 private:
     std::vector<std::unique_ptr<ParseNode>> childrenNodes;
     ParseNode* parentNode;  
-    ParseToken value;
+    ParseToken* value;
 
 };
 
