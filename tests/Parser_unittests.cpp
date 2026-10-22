@@ -339,3 +339,37 @@ TEST(Parser, GivenATextFile_WhenParsingText_ExpectCorrectParseTree)
     ASSERT_EQ(expectedParseTree1, parseTrees[0]);
     ASSERT_EQ(expectedParseTree2, parseTrees[1]);
 }
+
+TEST(Parser, GivenATextFileWithVariableAssignment_WhenParsingText_ExpectCorrectParseTree)
+{
+    
+    std::cout << "\n\n" << std::filesystem::current_path() << "\n\n" << '\n';
+
+    std::string filepath = "tests/test_files/parserCorrectlyIdentifiesVariableAssignment.txt";
+    Parser parser;
+    std::vector<ParseTree> parseTrees = parser.parse_from_file(filepath);
+    
+    ParseToken headToken{"StatementStart"};
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree1{headNode};
+    headNode->add_child(ParseToken{"centroidPoint"});
+    ParseNode* variableNode = headNode->get_children().back().get();
+    variableNode->add_child(ParseToken("Point"));
+    ParseNode* pointNode = variableNode->get_children().back().get();
+    pointNode->add_child(ParseToken{"1"});
+    pointNode->add_child(ParseToken{"1"});
+    pointNode->add_child(ParseToken{"1"});
+
+    ParseNode* headNode2 = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree2{headNode2};
+    headNode2->add_child(ParseToken{"theCube"});
+    ParseNode* variableNode2 = headNode2->get_children().back().get();
+    variableNode2->add_child(ParseToken("Cube"));
+    ParseNode* cubeNode = variableNode2->get_children().back().get();
+    cubeNode->add_child(ParseToken{"1"});
+    cubeNode->add_child(ParseToken{"1"});
+    cubeNode->add_child(ParseToken{"1"});
+
+    ASSERT_EQ(expectedParseTree1, parseTrees[0]);
+    ASSERT_EQ(expectedParseTree2, parseTrees[1]);
+}

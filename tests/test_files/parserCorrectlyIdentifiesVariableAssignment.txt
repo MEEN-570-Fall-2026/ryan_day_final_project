@@ -1,0 +1,2 @@
+centroidPoint = Point(1, 1, 1);
+theCube = Cube(centroidPoint, 1, 1, 1);
