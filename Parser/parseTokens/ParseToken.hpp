@@ -24,6 +24,7 @@ class ParseToken {
 
     protected:
         std::string tokenText;
+        TokenType type;
 };
 
 #endif

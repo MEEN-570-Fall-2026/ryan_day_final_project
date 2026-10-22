@@ -53,7 +53,7 @@ void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
     {
         if (character == '(')
         {
-            parentNode->add_child(new ArgumentToken(tokenText.str()));
+            parentNode->add_child(new ObjectToken(tokenText.str()));
             ParseNode* newNode = parentNode->get_children().back().get();
             parse_statement(newNode, statement);
             tokenText.str("");
