@@ -52,7 +52,9 @@ void Parser::parse_statement(ParseNode* parentNode, std::istringstream& statemen
         }
         else if (character == '.')
         {
-            if (!std::isdigit(tokenText.str().front()))
+            if (!std::isdigit(
+                static_cast<unsigned char>(tokenText.str().front())) 
+                && !std::isdigit(static_cast<unsigned char>(statement.peek())))
             {
                 parentNode->add_child(tokenText.str());
                 ParseNode* newNode = parentNode->get_children().back().get();
