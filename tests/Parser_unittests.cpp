@@ -199,3 +199,54 @@ TEST(Parser, GivenAMultiLineArgumentInputString_WhenParsingInput_ExpectCorrectPa
     ASSERT_EQ(expectedParseTree2, parseTrees[1]);
     ASSERT_EQ(expectedParseTree3, parseTrees[2]);
 }
+
+
+TEST(Parser, GivenASimpleInputStringWithSpaces_WhenParsingInput_ExpectCorrectParseTreeCreated)
+{
+    std::string input = "Cube(1, 1, 1);";
+    Parser parser;
+    std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
+    ParseToken headToken{"StatementStart"};
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree{headNode};
+    headNode->add_child(ParseToken{"Cube"});
+    ParseNode* cubeToken = headNode->get_children().back().get();
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    ASSERT_EQ(expectedParseTree, parseTrees[0]);
+}
+
+
+TEST(Parser, GivenASimpleInputStringWithNewlinesInArgument_WhenParsingInput_ExpectCorrectParseTreeCreated)
+{
+    std::string input = "Cube(\n1,\n1,\n1);";
+    Parser parser;
+    std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
+    ParseToken headToken{"StatementStart"};
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree{headNode};
+    headNode->add_child(ParseToken{"Cube"});
+    ParseNode* cubeToken = headNode->get_children().back().get();
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    ASSERT_EQ(expectedParseTree, parseTrees[0]);
+}
+
+
+TEST(Parser, GivenASimpleInputStringWithIndentedArgument_WhenParsingInput_ExpectCorrectParseTreeCreated)
+{
+    std::string input = "   Cube(\n1,\n1,\n1);";
+    Parser parser;
+    std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
+    ParseToken headToken{"StatementStart"};
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree{headNode};
+    headNode->add_child(ParseToken{"Cube"});
+    ParseNode* cubeToken = headNode->get_children().back().get();
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    ASSERT_EQ(expectedParseTree, parseTrees[0]);
+}
