@@ -1,6 +1,7 @@
 #include "Parser.hpp"
 #include <ranges>
 #include <string_view>
+#include <cctype>
 
 Parser::Parser()
 {
@@ -48,6 +49,20 @@ void Parser::parse_statement(ParseNode* parentNode, std::istringstream& statemen
         {
             parentNode->add_child(tokenText.str());
             return;
+        }
+        else if (character == '.')
+        {
+            if (!std::isdigit(tokenText.str().front()))
+            {
+                parentNode->add_child(tokenText.str());
+                ParseNode* newNode = parentNode->get_children().back().get();
+                parse_statement(newNode, statement);
+                tokenText.str("");
+            }
+            else
+            {
+                tokenText << character;
+            }
         }
         else if (character == ',')
         {

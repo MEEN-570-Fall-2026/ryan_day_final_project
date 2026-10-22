@@ -217,7 +217,6 @@ TEST(Parser, GivenASimpleInputStringWithSpaces_WhenParsingInput_ExpectCorrectPar
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }
 
-
 TEST(Parser, GivenASimpleInputStringWithNewlinesInArgument_WhenParsingInput_ExpectCorrectParseTreeCreated)
 {
     std::string input = "Cube(\n1,\n1,\n1);";
@@ -234,7 +233,6 @@ TEST(Parser, GivenASimpleInputStringWithNewlinesInArgument_WhenParsingInput_Expe
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }
 
-
 TEST(Parser, GivenASimpleInputStringWithIndentedArgument_WhenParsingInput_ExpectCorrectParseTreeCreated)
 {
     std::string input = "   Cube(\n1,\n1,\n1);";
@@ -248,5 +246,23 @@ TEST(Parser, GivenASimpleInputStringWithIndentedArgument_WhenParsingInput_Expect
     cubeToken->add_child(ParseToken{"1"});
     cubeToken->add_child(ParseToken{"1"});
     cubeToken->add_child(ParseToken{"1"});
+    ASSERT_EQ(expectedParseTree, parseTrees[0]);
+}
+
+TEST(Parser, GivenAMemberMethodCallInput_WhenParsingInput_ExpectCorrectParseTreeCreated)
+{
+    std::string input = "theCube.translate(1,2,3);";
+    Parser parser;
+    std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
+    ParseToken headToken{"StatementStart"};
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree{headNode};
+    headNode->add_child(ParseToken{"theCube"});
+    ParseNode* variableNode = headNode->get_children().back().get();
+    variableNode->add_child(ParseToken{"translate"});
+    ParseNode* translateNode = variableNode->get_children().back().get();
+    translateNode->add_child(ParseToken{"1"});
+    translateNode->add_child(ParseToken{"2"});
+    translateNode->add_child(ParseToken("3"));
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }
