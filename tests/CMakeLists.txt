@@ -24,11 +24,11 @@ target_link_libraries(tests
 )
 
 target_compile_definitions(tests PRIVATE
-    TEST_FILES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/test_files"
+    TEST_FILES_DIR="${CMAKE_CURRENT_BINARY_DIR}/test_files"
 )
 
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/test_files"
-     DESTINATION "${CMAKE_BINARY_DIR}/tests")
+     DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")
 
 gtest_discover_tests(tests)
 

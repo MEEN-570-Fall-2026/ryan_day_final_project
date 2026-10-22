@@ -345,7 +345,7 @@ TEST(Parser, GivenATextFileWithVariableAssignment_WhenParsingText_ExpectCorrectP
     
     std::cout << "\n\n" << std::filesystem::current_path() << "\n\n" << '\n';
 
-    std::string filepath = "tests/test_files/parserCorrectlyIdentifiesVariableAssignment.txt";
+    std::string filepath = "test_files/parserVariableTest.txt";
     Parser parser;
     std::vector<ParseTree> parseTrees = parser.parse_from_file(filepath);
     
@@ -366,6 +366,7 @@ TEST(Parser, GivenATextFileWithVariableAssignment_WhenParsingText_ExpectCorrectP
     ParseNode* variableNode2 = headNode2->get_children().back().get();
     variableNode2->add_child(ParseToken("Cube"));
     ParseNode* cubeNode = variableNode2->get_children().back().get();
+    cubeNode->add_child(ParseToken{"centroidPoint"});
     cubeNode->add_child(ParseToken{"1"});
     cubeNode->add_child(ParseToken{"1"});
     cubeNode->add_child(ParseToken{"1"});

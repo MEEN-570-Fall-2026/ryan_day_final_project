@@ -84,6 +84,13 @@ void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
             parentNode->add_child(tokenText.str());
             tokenText.str("");
         }
+        else if (character == '=')
+        {
+            parentNode->add_child(tokenText.str());
+            ParseNode* newNode = parentNode->get_children().back().get();
+            parse_statement(newNode, statement);
+            tokenText.str("");
+        }
         else if (character != '\n' && character != ' ') {
             tokenText << character;
         }
