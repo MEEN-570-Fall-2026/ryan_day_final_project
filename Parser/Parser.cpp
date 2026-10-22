@@ -21,7 +21,7 @@ std::vector<ParseTree> Parser::parse(std::istringstream inputStream)
     std::string statement;
     while (std::getline(inputStream, statement, ';'))
     {
-        // if (statement == "") continue;
+        if (statement == "") continue;
         ParseNode* headNode = new ParseNode(ParseToken("StatementStart"), nullptr);
         ParseTree parseTree{headNode};
         std::istringstream inputStream{statement};
@@ -55,7 +55,7 @@ void Parser::parse_statement(ParseNode* parentNode, std::istringstream& statemen
             parentNode->add_child(tokenText.str());
             tokenText.str("");
         }
-        else {
+        else if (character != '\n' && character != ' ') {
             tokenText << character;
         }
     }
