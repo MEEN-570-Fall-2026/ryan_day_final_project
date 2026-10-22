@@ -105,6 +105,14 @@ TEST(ParseToken, GivenTwoEqualParseTokens_WhenCheckingTokenEquality_ExpectTokesE
 }
 
 
+TEST(ParseToken, GivenTwoParseTokensWithEqualTextButDifferentTypes_WhenCheckingTokenEquality)
+{
+    ArgumentToken token1{"Value"};
+    VariableToken token2{"Value"};
+    ASSERT_EQ(token1, token2);
+}
+
+
 TEST(ParseNode, GivenTwoEqualParseNodes_WhenCheckingNodeEquality_ExpectNodesEqual)
 {
     ParseNode node1{new ArgumentToken{"Value"}, nullptr};
