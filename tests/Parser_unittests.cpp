@@ -305,3 +305,30 @@ TEST(Parser, GivenAnIntializedObjectAndMemberMethodInline_WhenParsingInput_Expec
     translateNode->add_child(ParseToken("1"));
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }
+
+TEST(Parser, GivenATextFile_WhenParsingText_ExpectCorrectParseTree)
+{
+    std::string filepath = "test_files/parserReadsFromFileTest.txt;";
+    Parser parser;
+    std::vector<ParseTree> parseTrees = parser.parse_from_file(filepath);
+    
+    ParseToken headToken{"StatementStart"};
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree1{headNode};
+    headNode->add_child(ParseToken{"Cube"});
+    ParseNode* cubeToken = headNode->get_children().back().get();
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+
+    ParseNode* headNode2 = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree2{headNode2};
+    headNode2->add_child(ParseToken{"Point"});
+    ParseNode* pointToken2 = headNode2->get_children().back().get();
+    pointToken2->add_child(ParseToken{"2"});
+    pointToken2->add_child(ParseToken{"2.2"});
+    pointToken2->add_child(ParseToken{"2"});
+
+    ASSERT_EQ(expectedParseTree1, parseTrees[0]);
+    ASSERT_EQ(expectedParseTree2, parseTrees[1]);
+}
