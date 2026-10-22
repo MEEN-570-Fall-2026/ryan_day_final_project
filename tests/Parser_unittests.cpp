@@ -158,3 +158,44 @@ TEST(Parser, GivenANestedInputString_WhenParsingInput_ExpectCorrectParseTreeCrea
     cubeToken->add_child(ParseToken{"1"});
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }
+
+TEST(Parser, GivenAMultiLineArgumentInputString_WhenParsingInput_ExpectCorrectParseTreeCreated)
+{
+    std::string input = "Cube(Point(1,2,3),1,1,1);\nPoint(1,1,1);\nCube(1,2,3);";
+    Parser parser;
+    std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
+    ParseToken headToken{"StatementStart"};
+
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree1{headNode};
+    headNode->add_child(ParseToken{"Cube"});
+    ParseNode* cubeToken = headNode->get_children().back().get();
+    cubeToken->add_child(ParseToken("Point"));
+    ParseNode* pointToken = cubeToken->get_children().back().get();
+    pointToken->add_child(ParseToken{"1"});
+    pointToken->add_child(ParseToken{"2"});
+    pointToken->add_child(ParseToken{"3"});
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+    cubeToken->add_child(ParseToken{"1"});
+
+    ParseNode* headNode2 = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree2{headNode2};
+    headNode2->add_child(ParseToken{"Point"});
+    ParseNode* pointToken2 = headNode2->get_children().back().get();
+    pointToken2->add_child(ParseToken{"1"});
+    pointToken2->add_child(ParseToken{"1"});
+    pointToken2->add_child(ParseToken{"1"});
+
+    ParseNode* headNode3 = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree3{headNode3};
+    headNode3->add_child(ParseToken{"Cube"});
+    ParseNode* cubeToken3 = headNode3->get_children().back().get();
+    cubeToken3->add_child(ParseToken{"1"});
+    cubeToken3->add_child(ParseToken{"2"});
+    cubeToken3->add_child(ParseToken{"3"});
+
+    ASSERT_EQ(expectedParseTree1, parseTrees[0]);
+    ASSERT_EQ(expectedParseTree2, parseTrees[1]);
+    ASSERT_EQ(expectedParseTree3, parseTrees[2]);
+}
