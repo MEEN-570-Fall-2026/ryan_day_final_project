@@ -109,7 +109,7 @@ TEST(ParseToken, GivenTwoParseTokensWithEqualTextButDifferentTypes_WhenCheckingT
 {
     ArgumentToken token1{"Value"};
     VariableToken token2{"Value"};
-    ASSERT_EQ(token1, token2);
+    ASSERT_NE(token1, token2);
 }
 
 

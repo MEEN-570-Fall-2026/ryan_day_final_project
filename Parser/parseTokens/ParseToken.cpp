@@ -11,7 +11,9 @@ std::string ParseToken::getTokenText()
 
 bool ParseToken::operator==(const ParseToken &other) const
 {
-    if (tokenText != other.tokenText && get_type() == other.get_type())
+    auto thisType = get_type();
+    auto otherType = other.get_type();
+    if (tokenText != other.tokenText || get_type() != other.get_type())
     {
         return false;
     }
