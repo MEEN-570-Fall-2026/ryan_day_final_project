@@ -314,7 +314,7 @@ TEST(Parser, GivenAnIntializedObjectAndMemberMethodInline_WhenParsingInput_Expec
     std::string input = "Cube(1, 1, 1).translate(1, 1, 1);";
     Parser parser;
     std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
-    ParseToken* headToken = new ArgumentToken{"StatementStart"};
+    ParseToken* headToken = new StartToken{"StatementStart"};
     ParseNode* headNode = new ParseNode(headToken, nullptr);
     ParseTree expectedParseTree{headNode};
     headNode->add_child(new ObjectToken{"Cube"});
