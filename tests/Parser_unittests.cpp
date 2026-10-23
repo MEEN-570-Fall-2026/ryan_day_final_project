@@ -390,15 +390,15 @@ TEST(Parser, GivenATextFileWithVariableAssignment_WhenParsingText_ExpectCorrectP
     ParseNode* variableNode2 = headNode2->get_children().back().get();
     variableNode2->add_child(new ObjectToken("Cube"));
     ParseNode* cubeNode = variableNode2->get_children().back().get();
-    cubeNode->add_child(new VariableToken{"centroidPoint"});
+    cubeNode->add_child(new ArgumentToken{"centroidPoint"});
     cubeNode->add_child(new ArgumentToken{"1"});
     cubeNode->add_child(new ArgumentToken{"1"});
     cubeNode->add_child(new ArgumentToken{"1"});
 
-    ASSERT_EQ(expectedParseTree1, parseTrees[0]);
     std::cout << "Expected:\n" << expectedParseTree1.to_string() << std::endl;
     std::cout << "Actual:\n" << parseTrees[0].to_string() << std::endl;
-    ASSERT_EQ(expectedParseTree2, parseTrees[1]);
+    ASSERT_EQ(expectedParseTree1, parseTrees[0]);
     std::cout << "Expected:\n" << expectedParseTree2.to_string() << std::endl;
     std::cout << "Actual:\n" << parseTrees[1].to_string() << std::endl;
+    ASSERT_EQ(expectedParseTree2, parseTrees[1]);
 }
