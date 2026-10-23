@@ -2,9 +2,9 @@
 add_library(Interpreter STATIC)
 target_sources(Interpreter
     PRIVATE
-        interpreter.cpp
+        Interpreter.cpp
     PUBLIC
-        interpreter.cpp
+        Interpreter.cpp
 )
 target_compile_features(Interpreter PRIVATE cxx_std_20)
 
