@@ -33,11 +33,30 @@ bool ParseTree::operator!=(const ParseTree &other) const
 }
 
 
+namespace
+{
+std::string token_type_name(ParseToken::TokenType type)
+{
+    using TokenType = ParseToken::TokenType;
+
+    switch (type)
+    {
+        case TokenType::Object:       return "Object";
+        case TokenType::Argument:     return "Argument";
+        case TokenType::Variable:     return "Variable";
+        case TokenType::MemberMethod: return "MemberMethod";
+        case TokenType::Start:        return "Start";
+    }
+
+    return "Unknown";
+}
+}
+
 void ParseTree::append_node(std::ostringstream& out,
-                 ParseNode* node,
-                 const std::string& prefix,
-                 bool is_last,
-                 bool is_root)
+                            ParseNode* node,
+                            const std::string& prefix,
+                            bool is_last,
+                            bool is_root)
 {
     if (node == nullptr)
     {
@@ -46,15 +65,22 @@ void ParseTree::append_node(std::ostringstream& out,
     }
 
     auto* token = node->get_value();
-    const std::string label = token ? token->getTokenText() : "<null token>";
+
+    const std::string label =
+        token ? token->getTokenText() : "<null token>";
+    const std::string type =
+        token ? token_type_name(token->get_type()) : "<null type>";
+
+    const std::string node_text = label + " [" + type + "]";
 
     if (is_root)
     {
-        out << label << '\n';
+        out << node_text << '\n';
     }
     else
     {
-        out << prefix << (is_last ? "└── " : "├── ") << label << '\n';
+        out << prefix << (is_last ? "└── " : "├── ")
+            << node_text << '\n';
     }
 
     const auto& children = node->get_children();
