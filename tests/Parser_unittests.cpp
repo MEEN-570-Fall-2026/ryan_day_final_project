@@ -321,6 +321,10 @@ TEST(Parser, GivenAnIntializedObjectAndMemberMethodInline_WhenParsingInput_Expec
     translateNode->add_child(new ArgumentToken("1"));
     translateNode->add_child(new ArgumentToken("1"));
     translateNode->add_child(new ArgumentToken("1"));
+    
+    std::cout << "Expected:\n" << expectedParseTree.to_string() << std::endl;
+    std::cout << "Actual:\n" << parseTrees[0].to_string() << std::endl;
+
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }
 
@@ -386,5 +390,9 @@ TEST(Parser, GivenATextFileWithVariableAssignment_WhenParsingText_ExpectCorrectP
     cubeNode->add_child(new ArgumentToken{"1"});
 
     ASSERT_EQ(expectedParseTree1, parseTrees[0]);
+    std::cout << "Expected:\n" << expectedParseTree1.to_string() << std::endl;
+    std::cout << "Actual:\n" << parseTrees[0].to_string() << std::endl;
     ASSERT_EQ(expectedParseTree2, parseTrees[1]);
+    std::cout << "Expected:\n" << expectedParseTree2.to_string() << std::endl;
+    std::cout << "Actual:\n" << parseTrees[1].to_string() << std::endl;
 }

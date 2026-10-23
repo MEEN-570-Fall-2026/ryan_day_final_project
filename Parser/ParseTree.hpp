@@ -4,6 +4,7 @@
 #include "ParseNode.hpp"
 #include <vector>
 #include <map>
+#include <string>
 
 class ParseTree {
 public:
@@ -13,6 +14,14 @@ public:
 
     bool operator==(const ParseTree& other) const;
     bool operator!=(const ParseTree& other) const;
+
+    std::string to_string();
+    void append_node(std::ostringstream& out,
+        ParseNode* node,
+        const std::string& prefix,
+        bool is_last,
+        bool is_root);
+    void PrintTo(const ParseTree& tree, std::ostream* os);
 
 private:
     ParseNode* headNode;

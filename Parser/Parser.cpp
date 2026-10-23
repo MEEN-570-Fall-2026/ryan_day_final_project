@@ -53,49 +53,24 @@ void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
     {
         if (character == '(')
         {
-            parentNode->add_child(new ObjectToken(tokenText.str()));
-            ParseNode* newNode = parentNode->get_children().back().get();
-            parse_statement(newNode, statement);
-            tokenText.str("");
+            parse_on_left_parenthases_delimeter(parentNode, statement, tokenText);
         }
         else if (character == ')')
         {
-            parentNode->add_child(new ArgumentToken(tokenText.str()));
+            parse_on_right_parenthases_delimeter(parentNode, statement, tokenText);
             return;
         }
         else if (character == '.')
         {
-            if (!std::isdigit(static_cast<unsigned char>(tokenText.str().front())) 
-                && !std::isdigit(static_cast<unsigned char>(statement.peek())))
-            {
-                std::string previousToken = tokenText.str();
-                if (previousToken == "")
-                {
-                    parentNode = parentNode->get_children().back().get();
-                    continue;
-                }
-                parentNode->add_child(new MemberMethodToken(previousToken));
-                ParseNode* newNode = parentNode->get_children().back().get();
-                parse_statement(newNode, statement);
-                tokenText.str("");
-            }
-            else
-            {
-                tokenText << character;
-            }
+            parse_on_dot_delimeter(parentNode, statement, tokenText);
         }
         else if (character == ',')
         {
-            if (tokenText.str() == "") continue;
-            parentNode->add_child(new ArgumentToken(tokenText.str()));
-            tokenText.str("");
+            parse_on_comma_delimeter(parentNode, statement, tokenText);
         }
         else if (character == '=')
         {
-            parentNode->add_child(new VariableToken(tokenText.str()));
-            ParseNode* newNode = parentNode->get_children().back().get();
-            parse_statement(newNode, statement);
-            tokenText.str("");
+            parse_on_equals_delimeter(parentNode, statement, tokenText);
         }
         else if (character != '\n' && character != ' ') {
             tokenText << character;
@@ -103,3 +78,69 @@ void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
     }
 }
 
+void Parser::parse_on_dot_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText)
+{
+    if (!std::isdigit(static_cast<unsigned char>(tokenText.str().front())) 
+                && !std::isdigit(static_cast<unsigned char>(inputStream.peek())))
+    {
+        previousDelimeter = '.';
+        std::string previousToken = tokenText.str();
+        if (previousToken == "")
+        {
+            parentNode = parentNode->get_children().back().get();
+            return;
+        }
+        parentNode->add_child(new VariableToken(previousToken));
+        ParseNode* newNode = parentNode->get_children().back().get();
+        parse_statement(newNode, inputStream);
+        tokenText.str("");
+    }
+    else
+    {
+        tokenText << '.';
+    }
+}
+
+
+void Parser::parse_on_comma_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText)
+{
+    if (tokenText.str() == "") return;
+    parentNode->add_child(new ArgumentToken(tokenText.str()));
+    tokenText.str("");
+    previousDelimeter = ',';
+}
+
+void Parser::parse_on_left_parenthases_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText)
+{
+    if (previousDelimeter == '.')
+    {
+        if (parentNode->get_children().size() > 0 && parentNode->get_children().back()->get_value()->get_type() == ParseToken::TokenType::Object)
+        {
+            parentNode = parentNode->get_children().back().get();
+        }
+        parentNode->add_child(new MemberMethodToken(tokenText.str()));
+    }
+    else
+    {
+        parentNode->add_child(new ObjectToken(tokenText.str()));
+    }
+    ParseNode* newNode = parentNode->get_children().back().get();
+    previousDelimeter = '(';
+    parse_statement(newNode, inputStream);
+    tokenText.str("");
+}
+
+void Parser::parse_on_equals_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText)
+{
+    parentNode->add_child(new VariableToken(tokenText.str()));
+    ParseNode* newNode = parentNode->get_children().back().get();
+    previousDelimeter = '=';
+    parse_statement(newNode, inputStream);
+    tokenText.str("");
+}
+
+void Parser::parse_on_right_parenthases_delimeter(ParseNode *parentNode, std::istream &inputStream, std::ostringstream &tokenText)
+{
+    parentNode->add_child(new ArgumentToken(tokenText.str()));
+    previousDelimeter = ')';
+}

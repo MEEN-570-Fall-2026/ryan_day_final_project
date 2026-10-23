@@ -17,6 +17,14 @@ private:
     std::vector<ParseTree> parse(std::istream& inputStream);
     void parse_statement(ParseNode* parentNode, std::istream& statement);
     std::vector<std::string> statements;
+    char previousDelimeter;
+    void parse_on_dot_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
+    void parse_on_comma_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
+    void parse_on_left_parenthases_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
+    void parse_on_equals_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
+    void parse_on_right_parenthases_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
+
+
 };
 
 
