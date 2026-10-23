@@ -16,11 +16,7 @@ public:
     bool operator!=(const ParseTree& other) const;
 
     std::string to_string();
-    void append_node(std::ostringstream& out,
-        ParseNode* node,
-        const std::string& prefix,
-        bool is_last,
-        bool is_root);
+    
     void PrintTo(const ParseTree& tree, std::ostream* os);
 
 private:
@@ -30,6 +26,11 @@ private:
     void update_leaf_nodes();
     void find_new_leaves(ParseNode*, int startingDepth);
 
+    void append_node_string(std::ostringstream& out,
+        ParseNode* node,
+        const std::string& prefix,
+        bool is_last,
+        bool is_root);
     
 
 };

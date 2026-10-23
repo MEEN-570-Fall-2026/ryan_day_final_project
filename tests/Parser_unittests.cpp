@@ -213,8 +213,14 @@ TEST(Parser, GivenAMultiLineArgumentInputString_WhenParsingInput_ExpectCorrectPa
     cubeToken3->add_child(new ArgumentToken{"2"});
     cubeToken3->add_child(new ArgumentToken{"3"});
 
+    std::cout << "Expected:\n" << expectedParseTree1.to_string() << std::endl;
+    std::cout << "Actual:\n" << parseTrees[0].to_string() << std::endl;
     ASSERT_EQ(expectedParseTree1, parseTrees[0]);
+    std::cout << "Expected:\n" << expectedParseTree2.to_string() << std::endl;
+    std::cout << "Actual:\n" << parseTrees[1].to_string() << std::endl;
     ASSERT_EQ(expectedParseTree2, parseTrees[1]);
+    std::cout << "Expected:\n" << expectedParseTree3.to_string() << std::endl;
+    std::cout << "Actual:\n" << parseTrees[2].to_string() << std::endl;
     ASSERT_EQ(expectedParseTree3, parseTrees[2]);
 }
 

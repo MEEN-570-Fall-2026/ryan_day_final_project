@@ -38,7 +38,6 @@ namespace
 std::string token_type_name(ParseToken::TokenType type)
 {
     using TokenType = ParseToken::TokenType;
-
     switch (type)
     {
         case TokenType::Object:       return "Object";
@@ -47,12 +46,11 @@ std::string token_type_name(ParseToken::TokenType type)
         case TokenType::MemberMethod: return "MemberMethod";
         case TokenType::Start:        return "Start";
     }
-
     return "Unknown";
 }
 }
 
-void ParseTree::append_node(std::ostringstream& out,
+void ParseTree::append_node_string(std::ostringstream& out,
                             ParseNode* node,
                             const std::string& prefix,
                             bool is_last,
@@ -63,41 +61,30 @@ void ParseTree::append_node(std::ostringstream& out,
         out << prefix << (is_last ? "└── " : "├── ") << "<null>\n";
         return;
     }
-
     auto* token = node->get_value();
-
-    const std::string label =
-        token ? token->getTokenText() : "<null token>";
-    const std::string type =
-        token ? token_type_name(token->get_type()) : "<null type>";
-
+    const std::string label = token ? token->getTokenText() : "<null token>";
+    const std::string type = token ? token_type_name(token->get_type()) : "<null type>";
     const std::string node_text = label + " [" + type + "]";
-
     if (is_root)
     {
         out << node_text << '\n';
     }
     else
     {
-        out << prefix << (is_last ? "└── " : "├── ")
-            << node_text << '\n';
+        out << prefix << (is_last ? "└── " : "├── ") << node_text << '\n';
     }
-
     const auto& children = node->get_children();
-    const std::string child_prefix =
-        is_root ? "" : prefix + (is_last ? "    " : "│   ");
-
+    const std::string child_prefix =is_root ? "" : prefix + (is_last ? "    " : "│   ");
     for (std::size_t i = 0; i < children.size(); ++i)
     {
-        append_node(out, children[i].get(), child_prefix,
-                    i + 1 == children.size(), false);
+        append_node_string(out, children[i].get(), child_prefix, i + 1 == children.size(), false);
     }
 }
 
 std::string ParseTree::to_string()
 {
     std::ostringstream out;
-    append_node(out, headNode, "", true, true);
+    append_node_string(out, headNode, "", true, true);
     return out.str();
 }
 
