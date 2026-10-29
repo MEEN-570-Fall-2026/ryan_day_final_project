@@ -9,6 +9,7 @@ void Interpreter::interpret(ParseTree* tree)
 {
     std::map<ParseNode*, int> leaves = tree->get_leaf_nodes();
     ParseNode* deepestLeaf = find_deepest_leaf(leaves);
+    deepestLeaf->getParent();
 }
 
 ParseNode* Interpreter::find_deepest_leaf(std::map<ParseNode*, int> leafMap)
