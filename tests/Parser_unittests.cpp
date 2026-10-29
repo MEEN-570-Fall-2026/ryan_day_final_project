@@ -281,13 +281,14 @@ TEST(Parser, GivenAMemberMethodCallInput_WhenParsingInput_ExpectCorrectParseTree
     ParseToken* headToken = new StartToken{"StatementStart"};
     ParseNode* headNode = new ParseNode(headToken, nullptr);
     ParseTree expectedParseTree{headNode};
-    headNode->add_child(new VariableToken{"theCube"});
-    ParseNode* variableNode = headNode->get_children().back().get();
-    variableNode->add_child(new MemberMethodToken{"translate"});
-    ParseNode* translateNode = variableNode->get_children().back().get();
+    headNode->add_child(new MemberMethodToken{"translate"});
+    ParseNode* translateNode = headNode->get_children().back().get();
+    translateNode->add_child(new VariableToken{"theCube"});
     translateNode->add_child(new ArgumentToken{"1"});
     translateNode->add_child(new ArgumentToken{"2"});
     translateNode->add_child(new ArgumentToken("3"));
+    std::cout << "Expected:\n" << expectedParseTree.to_string() << std::endl;
+    std::cout << "Actual:\n" << parseTrees[0].to_string() << std::endl;
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }
 

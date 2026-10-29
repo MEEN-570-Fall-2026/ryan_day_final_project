@@ -78,7 +78,16 @@ void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
     }
 }
 
-void Parser::parse_on_dot_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText)
+void Parser::do_member_method_add(ParseNode* parentNode, std::string methodText)
+{
+    ParseNode* grandparentNode = parentNode->get_parent();
+    auto parentNodeUniquePtr = grandparentNode->pop_last_child();
+    grandparentNode->add_child(new MemberMethodToken(methodText));
+    ParseNode* memberMethodNode = grandparentNode->get_children().back().get();
+    memberMethodNode->add_child_from_node(std::move(parentNodeUniquePtr));
+}
+
+void Parser::parse_on_dot_delimeter(ParseNode *parentNode, std::istream &inputStream, std::ostringstream &tokenText)
 {
     if (!std::isdigit(static_cast<unsigned char>(tokenText.str().front())) 
                 && !std::isdigit(static_cast<unsigned char>(inputStream.peek())))
@@ -90,7 +99,7 @@ void Parser::parse_on_dot_delimeter(ParseNode* parentNode, std::istream& inputSt
             parentNode = parentNode->get_children().back().get();
             return;
         }
-        parentNode->add_child(new VariableToken(previousToken));
+        parentNode->add_child(new VariableToken(previousToken)); // This is adding just the VariableToken, Not its children
         ParseNode* newNode = parentNode->get_children().back().get();
         parse_statement(newNode, inputStream);
         tokenText.str("");
@@ -112,21 +121,20 @@ void Parser::parse_on_comma_delimeter(ParseNode* parentNode, std::istream& input
 
 void Parser::parse_on_left_parenthases_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText)
 {
+    ParseNode* callNode = nullptr;
     if (previousDelimeter == '.')
     {
-        if (parentNode->get_children().size() > 0 && parentNode->get_children().back()->get_value()->get_type() == ParseToken::TokenType::Object)
-        {
-            parentNode = parentNode->get_children().back().get();
-        }
         parentNode->add_child(new MemberMethodToken(tokenText.str()));
+        parentNode->swap_positions_with_last_child();
+        callNode = parentNode->get_parent();
     }
     else
     {
         parentNode->add_child(new ObjectToken(tokenText.str()));
+        callNode = parentNode->get_children().back().get();
     }
-    ParseNode* newNode = parentNode->get_children().back().get();
     previousDelimeter = '(';
-    parse_statement(newNode, inputStream);
+    parse_statement(callNode, inputStream);
     tokenText.str("");
 }
 

@@ -16,9 +16,61 @@ void ParseNode::add_child(ParseToken* childToken)
     childrenNodes.push_back(std::move(childNode));
 }
 
+void ParseNode::add_child_from_node(std::unique_ptr<ParseNode> node)
+{
+    childrenNodes.push_back(std::move(node));
+}
+
 const std::vector<std::unique_ptr<ParseNode>>& ParseNode::get_children() const
 {
     return childrenNodes;
+}
+
+void ParseNode::swap_positions_with_last_child()
+{
+    if (parentNode == nullptr)
+    {
+        throw std::logic_error("Cannot promote a child of the root without access to the root owner.");
+    }
+    if (childrenNodes.empty())
+    {
+        throw std::runtime_error("Node has no children!");
+    }
+    ParseNode* oldParent = parentNode;
+    auto it = std::find_if(
+        oldParent->childrenNodes.begin(),
+        oldParent->childrenNodes.end(),
+        [this](const std::unique_ptr<ParseNode>& node)
+        {
+            return node.get() == this;
+        });
+    if (it == oldParent->childrenNodes.end())
+    {
+        throw std::logic_error("Parent does not own this node.");
+    }
+    auto oldNode = std::move(*it);    
+    auto promoted = std::move(childrenNodes.back());
+    childrenNodes.pop_back();
+    promoted->parentNode = oldParent;
+    oldNode->parentNode = promoted.get();
+    *it = std::move(promoted);            
+    (*it)->childrenNodes.push_back(std::move(oldNode));
+}
+
+std::unique_ptr<ParseNode> ParseNode::pop_last_child()
+{
+    if (childrenNodes.size() == 0)
+    {
+        throw std::runtime_error("Node has no children!");
+    }
+    auto lastChild = std::move(childrenNodes.back());
+    childrenNodes.pop_back();
+    return lastChild;
+}
+
+ParseNode *ParseNode::get_parent()
+{
+    return parentNode;
 }
 
 ParseToken* ParseNode::get_value()

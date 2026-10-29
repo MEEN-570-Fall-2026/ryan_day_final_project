@@ -18,6 +18,7 @@ private:
     void parse_statement(ParseNode* parentNode, std::istream& statement);
     std::vector<std::string> statements;
     char previousDelimeter;
+    void do_member_method_add(ParseNode* parentNode, std::string methodText);
     void parse_on_dot_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
     void parse_on_comma_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
     void parse_on_left_parenthases_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
