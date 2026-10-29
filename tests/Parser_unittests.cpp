@@ -300,13 +300,14 @@ TEST(Parser, GivenAMemberWithDecimals_WhenParsingInput_ExpectDecimalPointPreserv
     ParseToken* headToken = new StartToken{"StatementStart"};
     ParseNode* headNode = new ParseNode(headToken, nullptr);
     ParseTree expectedParseTree{headNode};
-    headNode->add_child(new VariableToken{"theCube"});
-    ParseNode* variableNode = headNode->get_children().back().get();
-    variableNode->add_child(new MemberMethodToken{"translate"});
-    ParseNode* translateNode = variableNode->get_children().back().get();
+    headNode->add_child(new MemberMethodToken{"translate"});
+    ParseNode* translateNode = headNode->get_children().back().get();
+    translateNode->add_child(new VariableToken{"theCube"});
     translateNode->add_child(new ArgumentToken{"1.23"});
     translateNode->add_child(new ArgumentToken{"2.0"});
     translateNode->add_child(new ArgumentToken(".3"));
+    std::cout << "Expected:\n" << expectedParseTree.to_string() << std::endl;
+    std::cout << "Actual:\n" << parseTrees[0].to_string() << std::endl;
     ASSERT_EQ(expectedParseTree, parseTrees[0]);
 }
 
@@ -318,13 +319,13 @@ TEST(Parser, GivenAnIntializedObjectAndMemberMethodInline_WhenParsingInput_Expec
     ParseToken* headToken = new StartToken{"StatementStart"};
     ParseNode* headNode = new ParseNode(headToken, nullptr);
     ParseTree expectedParseTree{headNode};
-    headNode->add_child(new ObjectToken{"Cube"});
-    ParseNode* cubeNode = headNode->get_children().back().get();
+    headNode->add_child(new MemberMethodToken("translate"));
+    ParseNode* translateNode = headNode->get_children().back().get();
+    translateNode->add_child(new ObjectToken{"Cube"});
+    ParseNode* cubeNode = translateNode->get_children().back().get();
     cubeNode->add_child(new ArgumentToken{"1"});
     cubeNode->add_child(new ArgumentToken{"1"});
     cubeNode->add_child(new ArgumentToken{"1"});
-    cubeNode->add_child(new MemberMethodToken("translate"));
-    ParseNode* translateNode = cubeNode->get_children().back().get();
     translateNode->add_child(new ArgumentToken("1"));
     translateNode->add_child(new ArgumentToken("1"));
     translateNode->add_child(new ArgumentToken("1"));
