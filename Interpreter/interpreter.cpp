@@ -1,16 +1,19 @@
 #include "Interpreter.hpp"
 #include <algorithm>
 #include "Interpreter.hpp"
+#include "ObjectFactory.hpp"
+#include "ObjectRegistration.hpp"
 
-Interpreter::Interpreter()
+
+Interpreter::Interpreter(Context* context) : context{context}
 {
+    register_objects(factory);
 }
 
-void Interpreter::interpret(ParseTree* tree)
+void Interpreter::interpret(ParseTree tree)
 {
-    std::map<ParseNode*, int> leaves = tree->get_leaf_nodes();
-    ParseNode* deepestLeaf = find_deepest_leaf(leaves);
-    deepestLeaf->get_parent();
+    ParseNode* head = tree.get_head_node();
+    evaluate_node(head);
 }
 
 ParseNode* Interpreter::find_deepest_leaf(std::map<ParseNode*, int> leafMap)
@@ -27,18 +30,69 @@ ParseNode* Interpreter::find_deepest_leaf(std::map<ParseNode*, int> leafMap)
         );
         return max->first;
     }
+    return nullptr;
 }
 
-Object3d* Interpreter::interpret_parse_tree(ParseTree tree)
+RuntimeValue Interpreter::evaluate_node(ParseNode* node)
 {
-    ParseNode* deepestLeaf = find_deepest_leaf(tree.get_leaf_nodes());
-    ParseNode* parentOfDeepestLeaf = deepestLeaf->get_parent();
-    //interpret_parse_node(parentofDeepestLeaf);
+    ParseToken::TokenType nodeType = node->get_value()->get_type();
+    switch(nodeType) {
+        case ParseToken::TokenType::Start:
+            return evaluate_start_node(node);
+        case ParseToken::TokenType::Object:
+            return evaluate_object_node(node);
+        case ParseToken::TokenType::Argument:
+            return evaluate_argument_node(node);
+        case ParseToken::TokenType::Variable:
+            return evaluate_variable_node(node);
+        case ParseToken::TokenType::MemberMethod:
+            return evaluate_member_method_node(node);
+    }
 }
 
-void Interpreter::interpret_parse_node(ParseNode* node)
+RuntimeValue Interpreter::evaluate_start_node(ParseNode *node)
 {
-    //nodeType = node->get_value()->get_type();
-    //auto children = node->get_children();
-    
+    const auto& children = node->get_children();
+    for (const auto& child : children)
+    {
+        evaluate_node(child.get());
+    }
+    return RuntimeValue{};
+}
+
+RuntimeValue Interpreter::evaluate_object_node(ParseNode* node)
+{
+    std::vector<RuntimeValue> args;
+    const auto& children = node->get_children();
+    for (const auto& child : children)
+    {
+        args.push_back(evaluate_node(child.get()));
+    }
+    auto object = factory.create(node->get_value()->getTokenText(), args);
+    return RuntimeValue(std::move(object));
+}
+
+RuntimeValue Interpreter::evaluate_argument_node(ParseNode* node)
+{
+    return RuntimeValue{std::stod(node->get_value()->getTokenText())};
+}
+
+RuntimeValue Interpreter::evaluate_variable_node(ParseNode* node)
+{
+    const auto& children = node->get_children();
+    if (children.size() == 0) 
+    {
+        std::string variableName = node->get_value()->getTokenText();
+        return RuntimeValue(context->get(variableName));
+    }
+    else if (children.size() == 1)
+    {
+        return RuntimeValue(evaluate_node(children[0].get()));
+    }
+    throw std::runtime_error("Cannot assign variable to more than one value!");
+}
+
+RuntimeValue Interpreter::evaluate_member_method_node(ParseNode *node)
+{
+    return RuntimeValue();
 }

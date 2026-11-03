@@ -5,10 +5,14 @@ target_sources(Interpreter
         Interpreter.cpp
         Context.cpp
         RuntimeValue.cpp
+        ObjectFactory.cpp
+        ObjectRegistration.cpp
     PUBLIC
         Interpreter.hpp
         Context.hpp
         RuntimeValue.hpp
+        ObjectFactory.hpp
+        ObjectRegistration.hpp
 )
 target_compile_features(Interpreter PRIVATE cxx_std_20)
 
