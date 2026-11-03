@@ -108,3 +108,12 @@ TEST(Primative3D, GivenA3DPrimative_WhenTranslating_Expect_VerticesAndCentroidTr
     
     assertContainsAllVertices(expectedVertices, cube);
 }
+
+TEST(Primitive3D, GivenA3DPrimative_WhenGettingCentroid_ExpectCentriodInCorrectLocation)
+{
+    Cube cube(1, 1, 1);
+    cube.translate(1, 1, 1);
+    Point centroid = cube.get_centroid();
+
+    
+}
