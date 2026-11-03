@@ -12,6 +12,7 @@ public:
     void translate(double xDistance, double yDistance, double zDistance);
     std::vector<SurfaceTriangle> getSurfaceTriangles();
     std::vector<std::array<int, 3>> getSurfaceTriangleIndices();
+    Point get_centroid();
 
     virtual ~Object3d() = default;
 

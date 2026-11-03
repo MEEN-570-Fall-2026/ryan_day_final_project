@@ -32,6 +32,11 @@ std::vector<std::array<int, 3>> Object3d::getSurfaceTriangleIndices()
     return surfaceTriangleIndices;
 }
 
+Point Object3d::get_centroid()
+{
+    return centroid;
+}
+
 bool Object3d::operator==(const Object3d& other) const
 {
     return (vertices == other.vertices && centroid == other.centroid);

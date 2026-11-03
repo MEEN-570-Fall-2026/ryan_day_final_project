@@ -115,5 +115,7 @@ TEST(Primitive3D, GivenA3DPrimative_WhenGettingCentroid_ExpectCentriodInCorrectL
     cube.translate(1, 1, 1);
     Point centroid = cube.get_centroid();
 
-    
+    Point expected = Point(1, 1, 1);
+
+    ASSERT_EQ(centroid, expected);
 }
