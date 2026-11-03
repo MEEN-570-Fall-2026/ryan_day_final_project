@@ -4,8 +4,9 @@
 #include "Point.hpp"
 #include <vector>
 #include "SurfaceTriangle.hpp"
+#include "CADObject.hpp"
 
-class Object3d {
+class Object3d : public CADObject {
 public:
     std::vector<Point> get_vertices();
     void translate(double xDistance, double yDistance, double zDistance);
@@ -13,6 +14,11 @@ public:
     std::vector<std::array<int, 3>> getSurfaceTriangleIndices();
 
     virtual ~Object3d() = default;
+
+    bool operator==(const Object3d& other) const;
+
+    RuntimeValue invoke(const std::string& method, const std::vector<RuntimeValue>& args);
+
     
 protected:
     Point centroid;

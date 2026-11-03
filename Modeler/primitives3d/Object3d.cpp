@@ -32,6 +32,21 @@ std::vector<std::array<int, 3>> Object3d::getSurfaceTriangleIndices()
     return surfaceTriangleIndices;
 }
 
+bool Object3d::operator==(const Object3d& other) const
+{
+    return (vertices == other.vertices && centroid == other.centroid);
+}
+
+RuntimeValue Object3d::invoke(const std::string &method, const std::vector<RuntimeValue> &args)
+{
+    if (method == "translate" && args.size() == 3)
+    {
+        translate(args[0].as_number(), args[1].as_number(), args[2].as_number());
+        return RuntimeValue{};
+    }
+    throw std::runtime_error("Unknown method " + method + " with supplied arguments!");
+}
+
 void Object3d::set_surface_triangles()
 {
     surfaceTriangles.clear();

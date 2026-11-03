@@ -1,6 +1,6 @@
 #include "Interpreter.hpp"
 #include <algorithm>
-#include "interpreter.hpp"
+#include "Interpreter.hpp"
 
 Interpreter::Interpreter()
 {
@@ -33,12 +33,12 @@ Object3d* Interpreter::interpret_parse_tree(ParseTree tree)
 {
     ParseNode* deepestLeaf = find_deepest_leaf(tree.get_leaf_nodes());
     ParseNode* parentOfDeepestLeaf = deepestLeaf->get_parent();
-    interpret_parse_node(parentofDeepestLeaf);
+    //interpret_parse_node(parentofDeepestLeaf);
 }
 
 void Interpreter::interpret_parse_node(ParseNode* node)
 {
-    nodeType = node->get_value()->get_type();
-    auto children = node->get_children();
+    //nodeType = node->get_value()->get_type();
+    //auto children = node->get_children();
     
 }

@@ -1,8 +1,10 @@
 #ifndef POINTMODELER
 #define POINTMODELER
 
+#include "CADObject.hpp"
+#include "RuntimeValue.hpp"
 
-class Point
+class Point : public CADObject
 {
 public:
     Point(double x, double y, double z);
@@ -14,6 +16,8 @@ public:
 
     bool operator<(const Point& other) const;
     bool operator==(const Point& other) const;
+
+    RuntimeValue invoke(const std::string& method, const std::vector<RuntimeValue>& args);
 
 private:
     double x_coordinate{0};

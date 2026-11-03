@@ -21,6 +21,11 @@ target_sources(Modeler
 )
 target_compile_features(Modeler PRIVATE cxx_std_20)
 
+target_link_libraries(Modeler
+    PUBLIC
+        Interpreter
+)
+
 target_include_directories(Modeler
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
