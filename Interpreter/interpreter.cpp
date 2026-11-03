@@ -2,12 +2,9 @@
 #include <algorithm>
 #include "Interpreter.hpp"
 #include "ObjectFactory.hpp"
-#include "ObjectRegistration.hpp"
-
 
 Interpreter::Interpreter(Context* context) : context{context}
 {
-    register_objects(factory);
 }
 
 void Interpreter::interpret(ParseTree tree)
@@ -80,14 +77,16 @@ RuntimeValue Interpreter::evaluate_argument_node(ParseNode* node)
 RuntimeValue Interpreter::evaluate_variable_node(ParseNode* node)
 {
     const auto& children = node->get_children();
+    std::string variableName = node->get_value()->getTokenText();
     if (children.size() == 0) 
     {
-        std::string variableName = node->get_value()->getTokenText();
         return RuntimeValue(context->get(variableName));
     }
     else if (children.size() == 1)
     {
-        return RuntimeValue(evaluate_node(children[0].get()));
+        RuntimeValue variableValue = RuntimeValue(evaluate_node(children[0].get()));
+        context->add(variableName, variableValue);
+        return variableValue;
     }
     throw std::runtime_error("Cannot assign variable to more than one value!");
 }
