@@ -95,3 +95,23 @@ TEST(Interpreter, GivenAStoredVariable_WhenUsingStoredVariable_ExpectVariableUse
 
     ASSERT_EQ(*storedObject, expectedCube);
 }
+
+
+TEST(Interpreter, GivenAStoredObject_WhenPerformingMemberMethodOnStoredObject_ExpectMemberMethodAppliedCorrectly)
+{
+    std::string input{"theCube = Cube(1,1,1);theCube.translate(1,1,1);"};
+    Context* context = new Context();
+    Interpreter interpreter{context};
+    Parser parser;
+    std::vector<ParseTree> trees = parser.parse_from_string(input);
+    std::cout << "Tree 0:\n" << trees[0].to_string() << std::endl;
+    std::cout << "Tree 0:\n" << trees[1].to_string() << std::endl;
+    interpreter.interpret_trees(trees);
+    Point expectedCentroid(1, 1, 1);
+    Cube expectedCube{expectedCentroid, 1, 1, 1};
+
+    auto retrieved = context->get("theCube").as<RuntimeValue::CADObjectPointer>();
+    auto storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);
+
+    ASSERT_EQ(*storedObject, expectedCube);
+}
