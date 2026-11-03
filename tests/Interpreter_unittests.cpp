@@ -40,6 +40,27 @@ TEST(Context, GivenARuntimeValuePrimitive_WhenAddingToContext_expectRuntimeValue
 }
 
 
+TEST(Context, GivenAMemberMethodForObjectInContext_WhenApplyingMemberMethod_ExpectMemberMethodCorrectlyApplied)
+{
+    Context context;
+    std::string variableName{"theCube"};
+    std::shared_ptr<CADObject> cubeObject = std::make_shared<Cube>(1, 1, 1);
+    RuntimeValue cubeRuntime{cubeObject};
+    context.add(variableName, cubeRuntime);
+
+    auto retrieved = context.get(variableName).as<RuntimeValue::CADObjectPointer>();
+    auto storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);
+    std::vector<RuntimeValue> translateArgs{RuntimeValue{-1}, RuntimeValue{-1}, RuntimeValue{-1}};
+    storedObject->invoke("translate", translateArgs);
+
+    retrieved = context.get(variableName).as<RuntimeValue::CADObjectPointer>();
+    storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);
+
+    Point expectedCentroid{-1, -1, -1};
+    ASSERT_EQ(*storedObject, Cube(expectedCentroid, 1, 1, 1));
+}
+
+
 // TEST(Interpreter, GivenABasicCubeCodeInput_WhenInterpreting_ExpectCubeObjectIsAddedToContext)
 // {
 //     std::string input{"theCube = Cube(1,1,1);"};
