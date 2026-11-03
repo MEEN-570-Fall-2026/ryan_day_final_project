@@ -68,7 +68,7 @@ std::unique_ptr<ParseNode> ParseNode::pop_last_child()
     return lastChild;
 }
 
-ParseNode *ParseNode::get_parent()
+ParseNode* ParseNode::get_parent()
 {
     return parentNode;
 }

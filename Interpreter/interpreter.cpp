@@ -1,5 +1,6 @@
 #include "Interpreter.hpp"
 #include <algorithm>
+#include "interpreter.hpp"
 
 Interpreter::Interpreter()
 {
@@ -9,7 +10,7 @@ void Interpreter::interpret(ParseTree* tree)
 {
     std::map<ParseNode*, int> leaves = tree->get_leaf_nodes();
     ParseNode* deepestLeaf = find_deepest_leaf(leaves);
-    deepestLeaf->getParent();
+    deepestLeaf->get_parent();
 }
 
 ParseNode* Interpreter::find_deepest_leaf(std::map<ParseNode*, int> leafMap)
@@ -26,4 +27,18 @@ ParseNode* Interpreter::find_deepest_leaf(std::map<ParseNode*, int> leafMap)
         );
         return max->first;
     }
+}
+
+Object3d* Interpreter::interpret_parse_tree(ParseTree tree)
+{
+    ParseNode* deepestLeaf = find_deepest_leaf(tree.get_leaf_nodes());
+    ParseNode* parentOfDeepestLeaf = deepestLeaf->get_parent();
+    interpret_parse_node(parentofDeepestLeaf);
+}
+
+void Interpreter::interpret_parse_node(ParseNode* node)
+{
+    nodeType = node->get_value()->get_type();
+    auto children = node->get_children();
+    
 }
