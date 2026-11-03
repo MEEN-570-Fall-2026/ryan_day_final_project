@@ -107,6 +107,7 @@ TEST(Interpreter, GivenAStoredObject_WhenPerformingMemberMethodOnStoredObject_Ex
     std::cout << "Tree 0:\n" << trees[0].to_string() << std::endl;
     std::cout << "Tree 0:\n" << trees[1].to_string() << std::endl;
     interpreter.interpret_trees(trees);
+    
     Point expectedCentroid(1, 1, 1);
     Cube expectedCube{expectedCentroid, 1, 1, 1};
 

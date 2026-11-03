@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "Interpreter.hpp"
 #include "ObjectFactory.hpp"
-#include "interpreter.hpp"
+#include "Interpreter.hpp"
 
 Interpreter::Interpreter(Context* context) : context{context}
 {
@@ -106,7 +106,21 @@ RuntimeValue Interpreter::evaluate_variable_node(ParseNode* node)
     throw std::runtime_error("Cannot assign variable to more than one value!");
 }
 
-RuntimeValue Interpreter::evaluate_member_method_node(ParseNode *node)
+RuntimeValue Interpreter::evaluate_member_method_node(ParseNode* node)
 {
+    std::vector<RuntimeValue> args;
+    const auto& children = node->get_children();
+    for (const auto& child : children)
+    {
+        args.push_back(evaluate_node(child.get()));
+    }
+    RuntimeValue memberObject = args[0];
+    auto retrieved = memberObject.as<RuntimeValue::CADObjectPointer>();
+    auto storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);
+    std::string method = node->get_value()->getTokenText();
+    if (!args.empty()) {
+        args.erase(args.begin());
+    }
+    storedObject->invoke(method, args);
     return RuntimeValue();
 }
