@@ -24,7 +24,7 @@ private:
     void parse_on_left_parenthases_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
     void parse_on_equals_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
     void parse_on_right_parenthases_delimeter(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
-
+    void parse_on_end_of_statement(ParseNode* parentNode, std::istream& inputStream, std::ostringstream& tokenText);
 
 };
 

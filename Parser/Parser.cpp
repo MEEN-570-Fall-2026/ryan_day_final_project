@@ -76,6 +76,7 @@ void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
             tokenText << character;
         }
     }
+    parse_on_end_of_statement(parentNode, statement, tokenText);
 }
 
 void Parser::do_member_method_add(ParseNode* parentNode, std::string methodText)
@@ -152,4 +153,13 @@ void Parser::parse_on_right_parenthases_delimeter(ParseNode *parentNode, std::is
 {
     parentNode->add_child(new ArgumentToken(tokenText.str()));
     previousDelimeter = ')';
+}
+
+void Parser::parse_on_end_of_statement(ParseNode *parentNode, std::istream &inputStream, std::ostringstream &tokenText)
+{
+    if (tokenText.str() == "")
+    {
+        return;
+    }
+    parentNode->add_child(new ArgumentToken(tokenText.str()));
 }

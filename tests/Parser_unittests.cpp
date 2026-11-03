@@ -416,7 +416,7 @@ TEST(Parser, GivenANumberStoredInAVariable_WhenParsingText_ExpectNumberStoredInV
     ParseTree expectedParseTree1{headNode};
     headNode->add_child(new VariableToken{"number"});
     ParseNode* variableNode = headNode->get_children().back().get();
-    variableNode->add_child(new ArgumentToken("Point"));
+    variableNode->add_child(new ArgumentToken("1"));
 
     std::cout << "Expected:\n" << expectedParseTree1.to_string() << std::endl;
     std::cout << "Actual:\n" << parseTrees[0].to_string() << std::endl;
