@@ -11,6 +11,7 @@
 class Interpreter {
     public:
         Interpreter(Context* context);
+        void interpret_trees(std::vector<ParseTree> trees);
         void interpret(ParseTree tree);
 
     private:

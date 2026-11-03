@@ -85,6 +85,8 @@ TEST(Interpreter, GivenAStoredVariable_WhenUsingStoredVariable_ExpectVariableUse
     Interpreter interpreter{context};
     Parser parser;
     std::vector<ParseTree> trees = parser.parse_from_string(input);
+    std::cout << "Tree 0:\n" << trees[0].to_string() << std::endl;
+    std::cout << "Tree 0:\n" << trees[1].to_string() << std::endl;
     interpreter.interpret_trees(trees);
     Cube expectedCube{1, 1, 1};
 

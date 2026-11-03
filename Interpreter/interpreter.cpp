@@ -2,9 +2,18 @@
 #include <algorithm>
 #include "Interpreter.hpp"
 #include "ObjectFactory.hpp"
+#include "interpreter.hpp"
 
 Interpreter::Interpreter(Context* context) : context{context}
 {
+}
+
+void Interpreter::interpret_trees(std::vector<ParseTree> trees)
+{
+    for (ParseTree tree : trees)
+    {
+        interpret(tree);
+    }
 }
 
 void Interpreter::interpret(ParseTree tree)
@@ -71,7 +80,13 @@ RuntimeValue Interpreter::evaluate_object_node(ParseNode* node)
 
 RuntimeValue Interpreter::evaluate_argument_node(ParseNode* node)
 {
-    return RuntimeValue{std::stod(node->get_value()->getTokenText())};
+    std::string tokenText = node->get_value()->getTokenText();
+    try {
+        return RuntimeValue{std::stod(tokenText)};
+    }
+    catch (const std::invalid_argument& e) {
+        return context->get(tokenText);
+    }
 }
 
 RuntimeValue Interpreter::evaluate_variable_node(ParseNode* node)

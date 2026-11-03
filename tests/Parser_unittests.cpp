@@ -404,3 +404,21 @@ TEST(Parser, GivenATextFileWithVariableAssignment_WhenParsingText_ExpectCorrectP
     std::cout << "Actual:\n" << parseTrees[1].to_string() << std::endl;
     ASSERT_EQ(expectedParseTree2, parseTrees[1]);
 }
+
+TEST(Parser, GivenANumberStoredInAVariable_WhenParsingText_ExpectNumberStoredInVariable)
+{
+    Parser parser;
+    std::string input = "number = 1;";
+    std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
+
+    ParseToken* headToken = new StartToken{"StatementStart"};
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree1{headNode};
+    headNode->add_child(new VariableToken{"number"});
+    ParseNode* variableNode = headNode->get_children().back().get();
+    variableNode->add_child(new ArgumentToken("Point"));
+
+    std::cout << "Expected:\n" << expectedParseTree1.to_string() << std::endl;
+    std::cout << "Actual:\n" << parseTrees[0].to_string() << std::endl;
+    ASSERT_EQ(expectedParseTree1, parseTrees[0]);
+}
