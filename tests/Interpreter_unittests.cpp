@@ -61,15 +61,18 @@ TEST(Context, GivenAMemberMethodForObjectInContext_WhenApplyingMemberMethod_Expe
 }
 
 
-// TEST(Interpreter, GivenABasicCubeCodeInput_WhenInterpreting_ExpectCubeObjectIsAddedToContext)
-// {
-//     std::string input{"theCube = Cube(1,1,1);"};
-//     Context context;
-//     Interpreter interpreter{context};
-//     Parser parser;
-//     std::vector<ParseTree> trees = parser.parse_from_string(input);
-//     interpreter.interpret_parse_tree(trees[0]);
-//     Cube expectedCube{1, 1, 1};
+TEST(Interpreter, GivenABasicCubeCodeInput_WhenInterpreting_ExpectCubeObjectIsAddedToContext)
+{
+    std::string input{"theCube = Cube(1,1,1);"};
+    Context context;
+    Interpreter interpreter{context};
+    Parser parser;
+    std::vector<ParseTree> trees = parser.parse_from_string(input);
+    interpreter.interpret_parse_tree(trees[0]);
+    Cube expectedCube{1, 1, 1};
 
-//     ASSERT_EQ(*context["theCube"], expectedCube);
-// }
+    auto retrieved = context.get("theCube").as<RuntimeValue::CADObjectPointer>();
+    auto storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);
+
+    ASSERT_EQ(*storedObject, expectedCube);
+}
