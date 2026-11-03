@@ -36,4 +36,9 @@ target_link_libraries(${PROJECT_NAME}
     VTKSceneRenderer
 )
 
+add_custom_command(TARGET QtVTK POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_SOURCE_DIR}/SampleFiles"
+        "$<TARGET_FILE_DIR:QtVTK>/SampleFiles"
+)
 

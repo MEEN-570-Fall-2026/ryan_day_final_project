@@ -34,5 +34,6 @@
 #QtCreator
 CMakeLists.txt.user
 /build
+/build-homebrew-qt
 
 CMakePresets.json

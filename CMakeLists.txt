@@ -30,3 +30,11 @@ add_subdirectory(Mesher)
 add_subdirectory(StructuralSimulator)
 add_subdirectory(VTKSceneRenderer)
 add_subdirectory(Interpreter)
+
+
+target_compile_definitions(tests PRIVATE
+    TEST_FILES_DIR="${CMAKE_CURRENT_BINARY_DIR}/SampleFiles"
+)
+
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/SampleFiles"
+     DESTINATION "${CMAKE_CURRENT_BINARY_DIR}")

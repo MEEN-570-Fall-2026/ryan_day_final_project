@@ -21,11 +21,18 @@ public:
 
 private:
   void setup_vtk_pipeline();
+  void setup_menu_bar();
+  void setup_connections();
+  void open_sample(const QString& filename);
+  void open_file();
+  void display_file(QString filename);
+  void new_file();
   Ui::MainWindow *ui;
   QVTKOpenGLNativeWidget* mQVtkWidget;
 
   vtkSmartPointer<vtkPolyData> mConeSource;
   vtkSmartPointer<vtkRenderer> mRenderer;
+  QString openedFile;
 };
 
 #endif // MAINWINDOW_H

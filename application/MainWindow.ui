@@ -137,6 +137,12 @@ li.checked::marker { content: &quot;\2612&quot;; }
      <height>30</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuThis_is_a_test">
+    <property name="title">
+     <string>This is a test</string>
+    </property>
+   </widget>
+   <addaction name="menuThis_is_a_test"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">

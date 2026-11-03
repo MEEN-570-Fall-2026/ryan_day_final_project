@@ -1,8 +1,6 @@
 #include "Interpreter.hpp"
 #include <algorithm>
-#include "Interpreter.hpp"
 #include "ObjectFactory.hpp"
-#include "Interpreter.hpp"
 
 Interpreter::Interpreter(Context* context) : context{context}
 {
