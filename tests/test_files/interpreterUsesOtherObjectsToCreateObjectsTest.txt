@@ -1,0 +1,8 @@
+cubeLength = 1;
+cubeWidth = 1;
+cubeHeight = 1;
+firstCube = Cube(cubeLength, cubeWidth, cubeHeight);
+firstCube.translate(1, 0, 0);
+centroid = firstCube.get_centroid();
+secondCube = Cube(centroid, cubeLength, cubeWidth, cubeHeight);
+secondCube.translate(1, 1, 1);

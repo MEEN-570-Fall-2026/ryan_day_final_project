@@ -107,7 +107,7 @@ TEST(Interpreter, GivenAStoredObject_WhenPerformingMemberMethodOnStoredObject_Ex
     std::cout << "Tree 0:\n" << trees[0].to_string() << std::endl;
     std::cout << "Tree 0:\n" << trees[1].to_string() << std::endl;
     interpreter.interpret_trees(trees);
-    
+
     Point expectedCentroid(1, 1, 1);
     Cube expectedCube{expectedCentroid, 1, 1, 1};
 
@@ -115,4 +115,29 @@ TEST(Interpreter, GivenAStoredObject_WhenPerformingMemberMethodOnStoredObject_Ex
     auto storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);
 
     ASSERT_EQ(*storedObject, expectedCube);
+}
+
+TEST(Interpreter, GivenAStoredObject_WhenUsingObjectValueForOtherObjectCreation_ExpectOtherObjectCreationCorrectly)
+{
+    std::string inputPath{"tests/test_files/interpreterUsesOtherObjectsToCreateObjectsTest.txt"};
+    Context* context = new Context();
+    Interpreter interpreter{context};
+    Parser parser;
+    std::vector<ParseTree> trees = parser.parse_from_file(inputPath);
+    for (ParseTree tree : trees)
+    {
+        std::cout << "Tree:\n" << tree.to_string() << std::endl;
+    }
+    interpreter.interpret_trees(trees);
+
+    Cube expectedFirstCube{Point(1, 0, 0), 1, 1, 1};
+    Cube expectedSecondCube{Point(2, 1, 1), 1, 1, 1};
+
+    auto firstRetrieved = context->get("firstCube").as<RuntimeValue::CADObjectPointer>();
+    auto firstStoredObject = std::dynamic_pointer_cast<Object3d>(firstRetrieved);  
+    auto secondRetrieved = context->get("secondCube").as<RuntimeValue::CADObjectPointer>();
+    auto secondStoredObject = std::dynamic_pointer_cast<Object3d>(secondRetrieved);
+
+    ASSERT_EQ(*firstStoredObject, expectedFirstCube);
+    ASSERT_EQ(*firstStoredObject, expectedSecondCube);
 }
