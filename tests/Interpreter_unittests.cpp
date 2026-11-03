@@ -26,6 +26,20 @@ TEST(Context, GivenARuntimeValue_WhenAddingToContext_ExpectRuntimeValueCorrectly
 }
 
 
+TEST(Context, GivenARuntimeValuePrimitive_WhenAddingToContext_expectRuntimeValueCorrectlyStoredInContext)
+{
+    Context context;
+    std::string variableName{"aNumber"};
+    int value = 1;
+    RuntimeValue intRuntime{value};
+    context.add(variableName, intRuntime);
+
+    auto retrieved = context.get(variableName).as<int>();
+
+    ASSERT_EQ(retrieved, value);
+}
+
+
 // TEST(Interpreter, GivenABasicCubeCodeInput_WhenInterpreting_ExpectCubeObjectIsAddedToContext)
 // {
 //     std::string input{"theCube = Cube(1,1,1);"};
