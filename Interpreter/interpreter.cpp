@@ -121,6 +121,5 @@ RuntimeValue Interpreter::evaluate_member_method_node(ParseNode* node)
     if (!args.empty()) {
         args.erase(args.begin());
     }
-    storedObject->invoke(method, args);
-    return RuntimeValue();
+    return storedObject->invoke(method, args);
 }

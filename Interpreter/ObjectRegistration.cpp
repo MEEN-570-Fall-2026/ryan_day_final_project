@@ -44,6 +44,3 @@ RuntimeValue::CADObjectPointer create_cube(const std::vector<RuntimeValue>& args
 
 
 
-
-// retrieved = context.get(variableName).as<RuntimeValue::CADObjectPointer>();
-// storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);

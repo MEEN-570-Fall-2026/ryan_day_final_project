@@ -119,7 +119,7 @@ TEST(Interpreter, GivenAStoredObject_WhenPerformingMemberMethodOnStoredObject_Ex
 
 TEST(Interpreter, GivenAStoredObject_WhenUsingObjectValueForOtherObjectCreation_ExpectOtherObjectCreationCorrectly)
 {
-    std::string inputPath{"tests/test_files/interpreterUsesOtherObjectsToCreateObjectsTest.txt"};
+    std::string inputPath{"test_files/interpreterUsesOtherObjectsToCreateObjectsTest.txt"};
     Context* context = new Context();
     Interpreter interpreter{context};
     Parser parser;
@@ -138,6 +138,6 @@ TEST(Interpreter, GivenAStoredObject_WhenUsingObjectValueForOtherObjectCreation_
     auto secondRetrieved = context->get("secondCube").as<RuntimeValue::CADObjectPointer>();
     auto secondStoredObject = std::dynamic_pointer_cast<Object3d>(secondRetrieved);
 
-    ASSERT_EQ(*firstStoredObject, expectedFirstCube);
-    ASSERT_EQ(*firstStoredObject, expectedSecondCube);
+    ASSERT_TRUE(*firstStoredObject == expectedFirstCube);
+    ASSERT_TRUE(*secondStoredObject == expectedSecondCube);
 }

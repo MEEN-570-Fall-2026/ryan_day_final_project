@@ -151,6 +151,10 @@ void Parser::parse_on_equals_delimeter(ParseNode* parentNode, std::istream& inpu
 
 void Parser::parse_on_right_parenthases_delimeter(ParseNode *parentNode, std::istream &inputStream, std::ostringstream &tokenText)
 {
+    if (tokenText.str() == "")
+    {
+        return;
+    }
     parentNode->add_child(new ArgumentToken(tokenText.str()));
     previousDelimeter = ')';
 }

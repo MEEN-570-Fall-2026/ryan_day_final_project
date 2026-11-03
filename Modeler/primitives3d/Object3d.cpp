@@ -42,12 +42,17 @@ bool Object3d::operator==(const Object3d& other) const
     return (vertices == other.vertices && centroid == other.centroid);
 }
 
-RuntimeValue Object3d::invoke(const std::string &method, const std::vector<RuntimeValue> &args)
+RuntimeValue Object3d::invoke(const std::string& method, const std::vector<RuntimeValue>& args)
 {
     if (method == "translate" && args.size() == 3)
     {
         translate(args[0].as_number(), args[1].as_number(), args[2].as_number());
         return RuntimeValue{};
+    }
+    else if (method == "get_centroid" && args.size() == 0)
+    {
+        auto centroidPointer = std::make_shared<Point>(get_centroid());
+        return RuntimeValue{std::move(centroidPointer)};
     }
     throw std::runtime_error("Unknown method " + method + " with supplied arguments!");
 }
