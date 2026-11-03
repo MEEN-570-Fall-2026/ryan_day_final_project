@@ -76,3 +76,20 @@ TEST(Interpreter, GivenABasicCubeCodeInput_WhenInterpreting_ExpectCubeObjectIsAd
 
     ASSERT_EQ(*storedObject, expectedCube);
 }
+
+
+TEST(Interpreter, GivenAStoredVariable_WhenUsingStoredVariable_ExpectVariableUsedCorrectly)
+{
+    std::string input{"number = 1;theCube = Cube(number,number,number);"};
+    Context* context = new Context();
+    Interpreter interpreter{context};
+    Parser parser;
+    std::vector<ParseTree> trees = parser.parse_from_string(input);
+    interpreter.interpret_trees(trees);
+    Cube expectedCube{1, 1, 1};
+
+    auto retrieved = context->get("theCube").as<RuntimeValue::CADObjectPointer>();
+    auto storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);
+
+    ASSERT_EQ(*storedObject, expectedCube);
+}
