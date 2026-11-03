@@ -6,16 +6,19 @@
 #include <variant>
 
 class CADObject; // Forward Declaration for compiler
+class ViewerAPI;
 
 class RuntimeValue {
     public:
         using CADObjectPointer = std::shared_ptr<CADObject>;
+        using ViewerAPIPointer = std::shared_ptr<ViewerAPI>;
         using Storage = std::variant<
             std::monostate,
             int,
             double,
             bool,
-            CADObjectPointer
+            CADObjectPointer,
+            ViewerAPIPointer
         >;
 
         RuntimeValue() = default;
@@ -23,6 +26,7 @@ class RuntimeValue {
         RuntimeValue(double value);
         RuntimeValue(bool value);
         RuntimeValue(CADObjectPointer value);
+        RuntimeValue(ViewerAPIPointer value);
 
         template <typename T>
         bool is() const {

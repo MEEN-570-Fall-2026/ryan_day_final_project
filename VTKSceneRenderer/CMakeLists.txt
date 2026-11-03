@@ -13,9 +13,11 @@ target_include_directories(VTKSceneRenderer
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
         Modeler
+        Interpreter
 )
 
 target_link_libraries(VTKSceneRenderer
     Modeler
+    Interpreter
     ${VTK_LIBRARIES}
 )

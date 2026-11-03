@@ -4,5 +4,8 @@ cubeHeight = 2.2;
 cubeExample = Cube(cubeLength, cubeWidth, cubeHeight);
 cubeExample.translate(1, 1, 1);
 cubeExampleCentroid = cubeExample.get_centroid();
+
 secondCube = Cube(cubeExampleCentroid, cubeLength, 1, 1);
 secondCube.translate(cubeLength, 0, 0);
+
+Viewer.add_object(cubeExample, secondCube);

@@ -1,4 +1,10 @@
 #include "Context.hpp"
+#include "ViewerAPI.hpp"
+
+Context::Context()
+{
+    variableMap["Viewer"] = RuntimeValue();
+}
 
 void Context::add(std::string variableName, RuntimeValue value)
 {

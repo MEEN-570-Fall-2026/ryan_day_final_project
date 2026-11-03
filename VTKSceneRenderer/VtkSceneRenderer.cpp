@@ -6,10 +6,6 @@ VtkSceneRenderer::VtkSceneRenderer()
 {
 }
 
-void VtkSceneRenderer::add_object(Object3d& object3d){
-    sceneObjects.push_back(&object3d);
-}
-
 std::vector<vtkSmartPointer<vtkPolyData>> VtkSceneRenderer::render_scene() const
 {
     std::vector<vtkSmartPointer<vtkPolyData>> sceneVector;
@@ -34,4 +30,14 @@ std::vector<vtkSmartPointer<vtkPolyData>> VtkSceneRenderer::render_scene() const
         sceneVector.push_back(polyData);
     }
     return sceneVector;
+}
+
+void VtkSceneRenderer::add_objects(const std::vector<RuntimeValue> &args)
+{
+    for (auto arg : args)
+    {
+        auto retrieved = arg.as<RuntimeValue::CADObjectPointer>();
+        auto storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);
+        sceneObjects.push_back(storedObject.get());
+    }
 }

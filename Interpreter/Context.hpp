@@ -6,7 +6,7 @@
 
 class Context {
     public:
-        Context() = default;
+        Context();
         void add(std::string variableName, RuntimeValue value);
         RuntimeValue get(std::string variableName);
 
