@@ -4,10 +4,23 @@
 #include "primitives3d/Object3d.hpp"
 #include "Parser.hpp"
 #include "ParseTree.hpp"
+#include "Context.hpp"
+#include "RuntimeValue.hpp"
 #include <vector>
 #include <string>
 
-TEST(interpreter, GivenABasicCubeCodeInput_WhenInterpreting_ExpectCubeObjectIsAddedToContext)
+
+TEST(Context, GivenARuntimeValue_WhenAddingToContext_ExpectRuntimeValueCorrectlyStoredInContext)
+{
+    Context context;
+    std::string variableName{"theCube"};
+    Cube* cubeObject = new Cube{1, 1, 1};
+    RuntimeValue cubeRuntime{cubeObject};
+    context.add(variableName, cubeRuntime);
+}
+
+
+TEST(Interpreter, GivenABasicCubeCodeInput_WhenInterpreting_ExpectCubeObjectIsAddedToContext)
 {
     std::string input{"theCube = Cube(1,1,1);"};
     Context context;

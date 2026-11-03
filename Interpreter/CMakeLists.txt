@@ -3,8 +3,12 @@ add_library(Interpreter STATIC)
 target_sources(Interpreter
     PRIVATE
         Interpreter.cpp
+        Context.cpp
+        RuntimeValue.cpp
     PUBLIC
         Interpreter.hpp
+        Context.hpp
+        RuntimeValue.hpp
 )
 target_compile_features(Interpreter PRIVATE cxx_std_20)
 
