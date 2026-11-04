@@ -87,6 +87,7 @@ void MainWindow::open_sample(const QString& filename)
   const QString filepath = QDir(QCoreApplication::applicationDirPath()).filePath("SampleFiles/" + filename);
   openedFile.clear();
   display_file(filepath);
+  logger->log("Opened sample " + filename.toStdString());
 }
 
 void MainWindow::open_file()
@@ -98,6 +99,7 @@ void MainWindow::open_file()
   }
   openedFile = filePath;
   display_file(filePath);
+  logger->log("Opened File " + filePath.toStdString());
 }
 
 
@@ -118,6 +120,7 @@ void MainWindow::new_file()
 {
   ui->codeEditor->clear();
   openedFile.clear();
+  logger->log("Created new file!");
 }
 
 void MainWindow::run_code()
@@ -126,12 +129,13 @@ void MainWindow::run_code()
   context = new Context(std::make_shared<VtkSceneRenderer>());
   interpreter = Interpreter(context);
   std::string text = ui->codeEditor->toPlainText().toStdString();
-  logger->log("Parsing code...")
+  logger->log("Parsing code...");
   auto parseTrees = parser.parse_from_string(text);
-  logger->log("Interpreting code...")
+  logger->log("Interpreting code...");
   interpreter.interpret_trees(parseTrees);
   RuntimeValue viewerRuntime = context->get("Viewer");
   auto viewerAPI = viewerRuntime.as<RuntimeValue::ViewerAPIPointer>();
   VtkSceneRenderer* viewer = std::dynamic_pointer_cast<VtkSceneRenderer>(viewerAPI).get();
   setup_vtk_pipeline(viewer);
+  logger->log("Done!");
 }
