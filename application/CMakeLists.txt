@@ -17,6 +17,8 @@ target_sources(${PROJECT_NAME}
         MainWindow.cpp
         MainWindow.h
         MainWindow.ui
+        ConsoleLogger.cpp
+        ConsoleLogger.hpp
 )
 
 target_include_directories(${PROJECT_NAME}

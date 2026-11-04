@@ -58,6 +58,7 @@ void MainWindow::setup_vtk_pipeline(VtkSceneRenderer* viewer)
     }
     mQVtkWidget->setRenderWindow(window);
     mRenderer->ResetCamera();
+    window->Render();
 }
 
 void MainWindow::setup_menu_bar()
@@ -122,10 +123,6 @@ void MainWindow::run_code()
   interpreter = Interpreter(context);
   std::string text = ui->codeEditor->toPlainText().toStdString();
   auto parseTrees = parser.parse_from_string(text);
-  for (auto tree : parseTrees)
-  {
-    std::cout << "Tree: " << tree.to_string() << std::endl;
-  }
   interpreter.interpret_trees(parseTrees);
   RuntimeValue viewerRuntime = context->get("Viewer");
   auto viewerAPI = viewerRuntime.as<RuntimeValue::ViewerAPIPointer>();
