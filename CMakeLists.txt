@@ -34,6 +34,7 @@ add_subdirectory(Mesher)
 add_subdirectory(StructuralSimulator)
 add_subdirectory(VTKSceneRenderer)
 add_subdirectory(Interpreter)
+add_subdirectory(Exceptions)
 
 
 target_compile_definitions(tests PRIVATE

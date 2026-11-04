@@ -102,16 +102,13 @@ void MainWindow::open_file()
   logger->log("Opened File " + filePath.toStdString());
 }
 
-
 void MainWindow::display_file(QString filepath)
 {
   QFile file(filepath);
-
   if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
       qWarning() << "Could not open" << filepath << file.errorString();
       return;
   }
-
   const QString contents = QString::fromUtf8(file.readAll());
   ui->codeEditor->setPlainText(contents);
 }
@@ -128,14 +125,19 @@ void MainWindow::run_code()
   delete context;
   context = new Context(std::make_shared<VtkSceneRenderer>());
   interpreter = Interpreter(context);
-  std::string text = ui->codeEditor->toPlainText().toStdString();
-  logger->log("Parsing code...");
-  auto parseTrees = parser.parse_from_string(text);
-  logger->log("Interpreting code...");
-  interpreter.interpret_trees(parseTrees);
-  RuntimeValue viewerRuntime = context->get("Viewer");
-  auto viewerAPI = viewerRuntime.as<RuntimeValue::ViewerAPIPointer>();
-  VtkSceneRenderer* viewer = std::dynamic_pointer_cast<VtkSceneRenderer>(viewerAPI).get();
-  setup_vtk_pipeline(viewer);
-  logger->log("Done!");
+  try {
+    std::string text = ui->codeEditor->toPlainText().toStdString();
+    logger->log("Parsing code...");
+    auto parseTrees = parser.parse_from_string(text);
+    logger->log("Interpreting code...");
+    interpreter.interpret_trees(parseTrees);
+    RuntimeValue viewerRuntime = context->get("Viewer");
+    auto viewerAPI = viewerRuntime.as<RuntimeValue::ViewerAPIPointer>();
+    VtkSceneRenderer* viewer = std::dynamic_pointer_cast<VtkSceneRenderer>(viewerAPI).get();
+    setup_vtk_pipeline(viewer);
+    logger->log("Done!");
+  }
+  catch (const std::exception& e) {
+    logger->logError(e);
+  }
 }

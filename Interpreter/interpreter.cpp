@@ -3,6 +3,7 @@
 #include "ObjectFactory.hpp"
 #include <iostream>
 #include "ViewerAPI.hpp"
+#include "InterpreterException.hpp"
 
 Interpreter::Interpreter(Context* context) : context{context}
 {

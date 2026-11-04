@@ -1,6 +1,7 @@
 #include "Context.hpp"
 #include "ViewerAPI.hpp"
 #include <iostream>
+#include "ContextException.hpp"
 
 Context::Context(std::shared_ptr<ViewerAPI> viewerSharedPointer)
 {
@@ -14,6 +15,11 @@ void Context::add(std::string variableName, RuntimeValue value)
 
 RuntimeValue Context::get(std::string variableName)
 {
-    std::cout << "Getting: " << variableName << std::endl;
-    return variableMap[variableName];
+    try {
+        std::cout << "Getting: " << variableName << std::endl;
+        return variableMap[variableName];
+    }
+    catch (std::out_of_range) {
+        throw ContextException(variableName);
+    }
 }

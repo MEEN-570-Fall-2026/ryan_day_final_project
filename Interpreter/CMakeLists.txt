@@ -22,10 +22,12 @@ target_include_directories(Interpreter
     PUBLIC
         Parser
         Modeler
+        Exceptions
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_link_libraries(Interpreter
     Parser
     Modeler
+    Exceptions
 )
