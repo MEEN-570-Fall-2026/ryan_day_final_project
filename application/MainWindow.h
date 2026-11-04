@@ -6,6 +6,10 @@
 #include <vtkSmartPointer.h>
 #include <vtkConeSource.h>
 #include <QGridLayout>
+#include "Parser.hpp"
+#include "Interpreter.hpp"
+#include "Context.hpp"
+#include "VtkSceneRenderer.hpp"
 
 namespace Ui {
   class MainWindow;
@@ -20,19 +24,24 @@ public:
   ~MainWindow();
 
 private:
-  void setup_vtk_pipeline();
+  void setup_vtk_pipeline(VtkSceneRenderer* viewer);
   void setup_menu_bar();
   void setup_connections();
   void open_sample(const QString& filename);
   void open_file();
   void display_file(QString filename);
   void new_file();
-  Ui::MainWindow *ui;
+  void run_code();
+  Ui::MainWindow* ui;
   QVTKOpenGLNativeWidget* mQVtkWidget;
 
   vtkSmartPointer<vtkPolyData> mConeSource;
   vtkSmartPointer<vtkRenderer> mRenderer;
   QString openedFile;
+
+  Parser parser;
+  Context* context = new Context{std::make_shared<VtkSceneRenderer>()};
+  Interpreter interpreter{context};
 };
 
 #endif // MAINWINDOW_H

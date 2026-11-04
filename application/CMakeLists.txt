@@ -34,6 +34,7 @@ target_link_libraries(${PROJECT_NAME}
     Parser
     StructuralSimulator
     VTKSceneRenderer
+    Interpreter
 )
 
 add_custom_command(TARGET QtVTK POST_BUILD

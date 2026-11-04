@@ -7,12 +7,14 @@ target_sources(Interpreter
         RuntimeValue.cpp
         ObjectFactory.cpp
         ObjectRegistration.cpp
+        ViewerAPI.cpp
     PUBLIC
         Interpreter.hpp
         Context.hpp
         RuntimeValue.hpp
         ObjectFactory.hpp
         ObjectRegistration.hpp
+        ViewerAPI.hpp
 )
 target_compile_features(Interpreter PRIVATE cxx_std_20)
 

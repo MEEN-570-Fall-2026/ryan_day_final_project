@@ -32,27 +32,19 @@ MainWindow::MainWindow(QWidget* parent) :
   layout->setContentsMargins(0, 0, 0, 0);
   layout->addWidget(mQVtkWidget);
 
-  setup_vtk_pipeline();
-
   setup_menu_bar();
   setup_connections();
-
 }
 
 MainWindow::~MainWindow()
 {
   delete ui;
+  delete context;
 }
 
-void MainWindow::setup_vtk_pipeline()
+void MainWindow::setup_vtk_pipeline(VtkSceneRenderer* viewer)
 {
-    Cube cube{1, 1, 1};
-    Point cube2Centroid{0.5, 0.5, 0.5};
-    Cube cube2{cube2Centroid, 1, 1, 1};
-    VtkSceneRenderer sceneRenderer;
-    sceneRenderer.add_object(cube);
-    sceneRenderer.add_object(cube2);
-    auto sceneData = sceneRenderer.render_scene();
+    auto sceneData = viewer->render_scene();
     auto window = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
     mRenderer = vtkSmartPointer<vtkRenderer>::New();
     window->AddRenderer(mRenderer);
@@ -82,6 +74,7 @@ void MainWindow::setup_menu_bar()
 
 void MainWindow::setup_connections()
 {
+  connect(ui->runCodeButton, &QPushButton::clicked, this, &MainWindow::run_code);
 }
 
 void MainWindow::open_sample(const QString& filename)
@@ -120,4 +113,22 @@ void MainWindow::new_file()
 {
   ui->codeEditor->clear();
   openedFile.clear();
+}
+
+void MainWindow::run_code()
+{
+  delete context;
+  context = new Context(std::make_shared<VtkSceneRenderer>());
+  interpreter = Interpreter(context);
+  std::string text = ui->codeEditor->toPlainText().toStdString();
+  auto parseTrees = parser.parse_from_string(text);
+  for (auto tree : parseTrees)
+  {
+    std::cout << "Tree: " << tree.to_string() << std::endl;
+  }
+  interpreter.interpret_trees(parseTrees);
+  RuntimeValue viewerRuntime = context->get("Viewer");
+  auto viewerAPI = viewerRuntime.as<RuntimeValue::ViewerAPIPointer>();
+  VtkSceneRenderer* viewer = std::dynamic_pointer_cast<VtkSceneRenderer>(viewerAPI).get();
+  setup_vtk_pipeline(viewer);
 }

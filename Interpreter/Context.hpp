@@ -6,7 +6,8 @@
 
 class Context {
     public:
-        Context();
+        Context() = default;
+        Context(std::shared_ptr<ViewerAPI> viewerSharedPointer);
         void add(std::string variableName, RuntimeValue value);
         RuntimeValue get(std::string variableName);
 

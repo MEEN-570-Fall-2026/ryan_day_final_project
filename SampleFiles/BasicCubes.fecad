@@ -8,4 +8,4 @@ cubeExampleCentroid = cubeExample.get_centroid();
 secondCube = Cube(cubeExampleCentroid, cubeLength, 1, 1);
 secondCube.translate(cubeLength, 0, 0);
 
-Viewer.add_object(cubeExample, secondCube);
+Viewer.add_objects(cubeExample, secondCube);

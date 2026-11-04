@@ -1,10 +1,10 @@
-#include "viewerAPI.hpp"
+#include "ViewerAPI.hpp"
 
 RuntimeValue ViewerAPI::invoke(const std::string &method, const std::vector<RuntimeValue>& args)
 {
     if (method == "add_objects" && args.size() != 0)
     {
-        render(args);
+        add_objects(args);
         return RuntimeValue{};
     }
     throw std::runtime_error("Unknown method " + method + " with supplied arguments!");

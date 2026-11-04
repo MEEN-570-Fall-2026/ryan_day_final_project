@@ -1,6 +1,8 @@
 #include "Interpreter.hpp"
 #include <algorithm>
 #include "ObjectFactory.hpp"
+#include <iostream>
+#include "ViewerAPI.hpp"
 
 Interpreter::Interpreter(Context* context) : context{context}
 {
@@ -10,6 +12,7 @@ void Interpreter::interpret_trees(std::vector<ParseTree> trees)
 {
     for (ParseTree tree : trees)
     {
+        std::cout << "Interpreting tree: " << tree.to_string() << std::endl;
         interpret(tree);
     }
 }
@@ -113,11 +116,24 @@ RuntimeValue Interpreter::evaluate_member_method_node(ParseNode* node)
         args.push_back(evaluate_node(child.get()));
     }
     RuntimeValue memberObject = args[0];
-    auto retrieved = memberObject.as<RuntimeValue::CADObjectPointer>();
-    auto storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);
-    std::string method = node->get_value()->getTokenText();
-    if (!args.empty()) {
-        args.erase(args.begin());
+    if (memberObject.is<RuntimeValue::ViewerAPIPointer>())
+    {
+        auto retrieved = memberObject.as<RuntimeValue::ViewerAPIPointer>();
+        auto storedObject = std::dynamic_pointer_cast<ViewerAPI>(retrieved);
+        std::string method = node->get_value()->getTokenText();
+        if (!args.empty()) {
+            args.erase(args.begin());
+        }
+        return storedObject->invoke(method, args);
     }
-    return storedObject->invoke(method, args);
+    else 
+    {
+        auto retrieved = memberObject.as<RuntimeValue::CADObjectPointer>();
+        auto storedObject = std::dynamic_pointer_cast<Object3d>(retrieved);
+        std::string method = node->get_value()->getTokenText();
+        if (!args.empty()) {
+            args.erase(args.begin());
+        }
+        return storedObject->invoke(method, args);
+    }
 }

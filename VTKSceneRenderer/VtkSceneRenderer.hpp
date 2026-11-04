@@ -20,7 +20,7 @@ public:
 
 private:
     std::vector<Object3d*> sceneObjects;
-    void add_objects(const std::vector<RuntimeValue>& args);
+    void add_objects(const std::vector<RuntimeValue>& args) override;
 };
 
 #endif
