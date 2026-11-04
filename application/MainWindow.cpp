@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget* parent) :
   ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
+  ui->consoleLog->setReadOnly(true);
+  logger = std::make_unique<ConsoleLogger>(*ui->consoleLog);
 
   mQVtkWidget = new QVTKOpenGLNativeWidget(ui->viewerFrame);
 
@@ -34,6 +36,8 @@ MainWindow::MainWindow(QWidget* parent) :
 
   setup_menu_bar();
   setup_connections();
+
+  logger->log("Launched FeCad!");
 }
 
 MainWindow::~MainWindow()
@@ -122,7 +126,9 @@ void MainWindow::run_code()
   context = new Context(std::make_shared<VtkSceneRenderer>());
   interpreter = Interpreter(context);
   std::string text = ui->codeEditor->toPlainText().toStdString();
+  logger->log("Parsing code...")
   auto parseTrees = parser.parse_from_string(text);
+  logger->log("Interpreting code...")
   interpreter.interpret_trees(parseTrees);
   RuntimeValue viewerRuntime = context->get("Viewer");
   auto viewerAPI = viewerRuntime.as<RuntimeValue::ViewerAPIPointer>();

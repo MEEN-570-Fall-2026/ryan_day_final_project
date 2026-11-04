@@ -1,16 +1,18 @@
 #ifndef CONSOLELOGGER
 #define CONSOLELOGGER
 
-#include <QPlainTextEdit>
+#include <QTextEdit>
 #include <QString>
+#include <string>
 
 
 class ConsoleLogger {
     public:
-        ConsoleLogger(QPlainTextEdit& consoleLog);
+        ConsoleLogger(QTextEdit& consoleLog);
+        void log(std::string message);
 
     private:
-        QPlainTextEdit& consoleLog;
+        QTextEdit& consoleLog;
 };
 
 #endif

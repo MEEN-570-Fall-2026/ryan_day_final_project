@@ -10,6 +10,8 @@
 #include "Interpreter.hpp"
 #include "Context.hpp"
 #include "VtkSceneRenderer.hpp"
+#include "ConsoleLogger.hpp"
+#include <memory>
 
 namespace Ui {
   class MainWindow;
@@ -42,6 +44,8 @@ private:
   Parser parser;
   Context* context = new Context{std::make_shared<VtkSceneRenderer>()};
   Interpreter interpreter{context};
+
+  std::unique_ptr<ConsoleLogger> logger;
 };
 
 #endif // MAINWINDOW_H
