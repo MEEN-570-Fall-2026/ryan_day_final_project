@@ -1,4 +1,5 @@
 #include "Object3d.hpp"
+#include <stdexcept>
 
 std::vector<Point> Object3d::get_vertices()
 {

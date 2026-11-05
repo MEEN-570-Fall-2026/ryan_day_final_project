@@ -1,5 +1,6 @@
 #include "Point.hpp"
 #include <tuple>
+#include <stdexcept>
 
 Point::Point(double x, double y, double z): x_coordinate{x}, y_coordinate{y}, z_coordinate{z}
 {

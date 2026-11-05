@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <variant>
+#include <stdexcept>
 
 class CADObject; // Forward Declaration for compiler
 class ViewerAPI;

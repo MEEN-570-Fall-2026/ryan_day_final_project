@@ -1,5 +1,6 @@
 #include "ParseNode.hpp"
 #include "parseTokens/ParseToken.hpp"
+#include <stdexcept>
 
 ParseNode::ParseNode(ParseToken* value, ParseNode* parent) : value{value}, parentNode{parent}
 {

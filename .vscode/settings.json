@@ -1,3 +1,18 @@
 {
-    "C_Cpp.dimInactiveRegions": false
+  "cmake.buildDirectory": "${workspaceFolder}/build/vscode-msvc",
+  "cmake.generator": "Ninja",
+  "cmake.configureSettings": {
+    "Qt6_DIR": "C:/Qt/6.11.2/msvc2022_64/lib/cmake/Qt6",
+    "VTK_DIR": "C:/VTK-9.7.1/lib/cmake/vtk-9.7"
+  },
+  "makefile.makePath": "C:\\Program Files\\CMake\\bin\\cmake.exe",
+  "makefile.makefilePath": "C:\\Users\\ryand\\Desktop\\Class Work\\ME EN 570\\ryan_day_final_project\\CMakeLists.txt",
+  "cmake.debugConfig": {
+  "environment": [
+    {
+      "name": "PATH",
+      "value": "C:/Qt/6.11.2/msvc2022_64/bin;C:/VTK-9.7.1/bin;${env:PATH}"
+    }
+  ]
+}
 }

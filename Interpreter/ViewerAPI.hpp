@@ -4,6 +4,7 @@
 #include <vector>
 #include "RuntimeValue.hpp"
 #include <string>
+#include <stdexcept>
 
 class ViewerAPI {
     public:

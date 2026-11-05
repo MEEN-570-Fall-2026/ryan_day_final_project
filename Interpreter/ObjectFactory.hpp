@@ -5,6 +5,7 @@
 #include <functional>
 #include <map>
 #include <string>
+#include <stdexcept>
 #include "RuntimeValue.hpp"
 
 class ObjectFactory {

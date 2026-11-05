@@ -90,8 +90,11 @@ void Parser::do_member_method_add(ParseNode* parentNode, std::string methodText)
 
 ParseNode* Parser::parse_on_dot_delimeter(ParseNode *parentNode, std::istream &inputStream, std::ostringstream &tokenText)
 {
-    if (!std::isdigit(static_cast<unsigned char>(tokenText.str().front())) 
-                && !std::isdigit(static_cast<unsigned char>(inputStream.peek())))
+    const std::string previousToken = tokenText.str();
+    const int nextChar = inputStream.peek();
+    const bool previousIsDigit = !previousToken.empty() && std::isdigit(static_cast<unsigned char>(previousToken.front())) != 0;
+    const bool nextIsDigit = nextChar != std::char_traits<char>::eof() && std::isdigit(static_cast<unsigned char>(nextChar)) != 0;
+    if (!previousIsDigit && !nextIsDigit)
     {
         previousDelimeter = '.';
         std::string previousToken = tokenText.str();
@@ -100,7 +103,7 @@ ParseNode* Parser::parse_on_dot_delimeter(ParseNode *parentNode, std::istream &i
             parentNode = parentNode->get_children().back().get();
             return parentNode;
         }
-        parentNode->add_child(new VariableToken(previousToken)); // This is adding just the VariableToken, Not its children
+        parentNode->add_child(new VariableToken(previousToken));
         ParseNode* newNode = parentNode->get_children().back().get();
         parse_statement(newNode, inputStream);
         tokenText.str("");
