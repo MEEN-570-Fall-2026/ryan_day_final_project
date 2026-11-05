@@ -5,12 +5,14 @@ add_executable(
     Modeler_unittests.cpp
     Parser_unittests.cpp
     Interpreter_unittests.cpp
+    Mesher_unittests.cpp
 )
 target_sources(tests
     PRIVATE
         Modeler_unittests.cpp
         Parser_unittests.cpp
         Interpreter_unittests.cpp
+        Mesher_unittests.cpp
 )
 target_compile_features(tests PRIVATE cxx_std_20)
 target_include_directories(tests
