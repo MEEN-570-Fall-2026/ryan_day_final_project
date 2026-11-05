@@ -49,6 +49,9 @@ MainWindow::~MainWindow()
 void MainWindow::setup_vtk_pipeline(VtkSceneRenderer* viewer)
 {
     auto sceneData = viewer->render_scene();
+    if (!sceneData.empty()) {
+      logger->log(std::format("Viewer displaying {} objects!", sceneData.size()));
+    }
     auto window = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
     mRenderer = vtkSmartPointer<vtkRenderer>::New();
     window->AddRenderer(mRenderer);
