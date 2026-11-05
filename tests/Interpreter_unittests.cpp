@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include "ContextException.hpp"
 
 
 TEST(Context, GivenARuntimeValue_WhenAddingToContext_ExpectRuntimeValueCorrectlyStoredInContext)
@@ -142,7 +143,7 @@ TEST(Interpreter, GivenAStoredObject_WhenUsingObjectValueForOtherObjectCreation_
     ASSERT_TRUE(*secondStoredObject == expectedSecondCube);
 }
 
-TEST(Interpreter, GivenAnIncorrectlySpelledVairable_WhenInterpretingStatement_ExpectThrowsUnknownVariableException)
+TEST(Interpreter, GivenAnIncorrectlySpelledVairable_WhenInterpretingStatement_ExpectThrowsContextException)
 {
     std::string input{"theCube = Cube(1,1,1);theeCube.translate(1,1,1);"};
     Context* context = new Context();
@@ -151,5 +152,5 @@ TEST(Interpreter, GivenAnIncorrectlySpelledVairable_WhenInterpretingStatement_Ex
     std::vector<ParseTree> trees = parser.parse_from_string(input);
     std::cout << "Tree 0:\n" << trees[0].to_string() << std::endl;
     std::cout << "Tree 0:\n" << trees[1].to_string() << std::endl;
-    ASSERT_THROW(interpreter.interpret_trees(trees), UnknownVariableException);
+    ASSERT_THROW(interpreter.interpret_trees(trees), ContextException);
 }

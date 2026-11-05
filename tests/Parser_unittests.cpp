@@ -422,3 +422,22 @@ TEST(Parser, GivenANumberStoredInAVariable_WhenParsingText_ExpectNumberStoredInV
     std::cout << "Actual:\n" << parseTrees[0].to_string() << std::endl;
     ASSERT_EQ(expectedParseTree1, parseTrees[0]);
 }
+
+
+TEST(Parser, GivenAnInputWithATab_WhenParsingText_ExpectTabIgnored)
+{
+    Parser parser;
+    std::string input = "\tnumber = 1;";
+    std::vector<ParseTree> parseTrees = parser.parse_from_string(input);
+
+    ParseToken* headToken = new StartToken{"StatementStart"};
+    ParseNode* headNode = new ParseNode(headToken, nullptr);
+    ParseTree expectedParseTree1{headNode};
+    headNode->add_child(new VariableToken{"number"});
+    ParseNode* variableNode = headNode->get_children().back().get();
+    variableNode->add_child(new ArgumentToken("1"));
+
+    std::cout << "Expected:\n" << expectedParseTree1.to_string() << std::endl;
+    std::cout << "Actual:\n" << parseTrees[0].to_string() << std::endl;
+    ASSERT_EQ(expectedParseTree1, parseTrees[0]);
+}

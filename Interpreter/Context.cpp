@@ -17,7 +17,7 @@ RuntimeValue Context::get(std::string variableName)
 {
     try {
         std::cout << "Getting: " << variableName << std::endl;
-        return variableMap[variableName];
+        return variableMap.at(variableName);
     }
     catch (std::out_of_range) {
         throw ContextException(variableName);

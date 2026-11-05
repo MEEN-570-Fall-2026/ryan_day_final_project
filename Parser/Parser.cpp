@@ -72,7 +72,7 @@ void Parser::parse_statement(ParseNode* parentNode, std::istream& statement)
         {
             parse_on_equals_delimeter(parentNode, statement, tokenText);
         }
-        else if (character != '\n' && character != ' ') {
+        else if (character != '\n' && character != ' ' && character != '\t') {
             tokenText << character;
         }
     }
