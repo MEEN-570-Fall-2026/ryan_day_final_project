@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget* parent) :
   logger = std::make_unique<ConsoleLogger>(*ui->consoleLog);
 
   mQVtkWidget = new QVTKOpenGLNativeWidget(ui->viewerFrame);
+  mQVtkWidget->setEnableTouchEventProcessing(false);
 
   auto* layout = new QGridLayout(ui->viewerFrame);
   layout->setContentsMargins(0, 0, 0, 0);
