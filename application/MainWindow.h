@@ -35,6 +35,7 @@ private:
   void display_file(QString filename);
   void new_file();
   void run_code();
+  void save_file();
   Ui::MainWindow* ui;
   QVTKOpenGLNativeWidget* mQVtkWidget;
 

@@ -113,6 +113,7 @@ void MainWindow::setup_menu_bar()
 void MainWindow::setup_connections()
 {
   connect(ui->runCodeButton, &QPushButton::clicked, this, &MainWindow::run_code);
+  connect(ui-saveButton, &QPushButton::clicked, this, &MainWindow::save_file);
 }
 
 void MainWindow::open_sample(const QString& filename)
@@ -173,4 +174,22 @@ void MainWindow::run_code()
   catch (const std::exception& e) {
     logger->logError(e);
   }
+}
+
+void MainWindow::save_file()
+{
+  if (openedFile.isEmpty())
+  {
+    save_as();
+    return;
+  }
+  std::ofstream outputFile{openedFile.toStdString()};
+  if (!outputFile)
+  {
+    logger->log("Failed to save. Could not open file: " + openedFile.toStdString());
+    return;
+  }
+  ouutputFile << ui->codeEditor->toPlainText();
+  outputFile.close();
+  logger->log("Saved to " + openedFile.toStdString());
 }
