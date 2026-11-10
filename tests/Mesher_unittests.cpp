@@ -131,6 +131,7 @@ TEST(Mesher, GivenRectangularCubeVertices_WhenCreatingTetrahedraCube_ExpectSixTe
     };
     TetrahedraCube tetCube{vertices};
     std::vector<Tetrahedron> tetrahedra = tetCube.get_tetrahedra();
+    ASSERT_EQ(tetrahedra.size(), 6);
     for (auto tetVertexIndices : expectedTetsVertexIndices)
     {
         ASSERT_TRUE(tet_vertices_match_expected_vertex_indices(vertices, tetVertexIndices, tetrahedra));
@@ -138,12 +139,12 @@ TEST(Mesher, GivenRectangularCubeVertices_WhenCreatingTetrahedraCube_ExpectSixTe
 }
 
 
-// TEST(Mesher, GivenASingleElementMeshGrid_WhenCreatingTetsInGrid_ExpectSixTetsCreated)
-// {
-//     Cube cube{1.0, 1.0, 1.0};
-//     Mesher mesher;
-//     Mesh mesh = mesher.create_mesh(cube, 1, 1, 1);
+TEST(Mesher, GivenAnEqualMeshGridToCubeSize_WhenMeshing_ExpectSingleTetrahedraCube)
+{
+    Cube cube{1.0, 1.0, 1.0};
+    Mesher mesher;
+    Mesh mesh = mesher.create_mesh(cube, 1, 1, 1);
 
-//     EXPECT_EQ(mesh.nodes.size(), 8);
-//     EXPECT_EQ(mesh.tetrahedra.size(), 6);
-// }
+    std::vector<TetrahedraCube> tetCubes = mesh.get_tetrahedra_cubes();
+    ASSERT_EQ(tetCubes.size(), 1);
+}
