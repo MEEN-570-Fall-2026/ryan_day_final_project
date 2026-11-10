@@ -14,10 +14,12 @@ target_include_directories(VTKSceneRenderer
         ${CMAKE_CURRENT_SOURCE_DIR}
         Modeler
         Interpreter
+        Mesher
 )
 
 target_link_libraries(VTKSceneRenderer
     Modeler
     Interpreter
+    Mesher
     ${VTK_LIBRARIES}
 )

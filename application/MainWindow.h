@@ -12,6 +12,7 @@
 #include "VtkSceneRenderer.hpp"
 #include "ConsoleLogger.hpp"
 #include <memory>
+#include "mesher.hpp"
 
 namespace Ui {
   class MainWindow;
@@ -42,7 +43,7 @@ private:
   QString openedFile;
 
   Parser parser;
-  Context* context = new Context{std::make_shared<VtkSceneRenderer>()};
+  Context* context = new Context{std::make_shared<VtkSceneRenderer>(), std::make_shared<Mesher>()};
   Interpreter interpreter{context};
 
   std::unique_ptr<ConsoleLogger> logger;

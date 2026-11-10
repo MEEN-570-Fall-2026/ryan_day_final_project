@@ -11,9 +11,14 @@ Mesh::Mesh(std::vector<PointPointers> objectVertices, double elementXSize, doubl
     create_tetrahedra_cubes();
 }
 
-std::vector<std::shared_ptr<TetrahedraCube>> Mesh::get_tetrahedra_cubes()
+std::vector<std::shared_ptr<TetrahedraCube>> Mesh::get_tetrahedra_cubes() const
 {
     return tetCubes;
+}
+
+const std::vector<std::shared_ptr<Point>>& Mesh::get_point_cloud() const
+{
+    return pointGrid;
 }
 
 void Mesh::set_tet_cube_counts()

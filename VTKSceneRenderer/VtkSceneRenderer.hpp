@@ -11,16 +11,21 @@
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkRenderer.h>
+#include <vtkUnstructuredGrid.h>
+#include <vtkDataSetMapper.h>
 
 class VtkSceneRenderer : public ViewerAPI {
 public:
     VtkSceneRenderer();
-    std::vector<vtkSmartPointer<vtkPolyData>> render_scene() const;
+    std::vector<vtkSmartPointer<vtkDataSet>> render_scene() const;
 
 
 private:
-    std::vector<Object3d*> sceneObjects;
+    std::vector<std::shared_ptr<Object3d>> sceneObjects;
+    std::vector<std::shared_ptr<Mesh>> meshObjects;
     void add_objects(const std::vector<RuntimeValue>& args) override;
+    void renderObject3d(Object3d* sceneObject, std::vector<vtkSmartPointer<vtkDataSet>>& sceneVector) const;
+    vtkSmartPointer<vtkUnstructuredGrid> convert_mesh(const Mesh& mesh) const;
 };
 
 #endif

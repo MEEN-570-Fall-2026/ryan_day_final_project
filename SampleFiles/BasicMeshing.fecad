@@ -1,0 +1,8 @@
+cubeLength = 10;
+cubeWidth = 10;
+cubeHeight = 10;
+cubeExample = Cube(cubeLength, cubeWidth, cubeHeight);
+
+theMesh = Mesher.create_mesh(cubeExample, 2, 3, 1);
+
+Viewer.add_objects(theMesh);

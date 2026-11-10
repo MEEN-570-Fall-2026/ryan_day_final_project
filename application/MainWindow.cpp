@@ -49,18 +49,24 @@ MainWindow::~MainWindow()
 void MainWindow::setup_vtk_pipeline(VtkSceneRenderer* viewer)
 {
     auto sceneData = viewer->render_scene();
-    if (!sceneData.empty()) {
-      logger->log(std::format("Viewer displaying {} objects!", sceneData.size()));
+    if (!sceneData.empty())
+    {
+        logger->log(std::format(
+            "Viewer displaying {} objects!", sceneData.size()));
     }
     auto window = vtkSmartPointer<vtkGenericOpenGLRenderWindow>::New();
     mRenderer = vtkSmartPointer<vtkRenderer>::New();
     window->AddRenderer(mRenderer);
     for (const auto& scene : sceneData)
     {
-        auto mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+        auto mapper = vtkSmartPointer<vtkDataSetMapper>::New();
         mapper->SetInputData(scene);
         auto actor = vtkSmartPointer<vtkActor>::New();
         actor->SetMapper(mapper);
+        if (vtkUnstructuredGrid::SafeDownCast(scene.GetPointer()))
+        {
+            actor->GetProperty()->SetRepresentationToWireframe();
+        }
         mRenderer->AddActor(actor);
     }
     mQVtkWidget->setRenderWindow(window);
@@ -74,6 +80,8 @@ void MainWindow::setup_menu_bar()
   auto* sampleCodeMenu = menuBar()->addMenu("Sample Code");
   auto* basicCubeSampleAction = sampleCodeMenu->addAction("BasicCubes");
   connect(basicCubeSampleAction, &QAction::triggered, this, [this] {open_sample(QStringLiteral("BasicCubes.fecad"));});
+  auto* simpleMeshingSampleAction = sampleCodeMenu->addAction("BasicMeshing");
+  connect(simpleMeshingSampleAction, &QAction::triggered, this, [this] {open_sample(QStringLiteral("BasicMeshing.fecad"));});
   auto* openAction = fileMenu->addAction("Open");
   connect(openAction, &QAction::triggered, this, &MainWindow::open_file);
   auto* newFileAction = fileMenu->addAction("New");
@@ -126,7 +134,7 @@ void MainWindow::new_file()
 void MainWindow::run_code()
 {
   delete context;
-  context = new Context(std::make_shared<VtkSceneRenderer>());
+  context = new Context(std::make_shared<VtkSceneRenderer>(), std::make_shared<Mesher>());
   interpreter = Interpreter(context);
   try {
     std::string text = ui->codeEditor->toPlainText().toStdString();

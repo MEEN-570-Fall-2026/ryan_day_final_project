@@ -13,7 +13,8 @@ class Mesh{
 
     public:
         Mesh(std::vector<PointPointers> objectVertices, double elementXSize, double elementYSize, double elementZSize);
-        std::vector<TetCubePointers> get_tetrahedra_cubes();
+        std::vector<TetCubePointers> get_tetrahedra_cubes() const;
+        const std::vector<std::shared_ptr<Point>>& get_point_cloud() const;
 
     private:
         void set_tet_cube_counts();
