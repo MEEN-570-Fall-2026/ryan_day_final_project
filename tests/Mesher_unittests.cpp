@@ -156,5 +156,5 @@ TEST(Mesher, GivenASmallerMeshGridThanCubeSize_WhenMeshing_ExpectMultiplpeTetrah
     Mesh mesh = mesher.create_mesh(cube, 0.5, 0.5, 0.5);
 
     std::vector<std::shared_ptr<TetrahedraCube>> tetCubes = mesh.get_tetrahedra_cubes();
-    ASSERT_EQ(tetCubes.size(), 4);
+    ASSERT_EQ(tetCubes.size(), 8);
 }

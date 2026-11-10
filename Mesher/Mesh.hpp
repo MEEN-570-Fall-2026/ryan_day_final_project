@@ -12,20 +12,33 @@ class Mesh{
     using TetCubePointers = std::shared_ptr<TetrahedraCube>;
 
     public:
-        Mesh(std::vector<PointPointers> objectVertices, double elementX, double elementY, double elementZ);
+        Mesh(std::vector<PointPointers> objectVertices, double elementXSize, double elementYSize, double elementZSize);
         std::vector<TetCubePointers> get_tetrahedra_cubes();
 
     private:
+        void set_tet_cube_counts();
+        void set_object_bounds();
+        void set_x_tet_cube_count();
+        void set_y_tet_cube_count();
+        void set_z_tet_cube_count();
         void create_point_cloud();
+        std::size_t get_point_cloud_index(int i, int j, int k) const;
         void create_tetrahedra_cubes();
         std::vector<TetCubePointers> tetCubes;
         std::vector<PointPointers> pointGrid;
         std::vector<PointPointers> objectVertices;
-        double elementX;
-        double elementY;
-        double elementZ;
-        
-
+        double elementXSize;
+        double elementYSize;
+        double elementZSize;
+        int xTetCubeCount;
+        int yTetCubeCount;
+        int zTetCubeCount;
+        double objectMinX;
+        double objectMaxX;
+        double objectMinY;
+        double objectMaxY;
+        double objectMinZ;
+        double objectMaxZ;
 };
 
 #endif

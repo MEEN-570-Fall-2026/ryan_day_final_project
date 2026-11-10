@@ -10,7 +10,7 @@ class Mesher {
 
     public:
         Mesher() = default;
-        Mesh& create_mesh(Object3d& geometry, int element_length, int element_width, int element_height);
+        Mesh& create_mesh(Object3d& geometry, double elementSizeX, double elementSizeY, double elementSizeZ);
 
     private:
         std::vector<MeshPointer> meshes;
