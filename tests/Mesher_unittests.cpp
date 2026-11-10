@@ -149,6 +149,7 @@ TEST(Mesher, GivenAnEqualMeshGridToCubeSize_WhenMeshing_ExpectSingleTetrahedraCu
     ASSERT_EQ(tetCubes.size(), 1);
 }
 
+
 TEST(Mesher, GivenASmallerMeshGridThanCubeSize_WhenMeshing_ExpectMultiplpeTetrahedraCubes)
 {
     Cube cube{1.0, 1.0, 1.0};
@@ -157,4 +158,59 @@ TEST(Mesher, GivenASmallerMeshGridThanCubeSize_WhenMeshing_ExpectMultiplpeTetrah
 
     std::vector<std::shared_ptr<TetrahedraCube>> tetCubes = mesh.get_tetrahedra_cubes();
     ASSERT_EQ(tetCubes.size(), 8);
+}
+
+
+bool tet_cube_is_in_object_bounds(TetrahedraCube& tetCube, Object3d& object)
+{
+    const auto objectVertices = object.get_vertices();
+    if (objectVertices.empty())
+    {
+        return false;
+    }
+    double minX = objectVertices[0].x();
+    double maxX = minX;
+    double minY = objectVertices[0].y();
+    double maxY = minY;
+    double minZ = objectVertices[0].z();
+    double maxZ = minZ;
+    for (const Point& point : objectVertices)
+    {
+        minX = std::min(minX, point.x());
+        maxX = std::max(maxX, point.x());
+        minY = std::min(minY, point.y());
+        maxY = std::max(maxY, point.y());
+        minZ = std::min(minZ, point.z());
+        maxZ = std::max(maxZ, point.z());
+    }
+    constexpr double tolerance = 1e-9;
+    for (const Tetrahedron& tet : tetCube.get_tetrahedra())
+    {
+        for (const auto& point : tet.get_vertices())
+        {
+            if (!point ||
+                point->x() < minX - tolerance || point->x() > maxX + tolerance ||
+                point->y() < minY - tolerance || point->y() > maxY + tolerance ||
+                point->z() < minZ - tolerance || point->z() > maxZ + tolerance)
+            {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
+TEST(Mesher, GivenANonDivisibleMeshSize_WhenMeshing_ExpectMeshCubeSizeShrinksToFallInBounds)
+{
+    Cube cube{5.0, 5.0, 5.0};
+    Mesher mesher;
+    Mesh mesh = mesher.create_mesh(cube, 2, 2, 2);
+
+    std::vector<std::shared_ptr<TetrahedraCube>> tetCubes = mesh.get_tetrahedra_cubes();
+    ASSERT_EQ(tetCubes.size(), 27);
+    for (auto tetCubePtr : tetCubes)
+    {
+        ASSERT_TRUE(tet_cube_is_in_object_bounds(*tetCubePtr, cube));
+    }
 }

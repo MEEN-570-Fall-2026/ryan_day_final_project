@@ -10,17 +10,17 @@ Point::Point()
 {
 }
 
-double Point::x()
+double Point::x() const
 {
     return x_coordinate;
 }
 
-double Point::y()
+double Point::y() const
 {
     return y_coordinate;
 }
 
-double Point::z()
+double Point::z() const
 {
     return z_coordinate;
 }
