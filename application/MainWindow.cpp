@@ -100,20 +100,24 @@ void MainWindow::setup_menu_bar()
 {
   auto* fileMenu = menuBar()->addMenu("File");
   auto* sampleCodeMenu = menuBar()->addMenu("Sample Code");
-  auto* basicCubeSampleAction = sampleCodeMenu->addAction("BasicCubes");
+  auto* basicCubeSampleAction = sampleCodeMenu->addAction("Basic Cubes");
   connect(basicCubeSampleAction, &QAction::triggered, this, [this] {open_sample(QStringLiteral("BasicCubes.fecad"));});
-  auto* simpleMeshingSampleAction = sampleCodeMenu->addAction("BasicMeshing");
+  auto* simpleMeshingSampleAction = sampleCodeMenu->addAction("Basic Meshing");
   connect(simpleMeshingSampleAction, &QAction::triggered, this, [this] {open_sample(QStringLiteral("BasicMeshing.fecad"));});
   auto* openAction = fileMenu->addAction("Open");
   connect(openAction, &QAction::triggered, this, &MainWindow::open_file);
   auto* newFileAction = fileMenu->addAction("New");
   connect(newFileAction, &QAction::triggered, this, &MainWindow::new_file);
+  auto* saveFileAction = fileMenu->addAction("Save");
+  connect(saveFileAction, &QAction::triggered, this, &MainWindow::save_file);
+  auto* saveAsFileAction = fileMenu->addAction("Save As");
+  connect(saveAsFileAction, &QAction::triggered, this, &MainWindow::save_as);
 }
 
 void MainWindow::setup_connections()
 {
   connect(ui->runCodeButton, &QPushButton::clicked, this, &MainWindow::run_code);
-  connect(ui-saveButton, &QPushButton::clicked, this, &MainWindow::save_file);
+  connect(ui->saveButton, &QPushButton::clicked, this, &MainWindow::save_file);
 }
 
 void MainWindow::open_sample(const QString& filename)
@@ -176,6 +180,17 @@ void MainWindow::run_code()
   }
 }
 
+void MainWindow::save_as()
+{
+  openedFile = QFileDialog::getSaveFileName(this, tr("Save As"), QString{}, tr("FeCAD files (*.fecad)"));
+  if (openedFile.isEmpty())
+  {
+    logger->log("No output file selectd. Failed to save as.");
+    return;
+  }
+  save_file();
+}
+
 void MainWindow::save_file()
 {
   if (openedFile.isEmpty())
@@ -189,7 +204,8 @@ void MainWindow::save_file()
     logger->log("Failed to save. Could not open file: " + openedFile.toStdString());
     return;
   }
-  ouutputFile << ui->codeEditor->toPlainText();
+  std::string codeText = ui->codeEditor->toPlainText().toStdString();
+  outputFile << codeText;
   outputFile.close();
   logger->log("Saved to " + openedFile.toStdString());
 }
