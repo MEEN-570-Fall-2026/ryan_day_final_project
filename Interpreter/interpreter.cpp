@@ -127,6 +127,13 @@ RuntimeValue Interpreter::evaluate_member_method_node(ParseNode* node)
         }
         return storedObject->invoke(method, args);
     }
+    else if (memberObject.is<RuntimeValue::MesherPointer>())
+    {
+        auto retrieved = memberObject.as<RuntimeValue::MesherPointer>();
+        auto storedObject = std::dynamic_pointer_cast<Mesher>(retrieved);
+        std::string method = node->get_value()->getTokenText();
+        return storedObject->invoke(method, args);
+    }
     else 
     {
         auto retrieved = memberObject.as<RuntimeValue::CADObjectPointer>();
