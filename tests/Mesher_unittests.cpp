@@ -145,6 +145,6 @@ TEST(Mesher, GivenAnEqualMeshGridToCubeSize_WhenMeshing_ExpectSingleTetrahedraCu
     Mesher mesher;
     Mesh mesh = mesher.create_mesh(cube, 1, 1, 1);
 
-    std::vector<TetrahedraCube> tetCubes = mesh.get_tetrahedra_cubes();
+    std::vector<std::shared_ptr<TetrahedraCube>> tetCubes = mesh.get_tetrahedra_cubes();
     ASSERT_EQ(tetCubes.size(), 1);
 }

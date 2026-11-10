@@ -1,22 +1,26 @@
 #include "Mesh.hpp"
-#include <unordered_set>
 
-Mesh::Mesh(Object3d& object, double elementLength, double elementWidth, double elementHeight) : 
-    rawObject{object},
-    elementLength{elementLength},
-    elementWidth{elementWidth},
-    elementHeight{elementHeight}
+Mesh::Mesh(std::vector<PointPointers> objectVertices, double elementX, double elementY, double elementZ) :
+    objectVertices{objectVertices},
+    elementX{elementX},
+    elementY{elementY},
+    elementZ{elementZ}
 {
+    create_point_cloud();
+    create_tetrahedra_cubes();
 }
 
-void Mesh::build_grid()
+std::vector<std::shared_ptr<TetrahedraCube>> Mesh::get_tetrahedra_cubes()
 {
-    Cube centralCube = Cube(rawObject.get_centroid(), 1, 1, 1);
-    meshGrid.push_back(centralCube);
+    return tetCubes;
 }
 
-void Mesh::build_tets_from_grid_element(Cube& gridElement)
+void Mesh::create_point_cloud()
 {
-    std::vector<Point> elementVertices = gridElement.get_vertices();
-    
+    pointGrid = objectVertices;
+}
+
+void Mesh::create_tetrahedra_cubes()
+{
+    tetCubes.push_back(std::make_shared<TetrahedraCube>(pointGrid));
 }
