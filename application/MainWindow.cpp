@@ -74,7 +74,7 @@ void MainWindow::setup_vtk_pipeline(VtkSceneRenderer* viewer)
 
           auto edgeActor = vtkSmartPointer<vtkActor>::New();
           edgeActor->SetMapper(edgeMapper);
-          edgeActor->GetProperty()->SetColor(1.0, 1.0, 1.0); // visible on black
+          edgeActor->GetProperty()->SetColor(1.0, 1.0, 1.0);
           edgeActor->GetProperty()->SetLineWidth(1.0);
 
           mRenderer->AddActor(edgeActor);
