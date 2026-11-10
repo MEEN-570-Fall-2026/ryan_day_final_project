@@ -20,6 +20,10 @@ RuntimeValue::RuntimeValue(ViewerAPIPointer value) : value{value}
 {
 }
 
+RuntimeValue::RuntimeValue(MesherPointer value) : value{value}
+{
+}
+
 double RuntimeValue::as_number() const
 {
     if (const auto* stored = std::get_if<int>(&value)) {

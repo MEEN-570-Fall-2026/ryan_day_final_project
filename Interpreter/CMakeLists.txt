@@ -23,6 +23,7 @@ target_include_directories(Interpreter
         Parser
         Modeler
         Exceptions
+        Mesher
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
@@ -30,4 +31,5 @@ target_link_libraries(Interpreter
     Parser
     Modeler
     Exceptions
+    Mesher
 )

@@ -8,6 +8,12 @@ Context::Context(std::shared_ptr<ViewerAPI> viewerSharedPointer)
     variableMap["Viewer"] = RuntimeValue(viewerSharedPointer);
 }
 
+Context::Context(std::shared_ptr<ViewerAPI> viewerSharedPointer, std::shared_ptr<Mesher> mesherSharedPointer)
+{
+    variableMap["Viewer"] = RuntimeValue(viewerSharedPointer);
+    variableMap["Mesher"] = RuntimeValue(mesherSharedPointer);
+}
+
 void Context::add(std::string variableName, RuntimeValue value)
 {
     variableMap[variableName] = value;

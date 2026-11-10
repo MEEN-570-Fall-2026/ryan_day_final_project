@@ -16,6 +16,7 @@ target_compile_features(Mesher PRIVATE cxx_std_20)
 target_link_libraries(Mesher
     PUBLIC
         Modeler
+        Interpreter
 )
 
 target_include_directories(Mesher
