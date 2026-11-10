@@ -7,6 +7,7 @@
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkGenericOpenGLRenderWindow.h>
+#include <vtkExtractEdges.h>
 #include <QVTKOpenGLNativeWidget.h>
 #include <vtkPolyDataMapper.h>
 #include <QGridLayout>
@@ -63,11 +64,32 @@ void MainWindow::setup_vtk_pipeline(VtkSceneRenderer* viewer)
         mapper->SetInputData(scene);
         auto actor = vtkSmartPointer<vtkActor>::New();
         actor->SetMapper(mapper);
-        if (vtkUnstructuredGrid::SafeDownCast(scene.GetPointer()))
+        if (auto* grid = vtkUnstructuredGrid::SafeDownCast(scene.GetPointer()))
         {
-            actor->GetProperty()->SetRepresentationToWireframe();
+          auto edges = vtkSmartPointer<vtkExtractEdges>::New();
+          edges->SetInputData(grid);
+
+          auto edgeMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+          edgeMapper->SetInputConnection(edges->GetOutputPort());
+
+          auto edgeActor = vtkSmartPointer<vtkActor>::New();
+          edgeActor->SetMapper(edgeMapper);
+          edgeActor->GetProperty()->SetColor(1.0, 1.0, 1.0); // visible on black
+          edgeActor->GetProperty()->SetLineWidth(1.0);
+
+          mRenderer->AddActor(edgeActor);
+        }
+        else
+        {
+          auto mapper = vtkSmartPointer<vtkDataSetMapper>::New();
+          mapper->SetInputData(scene);
+
+          auto actor = vtkSmartPointer<vtkActor>::New();
+          actor->SetMapper(mapper);
+          mRenderer->AddActor(actor);
         }
         mRenderer->AddActor(actor);
+        actor->GetProperty()->SetOpacity(0.2);
     }
     mQVtkWidget->setRenderWindow(window);
     mRenderer->ResetCamera();
