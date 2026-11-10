@@ -108,6 +108,36 @@ TEST(Mesher, GivenCubeVertices_WhenCreatingTetrahedraCube_ExpectSixTetrahedraCre
     }
 }
 
+
+TEST(Mesher, GivenRectangularCubeVertices_WhenCreatingTetrahedraCube_ExpectSixTetrahedraCreatedCorrectly)
+{
+    std::vector<std::shared_ptr<Point>> vertices = {
+        std::make_shared<Point>(Point{0, 0, 0}),
+        std::make_shared<Point>(Point{2.2, 0, 0}),
+        std::make_shared<Point>(Point{0, 7.8, 0}),
+        std::make_shared<Point>(Point{2.2, 7.8, 0}),
+        std::make_shared<Point>(Point{0, 0, 10}),
+        std::make_shared<Point>(Point{2.2, 0, 10}),
+        std::make_shared<Point>(Point{0, 7.8, 10}),
+        std::make_shared<Point>(Point{2.2, 7.8, 10})
+    };
+    std::vector<std::unordered_set<int>> expectedTetsVertexIndices {
+        {0, 1, 3, 7},
+        {0, 1, 5, 7},
+        {0, 2, 3, 7},
+        {0, 2, 6, 7},
+        {0, 4, 5, 7},
+        {0, 4, 6, 7}
+    };
+    TetrahedraCube tetCube{vertices};
+    std::vector<Tetrahedron> tetrahedra = tetCube.get_tetrahedra();
+    for (auto tetVertexIndices : expectedTetsVertexIndices)
+    {
+        ASSERT_TRUE(tet_vertices_match_expected_vertex_indices(vertices, tetVertexIndices, tetrahedra));
+    }
+}
+
+
 // TEST(Mesher, GivenASingleElementMeshGrid_WhenCreatingTetsInGrid_ExpectSixTetsCreated)
 // {
 //     Cube cube{1.0, 1.0, 1.0};
