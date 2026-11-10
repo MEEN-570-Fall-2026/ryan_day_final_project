@@ -89,7 +89,7 @@ void MainWindow::setup_vtk_pipeline(VtkSceneRenderer* viewer)
           mRenderer->AddActor(actor);
         }
         mRenderer->AddActor(actor);
-        actor->GetProperty()->SetOpacity(0.2);
+        actor->GetProperty()->SetOpacity(0.5);
     }
     mQVtkWidget->setRenderWindow(window);
     mRenderer->ResetCamera();
