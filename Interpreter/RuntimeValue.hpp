@@ -9,12 +9,14 @@
 class CADObject; // Forward Declaration for compiler
 class ViewerAPI;
 class Mesher;
+class Mesh;
 
 class RuntimeValue {
     public:
         using CADObjectPointer = std::shared_ptr<CADObject>;
         using ViewerAPIPointer = std::shared_ptr<ViewerAPI>;
         using MesherPointer = std::shared_ptr<Mesher>;
+        using MeshPointer = std::shared_ptr<Mesh>;
         using Storage = std::variant<
             std::monostate,
             int,
@@ -22,7 +24,8 @@ class RuntimeValue {
             bool,
             CADObjectPointer,
             ViewerAPIPointer,
-            MesherPointer
+            MesherPointer,
+            MeshPointer
         >;
 
         RuntimeValue() = default;
@@ -32,6 +35,7 @@ class RuntimeValue {
         RuntimeValue(CADObjectPointer value);
         RuntimeValue(ViewerAPIPointer value);
         RuntimeValue(MesherPointer value);
+        RuntimeValue(MeshPointer value);
 
         template <typename T>
         bool is() const {

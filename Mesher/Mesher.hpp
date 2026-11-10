@@ -7,7 +7,7 @@
 #include "RuntimeValue.hpp"
 
 class Mesher {
-    using MeshPointer = std::unique_ptr<Mesh>;
+    using MeshPointer = std::shared_ptr<Mesh>;
 
     public:
         Mesher() = default;

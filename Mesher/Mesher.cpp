@@ -11,7 +11,7 @@ Mesh& Mesher::create_mesh(Object3d& geometry, double elementSizeX, double elemen
     {
         vertexPointers.push_back(std::make_shared<Point>(vertex));
     }
-    MeshPointer meshPtr = std::make_unique<Mesh>(std::move(vertexPointers), elementSizeX, elementSizeY, elementSizeZ);
+    MeshPointer meshPtr = std::make_shared<Mesh>(std::move(vertexPointers), elementSizeX, elementSizeY, elementSizeZ);
     meshes.push_back(std::move(meshPtr));
     return *meshes.back();
 }
@@ -23,7 +23,7 @@ RuntimeValue Mesher::invoke(const std::string& method, const std::vector<Runtime
         auto retrieved = args[0].as<RuntimeValue::CADObjectPointer>();
         Object3d* storedObject = std::dynamic_pointer_cast<Object3d>(retrieved).get();
         create_mesh(*storedObject, args[1].as_number(), args[2].as_number(), args[3].as_number());
-        return RuntimeValue{};
+        return RuntimeValue{meshes.back()};
     }
     throw std::runtime_error("Unknown method " + method + " with supplied arguments!");
 }
