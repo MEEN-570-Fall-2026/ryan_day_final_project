@@ -1,10 +1,16 @@
 #include "TetrahedraCube.hpp"
 #include <algorithm>
+#include <array>
 
 
 TetrahedraCube::TetrahedraCube(std::vector<std::shared_ptr<Point>> vertices) : vertices{vertices}
 {
     build_tetrahedra();
+}
+
+std::vector<Tetrahedron> TetrahedraCube::get_tetrahedra()
+{
+    return tetrahedra;
 }
 
 std::size_t TetrahedraCube::get_corner_index(const std::vector<int>& xyz)
@@ -17,7 +23,7 @@ void TetrahedraCube::build_tetrahedra()
     std::vector<int> axes = {0, 1, 2};
     do
     {
-        std::vector<PointPtr> tetPoints;
+        std::array<PointPtr, 4> tetPoints;
         std::vector<int> xyz{0, 0, 0};
         tetPoints[0] = vertices[get_corner_index(xyz)];
         for (std::size_t step = 0; step < axes.size(); ++step)

@@ -6,7 +6,6 @@
 #include "TetrahedraCube.hpp"
 #include <unordered_set>
 #include <memory>
-#include "Mesher_unittests.h"
 
 
 bool tet_vertex_links_to_other_vertices(Tetrahedron& tet, std::vector<std::shared_ptr<Point>>& vertices, int vertex_index)

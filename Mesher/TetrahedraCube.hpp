@@ -12,6 +12,7 @@ class TetrahedraCube {
 
     public:
         TetrahedraCube(std::vector<PointPtr> vertices);
+        std::vector<Tetrahedron> get_tetrahedra();
 
     private:
         std::size_t get_corner_index(const std::vector<int>& xyz);

@@ -31,3 +31,8 @@ std::vector<std::shared_ptr<Point>> Tetrahedron::get_vertex_connections(int vert
     }
     return connectionPtrs;
 }
+
+std::vector<std::shared_ptr<Point>> Tetrahedron::get_vertices()
+{
+    return vertices;
+}

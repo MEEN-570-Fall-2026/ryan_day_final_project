@@ -13,6 +13,7 @@ class Tetrahedron
     public:
         Tetrahedron(std::vector<PointPtr> vertices);
         std::vector<std::shared_ptr<Point>> get_vertex_connections(int vertex_index);
+        std::vector<std::shared_ptr<Point>> get_vertices();
 
     private:
         std::vector<PointPtr> vertices;
