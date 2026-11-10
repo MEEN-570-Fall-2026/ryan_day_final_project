@@ -25,8 +25,7 @@ void TetrahedraCube::build_tetrahedra()
             xyz[axes[step]] = 1;
             tetPoints[step + 1] = vertices[get_corner_index(xyz)];
         }
-        tetrahedra.push_back(Tetrahedron(
-            std::vector<PointPtr>{
+        tetrahedra.push_back(Tetrahedron(std::vector<PointPtr>{
                 tetPoints[0], tetPoints[1],
                 tetPoints[2], tetPoints[3]
             }

@@ -20,3 +20,14 @@ void Tetrahedron::set_vertex_connections()
         
     }
 }
+
+std::vector<std::shared_ptr<Point>> Tetrahedron::get_vertex_connections(int vertex_index)
+{
+    std::vector<int> connectionIndices = vertexConnections[vertex_index];
+    std::vector<PointPtr> connectionPtrs;
+    for (int index : connectionIndices)
+    {
+        connectionPtrs.push_back(vertices[index]);
+    }
+    return connectionPtrs;
+}

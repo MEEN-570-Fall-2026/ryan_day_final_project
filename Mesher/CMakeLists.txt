@@ -4,12 +4,12 @@ target_sources(Mesher
         Mesher.cpp
         Mesh.cpp
         Tetrahedron.cpp
-        TetrahedronCube.cpp
+        TetrahedraCube.cpp
     PUBLIC
         Mesher.hpp
         Mesh.hpp
         Tetrahedron.hpp
-        TetrahedronCube.hpp
+        TetrahedraCube.hpp
 )
 target_compile_features(Mesher PRIVATE cxx_std_20)
 
