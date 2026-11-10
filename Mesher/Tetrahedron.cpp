@@ -1,7 +1,8 @@
 #include "Tetrahedron.hpp"
 
-Tetrahedron::Tetrahedron(std::vector<Point> vertices) : vertices{vertices}
+Tetrahedron::Tetrahedron(std::vector<PointPtr> vertices) : vertices{vertices}
 {
+    set_point_connections();
 }
 
 void Tetrahedron::set_point_connections()

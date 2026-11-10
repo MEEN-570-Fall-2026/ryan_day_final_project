@@ -3,9 +3,13 @@ target_sources(Mesher
     PRIVATE
         Mesher.cpp
         Mesh.cpp
+        Tetrahedron.cpp
+        TetrahedronCube.cpp
     PUBLIC
         Mesher.hpp
         Mesh.hpp
+        Tetrahedron.hpp
+        TetrahedronCube.hpp
 )
 target_compile_features(Mesher PRIVATE cxx_std_20)
 
