@@ -3,7 +3,10 @@
 #include "Mesher.hpp"
 #include "Point.hpp"
 #include "Tetrahedron.hpp"
+#include "TetrahedraCube.hpp"
+#include <unordered_set>
 #include <memory>
+#include "Mesher_unittests.h"
 
 
 bool tet_vertex_links_to_other_vertices(Tetrahedron& tet, std::vector<std::shared_ptr<Point>>& vertices, int vertex_index)
@@ -45,6 +48,64 @@ TEST(Mesher, GivenFourPoints_WhenCreatingTetrahedron_ExpectPointsLinkedCorrectly
     for (int i = 0; i < vertices.size(); i++)
     {
         ASSERT_TRUE(tet_vertex_links_to_other_vertices(tet, vertices, i));
+    }
+}
+
+
+bool tet_vertices_match_expected_vertex_indices(std::vector<std::shared_ptr<Point>>& vertices, std::unordered_set<int> tetVertexIndices, std::vector<Tetrahedron> tetrahedra)
+{
+    for (Tetrahedron tet : tetrahedra)
+    {
+        bool equalVertices = true;
+        for (auto tetVertexPointer : tet.get_vertices())
+        {
+            bool vertexFound = false;
+            for (int index : tetVertexIndices)
+            {
+                if (tetVertexPointer == vertices[index])
+                {
+                    vertexFound = true;
+                }
+            }
+            if (!vertexFound)
+            {
+                equalVertices = false;
+            }
+        }
+        if (equalVertices)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+TEST(Mesher, GivenCubeVertices_WhenCreatingTetrahedraCube_ExpectSixTetrahedraCreatedCorrectly)
+{
+    std::vector<std::shared_ptr<Point>> vertices = {
+        std::make_shared<Point>(Point{0, 0, 0}),
+        std::make_shared<Point>(Point{1, 0, 0}),
+        std::make_shared<Point>(Point{0, 1, 0}),
+        std::make_shared<Point>(Point{1, 1, 0}),
+        std::make_shared<Point>(Point{0, 0, 1}),
+        std::make_shared<Point>(Point{1, 0, 1}),
+        std::make_shared<Point>(Point{0, 1, 1}),
+        std::make_shared<Point>(Point{1, 1, 1})
+    };
+    std::vector<std::unordered_set<int>> expectedTetsVertexIndices {
+        {0, 1, 3, 7},
+        {0, 1, 5, 7},
+        {0, 2, 3, 7},
+        {0, 2, 6, 7},
+        {0, 4, 5, 7},
+        {0, 4, 6, 7}
+    };
+    TetrahedraCube tetCube{vertices};
+    std::vector<Tetrahedron> tetrahedra = tetCube.get_tetrahedra();
+    for (auto tetVertexIndices : expectedTetsVertexIndices)
+    {
+        ASSERT_TRUE(tet_vertices_match_expected_vertex_indices(vertices, tetVertexIndices, tetrahedra));
     }
 }
 
