@@ -21,12 +21,14 @@ target_include_directories(tests
         Modeler
         Parser
         Interpreter
+        Mesher
 )
 target_link_libraries(tests
     GTest::gtest_main
     Modeler
     Parser
     Interpreter
+    Mesher
 )
 
 target_compile_definitions(tests PRIVATE
