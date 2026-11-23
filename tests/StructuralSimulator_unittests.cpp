@@ -5,6 +5,7 @@
 #include "Mesh.cpp"
 #include "StructuralSimulator.hpp"
 #include "primitives3d/Cube.hpp"
+#include "UnassignedMaterialException.hpp"
 
 
 std::shared_ptr<Mesh> load_unit_cube_mesh_into_mesher(Mesher& mesher, double elementX, double elementY, double elementZ)
@@ -33,4 +34,14 @@ TEST(StructuralSolver, GivenAMesh_WhenCreatingAnIsotropicMaterial_ExpectMaterial
 
     ASSERT_EQ(poissons, retrievedMaterial.get_poissons_ratio());
     ASSERT_EQ(modulus, retrievedMaterial.get_modulus_of_elasticity());
+}
+
+TEST(StructuralSolver, GivenAMesh_WhenNoMaterialAssinged_ExpectGettingMaterialThrowsUnassignedMaterialException)
+{
+    Mesher mesher;
+    std::shared_ptr<Mesh> mesh = load_unit_cube_mesh_into_mesher(mesher, 1, 1, 1);
+
+    StructuralSimulator solver{mesher};
+
+    ASSERT_THROW(solver.get_mesh_material(mesh), UnassignedMaterialException);
 }
