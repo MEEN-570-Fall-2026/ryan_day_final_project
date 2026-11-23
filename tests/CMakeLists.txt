@@ -6,6 +6,7 @@ add_executable(
     Parser_unittests.cpp
     Interpreter_unittests.cpp
     Mesher_unittests.cpp
+    StructuralSimulator_unittests.cpp
 )
 target_sources(tests
     PRIVATE
@@ -13,6 +14,7 @@ target_sources(tests
         Parser_unittests.cpp
         Interpreter_unittests.cpp
         Mesher_unittests.cpp
+        StructuralSimulator_unittests.cpp
 )
 target_compile_features(tests PRIVATE cxx_std_20)
 target_include_directories(tests
