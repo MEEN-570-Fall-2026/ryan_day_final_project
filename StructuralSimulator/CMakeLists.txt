@@ -3,11 +3,14 @@ target_sources(StructuralSimulator
     PRIVATE
         StructuralSimulator.cpp
         PointLoad.cpp
-        Constraint.cpp
+        PointConstraint.cpp
+        IsotropicMaterial.cpp
     PUBLIC
         StructuralSimulator.hpp
         PointLoad.hpp
-        Constraint.hpp
+        PointConstraint.hpp
+        IsotropicMaterial.hpp
+        UnassignedMaterialException.hpp
 )
 target_compile_features(StructuralSimulator PRIVATE cxx_std_20)
 

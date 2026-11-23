@@ -4,7 +4,7 @@
 #include <memory>
 #include <iostream>
 
-Mesh& Mesher::create_mesh(Object3d& geometry, double elementSizeX, double elementSizeY, double elementSizeZ)
+std::shared_ptr<Mesh> Mesher::create_mesh(Object3d& geometry, double elementSizeX, double elementSizeY, double elementSizeZ)
 {
     std::vector<Point> geometry_vertices = geometry.get_vertices();
     std::vector<std::shared_ptr<Point>> vertexPointers;
@@ -14,7 +14,7 @@ Mesh& Mesher::create_mesh(Object3d& geometry, double elementSizeX, double elemen
     }
     MeshPointer meshPtr = std::make_shared<Mesh>(std::move(vertexPointers), elementSizeX, elementSizeY, elementSizeZ);
     meshes.push_back(std::move(meshPtr));
-    return *meshes.back();
+    return meshes.back();
 }
 
 RuntimeValue Mesher::invoke(const std::string& method, const std::vector<RuntimeValue>& args)
@@ -30,3 +30,9 @@ RuntimeValue Mesher::invoke(const std::string& method, const std::vector<Runtime
     std::cout << "Mesher Args Size " << std::to_string(args.size()) << std::endl;
     throw std::runtime_error("Unknown Mesher method " + method + " with supplied arguments!");
 }
+
+const std::vector<Mesher::MeshPointer> &Mesher::get_meshes() const
+{
+    return meshes;
+}
+

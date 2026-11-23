@@ -24,6 +24,7 @@ target_include_directories(tests
         Parser
         Interpreter
         Mesher
+        StructuralSimulator
 )
 target_link_libraries(tests
     GTest::gtest_main
@@ -31,6 +32,7 @@ target_link_libraries(tests
     Parser
     Interpreter
     Mesher
+    StructuralSimulator
 )
 
 target_compile_definitions(tests PRIVATE

@@ -143,7 +143,7 @@ TEST(Mesher, GivenAnEqualMeshGridToCubeSize_WhenMeshing_ExpectSingleTetrahedraCu
 {
     Cube cube{1.0, 1.0, 1.0};
     Mesher mesher;
-    Mesh mesh = mesher.create_mesh(cube, 1, 1, 1);
+    Mesh mesh = *mesher.create_mesh(cube, 1, 1, 1).get();
 
     std::vector<std::shared_ptr<TetrahedraCube>> tetCubes = mesh.get_tetrahedra_cubes();
     ASSERT_EQ(tetCubes.size(), 1);
@@ -154,7 +154,7 @@ TEST(Mesher, GivenASmallerMeshGridThanCubeSize_WhenMeshing_ExpectMultiplpeTetrah
 {
     Cube cube{1.0, 1.0, 1.0};
     Mesher mesher;
-    Mesh mesh = mesher.create_mesh(cube, 0.5, 0.5, 0.5);
+    Mesh mesh = *mesher.create_mesh(cube, 0.5, 0.5, 0.5).get();
 
     std::vector<std::shared_ptr<TetrahedraCube>> tetCubes = mesh.get_tetrahedra_cubes();
     ASSERT_EQ(tetCubes.size(), 8);
@@ -205,7 +205,7 @@ TEST(Mesher, GivenANonDivisibleMeshSize_WhenMeshing_ExpectMeshCubeSizeShrinksToF
 {
     Cube cube{5.0, 5.0, 5.0};
     Mesher mesher;
-    Mesh mesh = mesher.create_mesh(cube, 2, 2, 2);
+    Mesh mesh = *mesher.create_mesh(cube, 2, 2, 2).get();
 
     std::vector<std::shared_ptr<TetrahedraCube>> tetCubes = mesh.get_tetrahedra_cubes();
     ASSERT_EQ(tetCubes.size(), 27);
