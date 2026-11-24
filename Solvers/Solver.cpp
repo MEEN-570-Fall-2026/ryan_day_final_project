@@ -35,3 +35,16 @@ std::vector<std::shared_ptr<PointConstraint>> Solver::get_mesh_constraints(std::
 {
     return meshConstraints[meshSharedPtr];
 }
+
+void Solver::allign_constraints()
+{
+    for (auto& [mesh, constraints] : meshConstraints)
+    {
+        for (int i = 0; i < constraints.size(); i++)
+        {
+            Point constraintLocation = constraints[i]->get_constraint_location();
+            std::shared_ptr<Point> newLocation = mesh->get_closest_node(constraintLocation);
+            constraints[i]->update_location(newLocation);
+        }
+    }
+}

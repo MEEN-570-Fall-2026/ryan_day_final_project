@@ -201,14 +201,14 @@ TEST(StructuralSolver, GivenAMesh_WhenAlligningConstraintsWithNodes_ExpectConstr
     solver.allign_constraints();
 
     Point expected1{-0.5, -0.5, -0.5};
-    Point expected2{-0.5, -0.5, -0.5};
+    Point expected2{0.5, -0.5, -0.5};
     Point expected3{0.5, 0.5, 0.5};
 
     auto constraints = solver.get_mesh_constraints(mesh);
     auto structuralConstraints = downcast_vector<StructuralPointConstraint>(constraints);
 
     ASSERT_EQ(structuralConstraints.size(), 3);
-    ASSERT_EQ(*structuralConstraints[0], expected1);
-    ASSERT_EQ(*structuralConstraints[1], expected2);
-    ASSERT_EQ(*structuralConstraints[3], expected3);
+    ASSERT_EQ(structuralConstraints[0]->get_constraint_location(), expected1);
+    ASSERT_EQ(structuralConstraints[1]->get_constraint_location(), expected2);
+    ASSERT_EQ(structuralConstraints[2]->get_constraint_location(), expected3);
 }

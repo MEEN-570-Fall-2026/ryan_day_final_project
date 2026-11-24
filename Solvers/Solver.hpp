@@ -18,6 +18,8 @@ class Solver {
         void add_constraint_to_mesh(std::shared_ptr<Mesh> mesh, const PointConstraint& constraint);
         std::vector<std::shared_ptr<PointConstraint>> get_mesh_constraints(std::shared_ptr<Mesh> meshSharedPtr);
 
+        void allign_constraints();
+
         // virtual void solve() = 0;
 
     protected:

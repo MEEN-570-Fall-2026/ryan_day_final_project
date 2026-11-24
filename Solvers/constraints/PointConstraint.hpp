@@ -2,6 +2,7 @@
 #define CONSTRAINT
 
 #include "Point.hpp"
+#include <memory>
 
 class PointConstraint {
     public:
@@ -12,8 +13,10 @@ class PointConstraint {
 
         virtual std::unique_ptr<PointConstraint> clone() const = 0;
 
+        void update_location(std::shared_ptr<Point> newLocation);
+
     private:
-        Point constraintLocation;
+        std::shared_ptr<Point> constraintLocation;
 
         
 
