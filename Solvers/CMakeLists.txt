@@ -43,6 +43,8 @@ target_compile_features(Solvers PRIVATE cxx_std_20)
 target_link_libraries(Solvers
     PUBLIC
         Mesher
+    PRIVATE
+        Eigen3::Eigen
 )
 
 target_include_directories(Solvers

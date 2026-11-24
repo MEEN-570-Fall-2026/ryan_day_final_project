@@ -17,6 +17,8 @@ target_link_libraries(Mesher
     PUBLIC
         Modeler
         Interpreter
+    PRIVATE
+        Eigen3::Eigen
 )
 
 target_include_directories(Mesher

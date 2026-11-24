@@ -24,6 +24,27 @@ FetchContent_MakeAvailable(googletest)
 
 # ----------------------------
 
+
+# ----------------------------
+# Eigen
+# ----------------------------
+
+set(EIGEN_BUILD_DOC OFF CACHE BOOL "" FORCE)
+set(EIGEN_BUILD_TESTING OFF CACHE BOOL "" FORCE)
+set(EIGEN_BUILD_PKGCONFIG OFF CACHE BOOL "" FORCE)
+set(EIGEN_INSTALL OFF CACHE BOOL "" FORCE)
+
+FetchContent_Declare(
+    Eigen
+    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
+    GIT_TAG 3.4.0
+    GIT_SHALLOW TRUE
+)
+
+FetchContent_MakeAvailable(Eigen)
+
+# ----------------------------
+
 include(CTest)
 
 add_subdirectory(application)
