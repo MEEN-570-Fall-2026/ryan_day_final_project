@@ -1,4 +1,5 @@
 #include "Tetrahedron.hpp"
+#include <Eigen/Dense>
 
 Tetrahedron::Tetrahedron(std::vector<PointPtr> vertices) : vertices{vertices}
 {

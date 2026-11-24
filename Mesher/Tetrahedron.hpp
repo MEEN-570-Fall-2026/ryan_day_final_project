@@ -6,6 +6,7 @@
 #include <memory>
 #include "Point.hpp"
 
+
 class Tetrahedron
 {
     using PointPtr = std::shared_ptr<Point>;
