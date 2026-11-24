@@ -152,3 +152,25 @@ TEST(StructuralSolver, GivenAMesh_WhenAssigningMultiplePointConstraints_ExpectCo
     ASSERT_THROW(retrievedConstraint3.get_y_displacement(), UnassignedConstraintException);
     ASSERT_EQ(retrievedConstraint3.get_z_displacement(), 0);
 }
+
+TEST(StructuralSolver, GivenAMesh_WhenAssigningPointLoad_ExpectLoadCorrectlyApplied)
+{
+    Mesher mesher;
+    std::shared_ptr<Mesh> mesh = load_unit_cube_mesh_into_mesher(mesher, 1, 1, 1);
+
+    StructuralSolver solver{mesher};
+
+    Point loadPoint{-0.5, -0.5, -0.5};
+
+    StructuralPointLoad load{loadPoint, 100, 200, 300};
+    solver.add_load_to_mesh(mesh, load);
+    auto loads = solver.get_load_constraints(mesh);
+
+    ASSERT_EQ(loads.size(), 1);
+
+    const auto& retrievedLoad = *loads[0];
+    ASSERT_EQ(retrievedLoad.get_load_location(), loadPoint);
+    ASSERT_EQ(retrievedLoad.get_x_displacement(), 0);
+    ASSERT_THROW(retrievedLoad.get_y_displacement(), UnassignedConstraintException);
+    ASSERT_THROW(retrievedLoad.get_z_displacement(), UnassignedConstraintException);
+}
