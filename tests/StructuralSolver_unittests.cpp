@@ -8,6 +8,7 @@
 #include "UnassignedMaterialException.hpp"
 #include "UnassignedConstraintException.hpp"
 #include "constraints/structural/StructuralPointConstraint.hpp"
+#include "loads/PointLoad.hpp"
 
 
 std::shared_ptr<Mesh> load_unit_cube_mesh_into_mesher(Mesher& mesher, double elementX, double elementY, double elementZ)
@@ -162,15 +163,18 @@ TEST(StructuralSolver, GivenAMesh_WhenAssigningPointLoad_ExpectLoadCorrectlyAppl
 
     Point loadPoint{-0.5, -0.5, -0.5};
 
-    StructuralPointLoad load{loadPoint, 100, 200, 300};
+    double forceX = 100;
+    double forceY = 200;
+    double forceZ = 300;
+
+    PointLoad load{loadPoint, forceX, forceY, forceZ};
     solver.add_load_to_mesh(mesh, load);
-    auto loads = solver.get_load_constraints(mesh);
+    auto loads = solver.get_loads_from_mesh(mesh);
 
     ASSERT_EQ(loads.size(), 1);
 
-    const auto& retrievedLoad = *loads[0];
+    PointLoad retrievedLoad = loads[0];
     ASSERT_EQ(retrievedLoad.get_load_location(), loadPoint);
-    ASSERT_EQ(retrievedLoad.get_x_displacement(), 0);
-    ASSERT_THROW(retrievedLoad.get_y_displacement(), UnassignedConstraintException);
-    ASSERT_THROW(retrievedLoad.get_z_displacement(), UnassignedConstraintException);
+    std::vector<double> expectedLoad = {forceX, forceY, forceZ};
+    ASSERT_EQ(retrievedLoad.get_load_vector(), expectedLoad);
 }
