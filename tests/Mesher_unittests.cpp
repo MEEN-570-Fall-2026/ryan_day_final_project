@@ -214,3 +214,16 @@ TEST(Mesher, GivenANonDivisibleMeshSize_WhenMeshing_ExpectMeshCubeSizeShrinksToF
         ASSERT_TRUE(tet_cube_is_in_object_bounds(*tetCubePtr, cube));
     }
 }
+
+
+TEST(Mesher, GivenAMeshAndAPoint_WhenFindingClosestNode_ExpectCorrectClosestNodeFound)
+{
+    Cube cube{1, 1, 1};
+    Mesher mesher;
+    Mesh mesh = *mesher.create_mesh(cube, 1, 1, 1).get();
+    Point testPoint = Point(0.45, -0.45, 0.45);
+    std::shared_ptr<Point> closestNode = mesh.get_closest_node(testPoint);
+    Point expectedNode = Point(0.5, -0.5, 0.5);
+
+    ASSERT_EQ(testPoint, *closestNode);
+}

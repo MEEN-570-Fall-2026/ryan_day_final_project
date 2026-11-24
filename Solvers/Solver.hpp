@@ -3,6 +3,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include "Mesher.hpp"
 #include "materials/IsotropicMaterial.hpp"
 #include "constraints/PointConstraint.hpp"
