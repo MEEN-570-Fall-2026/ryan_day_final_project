@@ -6,6 +6,7 @@
 #include "StructuralSolver.hpp"
 #include "primitives3d/Cube.hpp"
 #include "UnassignedMaterialException.hpp"
+#include "constraints/structural/StructuralPointConstraint.hpp"
 
 
 std::shared_ptr<Mesh> load_unit_cube_mesh_into_mesher(Mesher& mesher, double elementX, double elementY, double elementZ)
@@ -44,4 +45,24 @@ TEST(StructuralSolver, GivenAMesh_WhenNoMaterialAssinged_ExpectGettingMaterialTh
     StructuralSolver solver{mesher};
 
     ASSERT_THROW(solver.get_mesh_material(mesh), UnassignedMaterialException);
+}
+
+TEST(StructuralSolver, GivenAMesh_WhenAssigningConstraint_ExpectConstraintCorrectlyApplied)
+{
+    Mesher mesher;
+    std::shared_ptr<Mesh> mesh = load_unit_cube_mesh_into_mesher(mesher, 1, 1, 1);
+
+    StructuralSolver solver{mesher};
+
+    Point constraintPoint{-0.5, -0.5, -0.5};
+
+    StructuralPointConstraint constraint{constraintPoint, 0, 0, 0};
+    solver.add_constraint(constraint);
+    std::vector<Constraint> constraints = solver.get_constraints();
+
+    ASSERT_EQ(constraints.size(), 1);
+    ASSERT_EQ(constraints[0].get_constraint_location(), constraintPoint);
+    ASSERT_EQ(constraints[0].get_x_displacement(), 0);
+    ASSERT_EQ(constraints[0].get_y_displacement(), 0);
+    ASSERT_EQ(constraints[0].get_z_displacement(), 0);
 }
