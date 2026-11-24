@@ -34,7 +34,7 @@ target_link_libraries(${PROJECT_NAME}
     Mesher
     Modeler
     Parser
-    StructuralSimulator
+    Solvers
     VTKSceneRenderer
     Interpreter
 )

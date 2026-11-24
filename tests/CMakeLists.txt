@@ -6,7 +6,7 @@ add_executable(
     Parser_unittests.cpp
     Interpreter_unittests.cpp
     Mesher_unittests.cpp
-    StructuralSimulator_unittests.cpp
+    StructuralSolver_unittests.cpp
 )
 target_sources(tests
     PRIVATE
@@ -14,7 +14,7 @@ target_sources(tests
         Parser_unittests.cpp
         Interpreter_unittests.cpp
         Mesher_unittests.cpp
-        StructuralSimulator_unittests.cpp
+        StructuralSolver_unittests.cpp
 )
 target_compile_features(tests PRIVATE cxx_std_20)
 target_include_directories(tests
@@ -24,7 +24,7 @@ target_include_directories(tests
         Parser
         Interpreter
         Mesher
-        StructuralSimulator
+        Solvers
 )
 target_link_libraries(tests
     GTest::gtest_main
@@ -32,7 +32,7 @@ target_link_libraries(tests
     Parser
     Interpreter
     Mesher
-    StructuralSimulator
+    Solvers
 )
 
 target_compile_definitions(tests PRIVATE

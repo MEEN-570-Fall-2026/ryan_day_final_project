@@ -1,21 +1,21 @@
-#include "StructuralSimulator.hpp"
+#include "Solver.hpp"
 
 #include <memory>
 #include "UnassignedMaterialException.hpp"
 
-StructuralSimulator::StructuralSimulator(Mesher mesher)
+Solver::Solver(Mesher mesher)
 {
     for (std::shared_ptr<Mesh> meshPtr : mesher.get_meshes()) {
         meshMaterials[meshPtr] = std::nullopt;
     }
 }
 
-void StructuralSimulator::assign_material_to_mesh(std::shared_ptr<Mesh> meshSharedPtr, IsotropicMaterial& material)
+void Solver::assign_material_to_mesh(std::shared_ptr<Mesh> meshSharedPtr, IsotropicMaterial& material)
 {
     meshMaterials[meshSharedPtr] = material;
 }
 
-IsotropicMaterial StructuralSimulator::get_mesh_material(std::shared_ptr<Mesh> meshSharedPtr)
+IsotropicMaterial Solver::get_mesh_material(std::shared_ptr<Mesh> meshSharedPtr)
 {
     if (!meshMaterials[meshSharedPtr].has_value())
     {
