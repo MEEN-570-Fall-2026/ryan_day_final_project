@@ -6,6 +6,7 @@
 #include "StructuralSolver.hpp"
 #include "primitives3d/Cube.hpp"
 #include "UnassignedMaterialException.hpp"
+#include "UnassignedConstraintException.hpp"
 #include "constraints/structural/StructuralPointConstraint.hpp"
 
 
@@ -84,6 +85,31 @@ TEST(StructuralSolver, GivenAMesh_WhenAssigningPointConstraint_ExpectConstraintC
     ASSERT_EQ(retrievedConstraint.get_z_displacement(), 0);
 }
 
+
+TEST(StructuralSolver, GivenAMesh_WhenAssigningAPointConstraintInOneDimension_ExpectConstraintCorrectlyApplied)
+{
+    Mesher mesher;
+    std::shared_ptr<Mesh> mesh = load_unit_cube_mesh_into_mesher(mesher, 1, 1, 1);
+
+    StructuralSolver solver{mesher};
+
+    Point constraintPoint{-0.5, -0.5, -0.5};
+
+    StructuralPointConstraint constraint{constraintPoint, 0, std::nullopt, std::nullopt};
+    solver.add_constraint_to_mesh(mesh, constraint);
+    auto constraints = solver.get_mesh_constraints(mesh);
+    auto structuralConstraints = downcast_vector<StructuralPointConstraint>(constraints);
+
+    ASSERT_EQ(structuralConstraints.size(), 1);
+
+    const auto& retrievedConstraint = *structuralConstraints[0];
+    ASSERT_EQ(retrievedConstraint.get_constraint_location(), constraintPoint);
+    ASSERT_EQ(retrievedConstraint.get_x_displacement(), 0);
+    ASSERT_THROW(retrievedConstraint.get_y_displacement(), UnassignedConstraintException);
+    ASSERT_THROW(retrievedConstraint.get_z_displacement(), UnassignedConstraintException);
+}
+
+
 TEST(StructuralSolver, GivenAMesh_WhenAssigningMultiplePointConstraints_ExpectConstraintsCorrectlyApplied)
 {
     Mesher mesher;
@@ -96,8 +122,8 @@ TEST(StructuralSolver, GivenAMesh_WhenAssigningMultiplePointConstraints_ExpectCo
     Point constraintPoint3{0.5, 0.5, 0.5};
 
     StructuralPointConstraint constraint1{constraintPoint1, 0, 0, 0};
-    StructuralPointConstraint constraint2{constraintPoint1, std::nullopt, 0, 0};
-    StructuralPointConstraint constraint3{constraintPoint1, std::nullopt, std::nullopt, 0};
+    StructuralPointConstraint constraint2{constraintPoint2, std::nullopt, 0, 0};
+    StructuralPointConstraint constraint3{constraintPoint3, std::nullopt, std::nullopt, 0};
 
     solver.add_constraint_to_mesh(mesh, constraint1);
     solver.add_constraint_to_mesh(mesh, constraint2);
@@ -116,13 +142,13 @@ TEST(StructuralSolver, GivenAMesh_WhenAssigningMultiplePointConstraints_ExpectCo
 
     const auto& retrievedConstraint2 = *structuralConstraints[1];
     ASSERT_EQ(retrievedConstraint2.get_constraint_location(), constraintPoint2);
-    ASSERT_THROW(retrievedConstraint2.get_x_displacement(), UnassignedMaterialException);
+    ASSERT_THROW(retrievedConstraint2.get_x_displacement(), UnassignedConstraintException);
     ASSERT_EQ(retrievedConstraint2.get_y_displacement(), 0);
     ASSERT_EQ(retrievedConstraint2.get_z_displacement(), 0);
 
-    const auto& retrievedConstraint3 = *structuralConstraints[1];
-    ASSERT_EQ(retrievedConstraint3.get_constraint_location(), constraintPoint1);
-    ASSERT_THROW(retrievedConstraint3.get_x_displacement(), UnassignedMaterialException);
-    ASSERT_THROW(retrievedConstraint3.get_y_displacement(), UnassignedMaterialException);
+    const auto& retrievedConstraint3 = *structuralConstraints[2];
+    ASSERT_EQ(retrievedConstraint3.get_constraint_location(), constraintPoint3);
+    ASSERT_THROW(retrievedConstraint3.get_x_displacement(), UnassignedConstraintException);
+    ASSERT_THROW(retrievedConstraint3.get_y_displacement(), UnassignedConstraintException);
     ASSERT_EQ(retrievedConstraint3.get_z_displacement(), 0);
 }
