@@ -83,3 +83,46 @@ TEST(StructuralSolver, GivenAMesh_WhenAssigningPointConstraint_ExpectConstraintC
     ASSERT_EQ(retrievedConstraint.get_y_displacement(), 0);
     ASSERT_EQ(retrievedConstraint.get_z_displacement(), 0);
 }
+
+TEST(StructuralSolver, GivenAMesh_WhenAssigningMultiplePointConstraints_ExpectConstraintsCorrectlyApplied)
+{
+    Mesher mesher;
+    std::shared_ptr<Mesh> mesh = load_unit_cube_mesh_into_mesher(mesher, 1, 1, 1);
+
+    StructuralSolver solver{mesher};
+
+    Point constraintPoint1{-0.5, -0.5, -0.5};
+    Point constraintPoint2{0.5, -0.5, -0.5};
+    Point constraintPoint3{0.5, 0.5, 0.5};
+
+    StructuralPointConstraint constraint1{constraintPoint1, 0, 0, 0};
+    StructuralPointConstraint constraint2{constraintPoint1, std::nullopt, 0, 0};
+    StructuralPointConstraint constraint3{constraintPoint1, std::nullopt, std::nullopt, 0};
+
+    solver.add_constraint_to_mesh(mesh, constraint1);
+    solver.add_constraint_to_mesh(mesh, constraint2);
+    solver.add_constraint_to_mesh(mesh, constraint3);
+
+    auto constraints = solver.get_mesh_constraints(mesh);
+    auto structuralConstraints = downcast_vector<StructuralPointConstraint>(constraints);
+
+    ASSERT_EQ(structuralConstraints.size(), 3);
+
+    const auto& retrievedConstraint1 = *structuralConstraints[0];
+    ASSERT_EQ(retrievedConstraint1.get_constraint_location(), constraintPoint1);
+    ASSERT_EQ(retrievedConstraint1.get_x_displacement(), 0);
+    ASSERT_EQ(retrievedConstraint1.get_y_displacement(), 0);
+    ASSERT_EQ(retrievedConstraint1.get_z_displacement(), 0);
+
+    const auto& retrievedConstraint2 = *structuralConstraints[1];
+    ASSERT_EQ(retrievedConstraint2.get_constraint_location(), constraintPoint2);
+    ASSERT_THROW(retrievedConstraint2.get_x_displacement(), UnassignedMaterialException);
+    ASSERT_EQ(retrievedConstraint2.get_y_displacement(), 0);
+    ASSERT_EQ(retrievedConstraint2.get_z_displacement(), 0);
+
+    const auto& retrievedConstraint3 = *structuralConstraints[1];
+    ASSERT_EQ(retrievedConstraint3.get_constraint_location(), constraintPoint1);
+    ASSERT_THROW(retrievedConstraint3.get_x_displacement(), UnassignedMaterialException);
+    ASSERT_THROW(retrievedConstraint3.get_y_displacement(), UnassignedMaterialException);
+    ASSERT_EQ(retrievedConstraint3.get_z_displacement(), 0);
+}
