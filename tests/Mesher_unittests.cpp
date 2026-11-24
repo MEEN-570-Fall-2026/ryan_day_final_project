@@ -237,6 +237,6 @@ TEST(Mesher, GivenATetrahedronAndAPoint_WhenCheckingIfTetContainsPoint_ExpectPos
         std::make_shared<Point>(Point{1, 1, 1})
     };
     Tetrahedron tet{vertices};
-    Point checkPoint{0.5, 0.75, 0.2};
+    Point checkPoint{0.5, 0.5, 0.2};
     ASSERT_TRUE(tet.contains(checkPoint));
 }

@@ -10,6 +10,7 @@ target_sources(Mesher
         Mesh.hpp
         Tetrahedron.hpp
         TetrahedraCube.hpp
+        DegenerateTetrahedronException.hpp
 )
 target_compile_features(Mesher PRIVATE cxx_std_20)
 
@@ -17,8 +18,8 @@ target_link_libraries(Mesher
     PUBLIC
         Modeler
         Interpreter
-    PRIVATE
         Eigen3::Eigen
+        
 )
 
 target_include_directories(Mesher

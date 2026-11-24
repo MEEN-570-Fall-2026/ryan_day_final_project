@@ -24,6 +24,7 @@ FetchContent_MakeAvailable(googletest)
 
 # ----------------------------
 
+set(_project_build_testing "${BUILD_TESTING}")
 
 # ----------------------------
 # Eigen
@@ -33,6 +34,7 @@ set(EIGEN_BUILD_DOC OFF CACHE BOOL "" FORCE)
 set(EIGEN_BUILD_TESTING OFF CACHE BOOL "" FORCE)
 set(EIGEN_BUILD_PKGCONFIG OFF CACHE BOOL "" FORCE)
 set(EIGEN_INSTALL OFF CACHE BOOL "" FORCE)
+set(BUILD_TESTING OFF)
 
 FetchContent_Declare(
     Eigen
@@ -44,6 +46,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Eigen)
 
 # ----------------------------
+
+set(BUILD_TESTING "${_project_build_testing}")
 
 include(CTest)
 
