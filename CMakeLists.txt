@@ -24,6 +24,8 @@ FetchContent_MakeAvailable(googletest)
 
 # ----------------------------
 
+include(CTest)
+
 set(_project_build_testing "${BUILD_TESTING}")
 
 # ----------------------------
@@ -49,7 +51,6 @@ FetchContent_MakeAvailable(Eigen)
 
 set(BUILD_TESTING "${_project_build_testing}")
 
-include(CTest)
 
 add_subdirectory(application)
 add_subdirectory(tests)
