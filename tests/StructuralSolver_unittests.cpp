@@ -16,6 +16,20 @@ std::shared_ptr<Mesh> load_unit_cube_mesh_into_mesher(Mesher& mesher, double ele
 }
 
 
+template <typename Derived, typename Base> std::vector<std::shared_ptr<Derived>> downcast_vector(const std::vector<std::shared_ptr<Base>>& objects)
+{
+    std::vector<std::shared_ptr<Derived>> result;
+    for (const auto& object : objects) 
+    {
+        if (auto casted = std::dynamic_pointer_cast<Derived>(object)) 
+        {
+            result.push_back(std::move(casted));
+        }
+    }
+    return result;
+}
+
+
 TEST(StructuralSolver, GivenAMesh_WhenCreatingAnIsotropicMaterial_ExpectMaterialAppliedToMesh) 
 {
     double poissons = 0.25;
@@ -47,7 +61,7 @@ TEST(StructuralSolver, GivenAMesh_WhenNoMaterialAssinged_ExpectGettingMaterialTh
     ASSERT_THROW(solver.get_mesh_material(mesh), UnassignedMaterialException);
 }
 
-TEST(StructuralSolver, GivenAMesh_WhenAssigningConstraint_ExpectConstraintCorrectlyApplied)
+TEST(StructuralSolver, GivenAMesh_WhenAssigningPointConstraint_ExpectConstraintCorrectlyApplied)
 {
     Mesher mesher;
     std::shared_ptr<Mesh> mesh = load_unit_cube_mesh_into_mesher(mesher, 1, 1, 1);
@@ -57,12 +71,15 @@ TEST(StructuralSolver, GivenAMesh_WhenAssigningConstraint_ExpectConstraintCorrec
     Point constraintPoint{-0.5, -0.5, -0.5};
 
     StructuralPointConstraint constraint{constraintPoint, 0, 0, 0};
-    solver.add_constraint(constraint);
-    std::vector<Constraint> constraints = solver.get_constraints();
+    solver.add_constraint_to_mesh(mesh, constraint);
+    auto constraints = solver.get_mesh_constraints(mesh);
+    auto structuralConstraints = downcast_vector<StructuralPointConstraint>(constraints);
 
-    ASSERT_EQ(constraints.size(), 1);
-    ASSERT_EQ(constraints[0].get_constraint_location(), constraintPoint);
-    ASSERT_EQ(constraints[0].get_x_displacement(), 0);
-    ASSERT_EQ(constraints[0].get_y_displacement(), 0);
-    ASSERT_EQ(constraints[0].get_z_displacement(), 0);
+    ASSERT_EQ(structuralConstraints.size(), 1);
+
+    const auto& retrievedConstraint = *structuralConstraints[0];
+    ASSERT_EQ(retrievedConstraint.get_constraint_location(), constraintPoint);
+    ASSERT_EQ(retrievedConstraint.get_x_displacement(), 0);
+    ASSERT_EQ(retrievedConstraint.get_y_displacement(), 0);
+    ASSERT_EQ(retrievedConstraint.get_z_displacement(), 0);
 }

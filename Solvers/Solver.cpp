@@ -7,6 +7,7 @@ Solver::Solver(Mesher mesher)
 {
     for (std::shared_ptr<Mesh> meshPtr : mesher.get_meshes()) {
         meshMaterials[meshPtr] = std::nullopt;
+        meshConstraints[meshPtr] = std::vector<std::shared_ptr<PointConstraint>>();
     }
 }
 
@@ -22,4 +23,15 @@ IsotropicMaterial Solver::get_mesh_material(std::shared_ptr<Mesh> meshSharedPtr)
         throw UnassignedMaterialException("No material assigned to requested mesh!");
     }
     return *meshMaterials[meshSharedPtr];
+}
+
+void Solver::add_constraint_to_mesh(std::shared_ptr<Mesh> mesh, const PointConstraint& constraint)
+{
+    auto copy = constraint.clone();
+    meshConstraints[mesh].push_back(std::shared_ptr<PointConstraint>(std::move(copy)));
+}
+
+std::vector<std::shared_ptr<PointConstraint>> Solver::get_mesh_constraints(std::shared_ptr<Mesh> meshSharedPtr)
+{
+    return meshConstraints[meshSharedPtr];
 }
