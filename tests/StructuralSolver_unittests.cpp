@@ -178,3 +178,37 @@ TEST(StructuralSolver, GivenAMesh_WhenAssigningPointLoad_ExpectLoadCorrectlyAppl
     std::vector<double> expectedLoad = {forceX, forceY, forceZ};
     ASSERT_EQ(retrievedLoad.get_load_vector(), expectedLoad);
 }
+
+TEST(StructuralSolver, GivenAMesh_WhenAlligningConstraintsWithNodes_ExpectConstraintsProperlyAlligned)
+{
+    Mesher mesher;
+    std::shared_ptr<Mesh> mesh = load_unit_cube_mesh_into_mesher(mesher, 1, 1, 1);
+
+    StructuralSolver solver{mesher};
+
+    Point constraintPoint1{-0.45, -0.45, -0.45};
+    Point constraintPoint2{0.45, -0.45, -0.45};
+    Point constraintPoint3{0.45, 0.45, 0.45};
+
+    StructuralPointConstraint constraint1{constraintPoint1, 0, 0, 0};
+    StructuralPointConstraint constraint2{constraintPoint2, std::nullopt, 0, 0};
+    StructuralPointConstraint constraint3{constraintPoint3, std::nullopt, std::nullopt, 0};
+
+    solver.add_constraint_to_mesh(mesh, constraint1);
+    solver.add_constraint_to_mesh(mesh, constraint2);
+    solver.add_constraint_to_mesh(mesh, constraint3);
+
+    solver.allign_constraints();
+
+    Point expected1{-0.5, -0.5, -0.5};
+    Point expected2{-0.5, -0.5, -0.5};
+    Point expected3{0.5, 0.5, 0.5};
+
+    auto constraints = solver.get_mesh_constraints(mesh);
+    auto structuralConstraints = downcast_vector<StructuralPointConstraint>(constraints);
+
+    ASSERT_EQ(structuralConstraints.size(), 3);
+    ASSERT_EQ(*structuralConstraints[0], expected1);
+    ASSERT_EQ(*structuralConstraints[1], expected2);
+    ASSERT_EQ(*structuralConstraints[3], expected3);
+}
