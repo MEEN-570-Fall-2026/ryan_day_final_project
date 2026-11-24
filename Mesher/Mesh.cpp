@@ -1,5 +1,8 @@
 #include "Mesh.hpp"
 
+#include <limits>
+#include <cmath>
+
 Mesh::Mesh(std::vector<PointPointers> objectVertices, double elementXSize, double elementYSize, double elementZSize) :
     objectVertices{objectVertices},
     elementXSize{elementXSize},
@@ -19,6 +22,21 @@ std::vector<std::shared_ptr<TetrahedraCube>> Mesh::get_tetrahedra_cubes() const
 const std::vector<std::shared_ptr<Point>>& Mesh::get_point_cloud() const
 {
     return pointGrid;
+}
+
+std::shared_ptr<Point> Mesh::get_closest_node(Point point)
+{
+    double closestDistance = std::numeric_limits<double>::max();
+    std::shared_ptr<Point> closestNode;
+    for (auto nodePointer : pointGrid)
+    {
+        double distance = calculate_distance_between_nodes(*nodePointer, point);
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestNode = nodePointer;
+        }
+    }
+    return closestNode;
 }
 
 void Mesh::set_tet_cube_counts()
@@ -136,4 +154,12 @@ void Mesh::create_tetrahedra_cubes()
             }
         }
     }
+}
+
+double Mesh::calculate_distance_between_nodes(Point& point1, Point& point2)
+{
+    double xSquareDistance = std::pow(point1.x() - point2.x(), 2);
+    double ySquareDistance = std::pow(point1.y() - point2.y(), 2);
+    double zSquareDistance = std::pow(point1.z() - point2.z(), 2);
+    return std::sqrt(xSquareDistance + ySquareDistance + zSquareDistance);
 }

@@ -38,3 +38,4 @@ CMakeLists.txt.user
 /out
 
 CMakePresets.json
+Launch.json

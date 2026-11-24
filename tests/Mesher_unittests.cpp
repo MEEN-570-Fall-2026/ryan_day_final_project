@@ -225,5 +225,5 @@ TEST(Mesher, GivenAMeshAndAPoint_WhenFindingClosestNode_ExpectCorrectClosestNode
     std::shared_ptr<Point> closestNode = mesh.get_closest_node(testPoint);
     Point expectedNode = Point(0.5, -0.5, 0.5);
 
-    ASSERT_EQ(testPoint, *closestNode);
+    ASSERT_EQ(expectedNode, *closestNode);
 }

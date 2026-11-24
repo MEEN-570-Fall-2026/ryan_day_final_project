@@ -16,6 +16,8 @@ class Mesh{
         std::vector<TetCubePointers> get_tetrahedra_cubes() const;
         const std::vector<std::shared_ptr<Point>>& get_point_cloud() const;
 
+        std::shared_ptr<Point> get_closest_node(Point point);
+
     private:
         void set_tet_cube_counts();
         void set_object_bounds();
@@ -28,6 +30,7 @@ class Mesh{
         std::vector<TetCubePointers> tetCubes;
         std::vector<PointPointers> pointGrid;
         std::vector<PointPointers> objectVertices;
+        double calculate_distance_between_nodes(Point& point1, Point& point2);
         double elementXSize;
         double elementYSize;
         double elementZSize;
