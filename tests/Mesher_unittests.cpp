@@ -240,3 +240,16 @@ TEST(Mesher, GivenATetrahedronAndAPoint_WhenCheckingIfTetContainsPoint_ExpectPos
     Point checkPoint{0.5, 0.5, 0.2};
     ASSERT_TRUE(tet.contains(checkPoint));
 }
+
+TEST(Mesher, GivenATetrahedronAndAPoint_WhenChecnkingIfTetContainsPoint_ExpectNegativeContainCheck)
+{
+    std::vector<std::shared_ptr<Point>> vertices = {
+        std::make_shared<Point>(Point{0, 0, 0}),
+        std::make_shared<Point>(Point{1, 0, 0}),
+        std::make_shared<Point>(Point{1, 1, 0}),
+        std::make_shared<Point>(Point{1, 1, 1})
+    };
+    Tetrahedron tet{vertices};
+    Point checkPoint{0, -0.1, 0};
+    ASSERT_FALSE(tet.contains(checkPoint));
+}

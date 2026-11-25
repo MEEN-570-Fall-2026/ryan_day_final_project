@@ -26,11 +26,12 @@ FetchContent_MakeAvailable(googletest)
 
 include(CTest)
 
-set(_project_build_testing "${BUILD_TESTING}")
 
 # ----------------------------
 # Eigen
 # ----------------------------
+
+set(_project_build_testing "${BUILD_TESTING}")
 
 set(EIGEN_BUILD_DOC OFF CACHE BOOL "" FORCE)
 set(EIGEN_BUILD_TESTING OFF CACHE BOOL "" FORCE)
@@ -47,9 +48,10 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Eigen)
 
+set(BUILD_TESTING "${_project_build_testing}")
 # ----------------------------
 
-set(BUILD_TESTING "${_project_build_testing}")
+
 
 
 add_subdirectory(application)
